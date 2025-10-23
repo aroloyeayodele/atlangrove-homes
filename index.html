@@ -4,44 +4,57 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>iHomes Africa - Premium Real Estate in Nigeria</title>
-    <meta name="description" content="iHomes Africa provides premium real estate solutions for buyers, sellers, and investors across Nigeria. Find your ideal property with our expert guidance." />
+    <meta
+      name="description"
+      content="iHomes Africa provides premium real estate solutions for buyers, sellers, and investors across Nigeria. Find your ideal property with our expert guidance."
+    />
     <meta name="author" content="iHomes Africa" />
 
-    <meta property="og:title" content="iHomes Africa - Premium Real Estate in Nigeria" />
-    <meta property="og:description" content="iHomes Africa provides premium real estate solutions for buyers, sellers, and investors across Nigeria. Find your ideal property with our expert guidance." />
+    <!-- ✅ Your custom Open Graph (WhatsApp, Facebook, etc.) preview -->
+    <meta
+      property="og:title"
+      content="iHomes Africa - Premium Real Estate in Nigeria"
+    />
+    <meta
+      property="og:description"
+      content="Discover luxury and affordable real estate solutions with iHomes Africa. Your dream property awaits."
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta property="og:url" content="https://ihomes-version-1.vercel.app/" />
 
+    <!-- 🖼️ Replace this with your own hosted image -->
+    <meta property="og:image" content="/preview.jpg" />
+
+    <!-- ✅ Twitter / WhatsApp Preview -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta name="twitter:title" content="iHomes Africa - Premium Real Estate in Nigeria" />
+    <meta name="twitter:description" content="Your trusted real estate partner across Nigeria." />
+    <meta name="twitter:image" content="/preview.jpg" />
 
-    <!-- Start Single Page Apps for GitHub Pages -->
+    <!-- (Optional) Single Page Apps redirect script -->
     <script type="text/javascript">
-      // Single Page Apps for GitHub Pages
-      // MIT License
-      // https://github.com/rafgraph/spa-github-pages
-      // This script checks to see if a redirect is present in the query string,
-      // converts it back into the correct url and adds it to the
-      // browser's history using window.history.replaceState(...)
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
+      (function (l) {
+        if (l.search[1] === "/") {
+          var decoded = l.search
+            .slice(1)
+            .split("&")
+            .map(function (s) {
+              return s.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
         }
-      }(window.location))
+      })(window.location);
     </script>
-    <!-- End Single Page Apps for GitHub Pages -->
   </head>
 
   <body>
     <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+
+    <!-- ❌ Remove the Lovable (GPT Engineer) script -->
+    <!-- <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script> -->
+
+    <!-- ✅ Keep your own app’s entry point -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
