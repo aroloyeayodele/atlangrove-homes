@@ -44,7 +44,7 @@ const StatsSection = () => {
             Our <span className="text-brand-red">Impact</span>
           </h2>
           <p className="text-gray-600 slide-up animate-delay-200 mb-8">
-            For over 15 years, iHomes Africa has been a trusted name in Nigerian real estate, 
+            For over 15 years, Exclusive Estates has been a trusted name in Nigerian real estate, 
             delivering exceptional results for our clients across the country.
           </p>
         </div>

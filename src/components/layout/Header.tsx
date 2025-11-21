@@ -53,7 +53,7 @@ const Header = () => {
           <Link to="/" className="flex items-center">
             <img 
               src="/lovable-uploads/d8b82a03-78f9-4b90-ac43-39097201c852.png" 
-              alt="iHomes Africa Logo" 
+              alt="Exclusive Estates Logo" 
               className="h-8 sm:h-10"
             />
           </Link>
@@ -78,7 +78,7 @@ const Header = () => {
 
           {/* Contact Button - Desktop */}
           <div className="hidden md:block">
-            <Button asChild>
+            <Button asChild className="bg-[#bf1206] text-white hover:bg-[#a10e05]">
               <Link to="/contact">Get In Touch</Link>
             </Button>
           </div>

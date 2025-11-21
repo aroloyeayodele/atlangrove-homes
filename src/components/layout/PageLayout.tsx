@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import WhatsAppButton from '@/components/ui/WhatsAppButton';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -16,6 +17,7 @@ const PageLayout = ({ children }: PageLayoutProps) => {
       <Header />
       <main className="flex-grow pt-16">{children}</main>
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 };

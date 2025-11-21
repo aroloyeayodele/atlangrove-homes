@@ -54,7 +54,7 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				// Custom brand colors
-				"brand-red": "#A60014",
+				"brand-red": "#bf1206",
 				"brand-gray": "#888686",
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',

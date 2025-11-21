@@ -21,7 +21,7 @@ const teamMembers: TeamMember[] = [
     name: 'Peter Adobamen',
     role: 'CEO & Founder',
     bio: 'With over 15 years of experience in real estate development and investment, Adebayo brings unparalleled expertise to Exclusive Estates.',
-    image: '',
+    image: '/lovable-uploads/TeamMember/PeterAdobamen.jpg',
     social: {
       facebook: '#',
       instagram: '#',
@@ -33,7 +33,7 @@ const teamMembers: TeamMember[] = [
     name: 'Emmanuel Adetutu',
     role: 'Head of Sales',
     bio: 'Emmanuel leads our sales team with a focus on creating exceptional client experiences and achieving outstanding results.',
-    image: '',
+    image: '/lovable-uploads/TeamMember/EmmanuelAdetutu.jpg',
     social: {
       instagram: '#',
       linkedin: '#',
@@ -44,7 +44,7 @@ const teamMembers: TeamMember[] = [
     name: 'Halima Abubakar',
     role: 'Property Consultant',
     bio: 'Halima specializes in high-value property acquisitions and has a deep understanding of the luxury real estate market.',
-    image: '',
+    image: '/lovable-uploads/TeamMember/HalimaAbubakar.jpg',
     social: {
       facebook: '#',
       linkedin: '#',
@@ -55,7 +55,7 @@ const teamMembers: TeamMember[] = [
     name: 'Uche Chiamaka Glory',
     role: 'Investment Advisor',
     bio: 'Chiamaka helps clients make informed investment decisions, with expertise in both residential and commercial properties.',
-    image: '',
+    image: '/lovable-uploads/TeamMember/UcheChiamakaGlory.jpg',
     social: {
       instagram: '#',
       linkedin: '#',

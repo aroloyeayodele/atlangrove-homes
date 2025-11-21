@@ -22,7 +22,7 @@ const ContactInfo = () => {
           </div>
           <div>
             <h4 className="font-medium mb-1">Email</h4>
-            <p className="text-gray-600">ihomesafrica@gmail.com</p>
+            <p className="text-gray-600">exclusiveestates@gmail.com</p>
           </div>
         </div>
         
@@ -32,7 +32,7 @@ const ContactInfo = () => {
           </div>
           <div>
             <h4 className="font-medium mb-1">Office Locations</h4>
-            <p className="text-gray-600 mb-2">Wuse 2, Abuja, Nigeria</p>
+            <p className="text-gray-600 mb-2">No.6, Bakwu Street, Wuse 2, Abuja, Nigeria</p>
             <p className="text-gray-600">Victoria Island, Lagos, Nigeria</p>
           </div>
         </div>

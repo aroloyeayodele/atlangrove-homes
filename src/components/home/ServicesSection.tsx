@@ -44,7 +44,7 @@ const ServicesSection = () => {
             Our <span className="text-brand-red">Services</span>
           </h2>
           <p className="text-gray-600 slide-up animate-delay-200">
-            iHomes Africa provides comprehensive real estate solutions tailored to your needs,
+            Exclusive Estates provides comprehensive real estate solutions tailored to your needs,
             whether you're buying, selling, renting, or investing.
           </p>
         </div>

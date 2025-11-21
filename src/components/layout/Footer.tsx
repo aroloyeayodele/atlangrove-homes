@@ -18,13 +18,13 @@ const Footer = () => {
               />
             </Link>
             <p className="text-sm text-gray-600 mt-4">
-              iHomes Africa specializes in property sales, rentals, acquisitions, 
+              Exclusive Estates specializes in property sales, rentals, acquisitions, 
               and investment consultancy, delivering exceptional real estate 
               solutions across Africa.
             </p>
             <div className="flex space-x-4 pt-2">
               <a 
-                href="https://web.facebook.com/people/Ihomesafrica/61582368710899/" 
+                href="https://web.facebook.com/people/ExclusiveEstates/61582368710899/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-brand-red transition-colors"
@@ -33,7 +33,7 @@ const Footer = () => {
                 <Facebook className="h-5 w-5" />
               </a>
               <a 
-                href="https://www.instagram.com/ihomesafrica/" 
+                href="https://www.instagram.com/exclusiveestates/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-brand-red transition-colors"
@@ -139,14 +139,14 @@ const Footer = () => {
               </p>
               <p className="flex items-start text-sm">
                 <Mail className="h-5 w-5 text-brand-red mr-2 mt-0.5" />
-                <span className="text-gray-600">ihomesafrica@gmail.com</span>
+                <span className="text-gray-600">exclusiveestates@gmail.com</span>
               </p>
             </div>
           </div>
         </div>
 
         <div className="border-t border-gray-200 mt-10 pt-6 text-center text-sm text-gray-500">
-          <p>&copy; {currentYear} iHomes Africa. All rights reserved.</p>
+          <p>&copy; {currentYear} Exclusive Estates. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -9,128 +9,63 @@ import { Skeleton } from '@/components/ui/skeleton';
 import PageLayout from '@/components/layout/PageLayout';
 import { PropertyData } from '@/components/property/PropertyCard';
 import { formatCurrency, generateWhatsAppLink } from '@/utils/format';
-
-// Mock data - will be replaced with Supabase data
-const mockProperties: Record<string, PropertyData & { 
-  description: string; 
-  features: string[];
-  images: string[];
-  status: 'Available' | 'Sold' | 'Pending';
-  listedDate: string;
-  propertySize: string;
-  contactPhone: string;
-}> = {
-  '1': {
-    id: '1',
-    title: 'Luxury Villa with Ocean View',
-    price: 250000000,
-    location: 'Banana Island, Lagos',
-    category: 'finished',
-    imageUrl: 'https://images.unsplash.com/photo-1488972685288-c3fd157d7c7a',
-    bedrooms: 5,
-    bathrooms: 6,
-    squareMeters: 450,
-    description: 'This stunning oceanfront villa offers breathtaking views and luxurious living spaces. The property features 5 spacious bedrooms, 6 bathrooms, a gourmet kitchen, private swimming pool, and direct beach access. Perfect for those seeking the ultimate luxury lifestyle.',
-    features: [
-      'Oceanfront location',
-      'Private swimming pool',
-      'Home automation system',
-      'Marble flooring',
-      'Chef\'s kitchen with high-end appliances',
-      'Walk-in closets',
-      'Home theater',
-      'Staff quarters',
-      '3-car garage',
-      '24/7 security'
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1488972685288-c3fd157d7c7a',
-      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750',
-      'https://images.unsplash.com/photo-1580587771525-78b9dba3b914',
-      'https://images.unsplash.com/photo-1513584684374-8bab748fbf90',
-    ],
-    status: 'Available',
-    listedDate: '2023-09-15',
-    propertySize: '1,200 sqm',
-    contactPhone: '08184114496',
-  },
-  '2': {
-    id: '2',
-    title: 'Premium Building Land',
-    price: 75000000,
-    location: 'Guzape, Abuja',
-    category: 'land',
-    imageUrl: 'https://images.unsplash.com/photo-1496307653780-42ee777d4833',
-    squareMeters: 1000,
-    description: 'Prime residential building land located in the prestigious Guzape district of Abuja. This 1,000 square meter plot is ideal for constructing a luxury home, with excellent views and a strategic location. The land has clean title documents and all necessary approvals.',
-    features: [
-      'Clean title documents',
-      'Rectangular shape',
-      'Flat topography',
-      'Road access',
-      'Electricity nearby',
-      'Water connection available',
-      'Secured neighborhood',
-      'Close to amenities'
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1496307653780-42ee777d4833',
-      'https://images.unsplash.com/photo-1500382017468-9049fed747ef',
-      'https://images.unsplash.com/photo-1628624747186-a941c476b7ef',
-    ],
-    status: 'Available',
-    listedDate: '2023-10-05',
-    propertySize: '1,000 sqm',
-    contactPhone: '09018817807',
-  },
-  '3': {
-    id: '3',
-    title: 'Contemporary Duplex',
-    price: 120000000,
-    location: 'Lekki Phase 1, Lagos',
-    category: 'carcass',
-    imageUrl: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742',
-    bedrooms: 4,
-    bathrooms: 4,
-    squareMeters: 350,
-    description: 'This contemporary duplex is currently at carcass stage, offering the perfect opportunity to customize your dream home. Located in the sought-after Lekki Phase 1 area, the property features a thoughtful layout with 4 bedrooms, all en-suite. The structure is sound and ready for completion to your specifications.',
-    features: [
-      'Solid structural framework',
-      'All rooms en-suite',
-      'Spacious family lounge',
-      'Provision for home office',
-      'Double car garage',
-      'Ample garden space',
-      'Security post',
-      'Good road network'
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1518005020951-eccb494ad742',
-      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9',
-      'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83',
-    ],
-    status: 'Available',
-    listedDate: '2023-08-20',
-    propertySize: '450 sqm',
-    contactPhone: '07047389356',
-  },
-};
+import { supabase } from '@/lib/supabase';
 
 const PropertyDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const [property, setProperty] = useState<(typeof mockProperties)[string] | null>(null);
+  const [property, setProperty] = useState<(PropertyData & {
+    description?: string | null;
+    status?: 'Available' | 'Sold' | 'Pending' | null;
+    listedDate?: string | null;
+    propertySize?: string | null;
+    contactPhone?: string | null;
+    images: string[];
+    features: string[];
+  }) | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate API fetch
-    const timer = setTimeout(() => {
-      if (id && mockProperties[id]) {
-        setProperty(mockProperties[id]);
-      }
-      setLoading(false);
-    }, 1000);
+    const load = async () => {
+      try {
+        if (!id) return;
+        // Main property from view (camelCase fields)
+        const { data: prop, error: pErr } = await supabase
+          .from('properties_view')
+          .select('*')
+          .eq('id', id)
+          .single();
+        if (pErr || !prop) throw pErr || new Error('Not found');
 
-    return () => clearTimeout(timer);
+        // Gallery images
+        const { data: imgs } = await supabase
+          .from('property_images')
+          .select('url, sort_order')
+          .eq('property_id', id)
+          .order('sort_order', { ascending: true });
+        // Features
+        const { data: feats } = await supabase
+          .from('property_features')
+          .select('feature, sort_order')
+          .eq('property_id', id)
+          .order('sort_order', { ascending: true });
+
+        const images = (imgs?.map(i => i.url) || []).length > 0
+          ? (imgs as any[]).map(i => i.url as string)
+          : [prop.imageUrl].filter(Boolean);
+        const features = (feats as any[] | null)?.map(f => f.feature as string) || [];
+
+        setProperty({
+          ...(prop as any),
+          images,
+          features,
+        });
+      } catch (e) {
+        console.error('Failed to load property', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
   }, [id]);
 
   if (loading) {

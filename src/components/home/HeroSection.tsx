@@ -95,8 +95,8 @@ const HeroSection = () => {
 						Discover Your Perfect <span className="text-brand-red">Property</span> in Nigeria
 					</h1>
 					<p className="text-lg text-gray-200 mb-8 max-w-2xl">
-						iHomes Africa provides innovative real estate solutions for buyers, sellers, and investors.
-						Discover your ideal property with our expert guidance and commitment to excellence.
+						Exclusive Estates provides innovative real estate solutions for buyers, sellers, and investors.
+						
 					</p>
 
 					{/* Search Form */}

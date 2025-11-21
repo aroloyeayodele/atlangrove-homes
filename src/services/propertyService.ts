@@ -6,7 +6,7 @@ import { PropertyData } from '@/components/property/PropertyCard';
 export async function getFeaturedProperties(): Promise<PropertyData[]> {
   try {
     const { data, error } = await supabase
-      .from('properties')
+      .from('properties_view')
       .select('*')
       .order('created_at', { ascending: false })
       .limit(3);
@@ -24,7 +24,7 @@ export async function getFeaturedProperties(): Promise<PropertyData[]> {
 export async function getAllProperties(category?: string): Promise<PropertyData[]> {
   try {
     let query = supabase
-      .from('properties')
+      .from('properties_view')
       .select('*')
       .order('created_at', { ascending: false });
     
@@ -48,7 +48,7 @@ export async function getAllProperties(category?: string): Promise<PropertyData[
 export async function getPropertyById(id: string): Promise<PropertyData | null> {
   try {
     const { data, error } = await supabase
-      .from('properties')
+      .from('properties_view')
       .select('*')
       .eq('id', id)
       .single();

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { MapPin } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { formatCurrency } from '@/utils/format';
+import { useState } from 'react';
 
 export interface PropertyData {
   id: string;
@@ -22,6 +23,7 @@ interface PropertyCardProps {
 }
 
 const PropertyCard = ({ property, className }: PropertyCardProps) => {
+  const [imgSrc, setImgSrc] = useState(property.imageUrl);
   const categoryLabel = {
     land: 'Land',
     carcass: 'Carcass',
@@ -35,10 +37,11 @@ const PropertyCard = ({ property, className }: PropertyCardProps) => {
     >
       <div className="relative overflow-hidden rounded-t-lg aspect-[4/3]">
         <img 
-          src={property.imageUrl} 
+          src={imgSrc || ''} 
           alt={property.title}
           className="w-full h-full object-cover"
           loading="lazy"
+          onError={() => setImgSrc('https://placehold.co/800x600?text=No+Image')}
         />
         <div className="absolute top-4 left-4">
           <Badge 
