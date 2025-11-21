@@ -6,7 +6,7 @@
         "-y",
         "@supabase/mcp-server-supabase@latest",
         "--access-token",
-        "${SUPABASE_MCP_TOKEN}"
+        "${sbp_b4337921278e6cf11c05b910f87cc2876ef0a196}"
       ],
       "env": {}
     }

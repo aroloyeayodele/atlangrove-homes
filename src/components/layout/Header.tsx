@@ -53,7 +53,7 @@ const Header = () => {
           <Link to="/" className="flex items-center">
             <img 
               src="/lovable-uploads/d8b82a03-78f9-4b90-ac43-39097201c852.png" 
-              alt="Exclusive Estates Logo" 
+              alt="Atlangrove Heights Logo" 
               className="h-8 sm:h-10"
             />
           </Link>
@@ -78,7 +78,7 @@ const Header = () => {
 
           {/* Contact Button - Desktop */}
           <div className="hidden md:block">
-            <Button asChild className="bg-[#bf1206] text-white hover:bg-[#a10e05]">
+            <Button asChild className="bg-brand-red text-white hover:brightness-90">
               <Link to="/contact">Get In Touch</Link>
             </Button>
           </div>
@@ -114,7 +114,7 @@ const Header = () => {
                 {item.name}
               </Link>
             ))}
-            <Button asChild className="w-full mt-4">
+            <Button asChild className="w-full mt-4 bg-brand-red text-white hover:brightness-90">
               <Link to="/contact">Get In Touch</Link>
             </Button>
           </div>

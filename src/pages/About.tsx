@@ -8,30 +8,30 @@ const About = () => {
   return (
     <PageLayout>
       <Helmet>
-        <title>About Exclusive Estates | Premium Real Estate in Africa</title>
-        <meta name="description" content="Learn about Exclusive Estates, Africa's leading luxury real estate brand. Discover our story, vision, mission, values, and team." />
-        <meta name="keywords" content="Exclusive Estates, luxury homes, premium real estate, Nigeria, Africa, property sales, smart homes, secure estates" />
-        <meta property="og:title" content="About Exclusive Estates" />
-        <meta property="og:description" content="Discover the story, vision, and values of Exclusive Estates, Africa's trusted luxury real estate brand." />
+        <title>About Atlangrove Heights | Quality Real Estate in Nigeria</title>
+        <meta name="description" content="Learn about Atlangrove Heights — providing quality and affordable accommodation, crafting homes and transformative experiences across Nigeria." />
+        <meta name="keywords" content="Atlangrove Heights, Atlangrove Homes, real estate, Nigeria, Abuja, affordable homes, secure estates" />
+        <meta property="og:title" content="About Atlangrove Heights" />
+        <meta property="og:description" content="Atlangrove Heights creates quality, affordable homes and transformative living experiences across Nigeria." />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/preview.jpg" />
         <script type="application/ld+json">{`
           {
             "@context": "https://schema.org",
             "@type": "Organization",
-            "name": "Exclusive Estates",
-            "url": "https://exclusive-estates.vercel.app/",
+            "name": "Atlangrove Heights",
+            "url": "https://www.atlangrovehomes.com/",
             "logo": "/lovable-uploads/d8b82a03-78f9-4b90-ac43-39097201c852.png",
             "contactPoint": [{
               "@type": "ContactPoint",
-              "telephone": "+234 123 456 7890",
+              "telephone": "+234 806 655 8355",
               "contactType": "customer service",
-              "email": "info@exclusiveestates.com"
+              "email": "info@example.com"
             }],
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "Victoria Island",
-              "addressLocality": "Lagos",
+              "streetAddress": "Suite FF037, AICL Neighbourhood Shopping Centre, Garki Area 3",
+              "addressLocality": "Abuja",
               "addressCountry": "Nigeria"
             }
           }
@@ -43,11 +43,10 @@ const About = () => {
         <div className="section-container">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-serif font-semibold mb-6 slide-up">
-              About <span className="text-brand-red">Exclusive Estates</span>
+              About <span className="text-brand-red">Atlangrove Heights</span>
             </h1>
             <p className="text-lg text-gray-600 mb-8 slide-up animate-delay-200">
-              Exclusive Estates is a premium-living brand delivering thoughtfully designed homes, secure estates, and elevated lifestyle experiences across Africa.<br />
-              As a distinguished brand under iHomes Africa, we combine decades of real estate expertise with contemporary design excellence to create residential spaces that define luxury living.
+              ATLANGROVE HEIGHTS was created on February 25, 2021 to provide quality and affordable accommodation to Nigerians who desire and deserve to live in a decent and comfortable environment.
             </p>
           </div>
         </div>
@@ -58,33 +57,28 @@ const About = () => {
         <div className="section-container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-4 slide-up">Our Story</h2>
-            <p className="text-gray-600">A journey of excellence in premium real estate</p>
+            <p className="text-gray-600">A journey of excellence in real estate and community building</p>
           </div>
           <div className="grid gap-8">
             <div className="bg-white rounded-lg p-6 shadow-sm">
-              <strong className="text-brand-red text-xl">2013</strong>
+              <strong className="text-brand-red text-xl">2021</strong>
               <h3 className="font-semibold mt-2">Founding</h3>
-              <p className="text-gray-600">iHomes Africa established with a vision to transform African real estate</p>
+              <p className="text-gray-600">Atlangrove Heights was established, led by competent and professional realtors accredited by the Nigeria Institute of Estate Surveyors and Valuers.</p>
             </div>
             <div className="bg-white rounded-lg p-6 shadow-sm">
-              <strong className="text-brand-red text-xl">2016</strong>
-              <h3 className="font-semibold mt-2">Growth</h3>
-              <p className="text-gray-600">Expanded portfolio across multiple African countries</p>
+              <strong className="text-brand-red text-xl">Vision</strong>
+              <h3 className="font-semibold mt-2">Transformative Living</h3>
+              <p className="text-gray-600">We aspire to be catalysts for transformative experiences, crafting not just homes but narratives of lives well lived.</p>
             </div>
             <div className="bg-white rounded-lg p-6 shadow-sm">
-              <strong className="text-brand-red text-xl">2020</strong>
-              <h3 className="font-semibold mt-2">Integration</h3>
-              <p className="text-gray-600">Launch of Exclusive Estates as premium luxury brand</p>
+              <strong className="text-brand-red text-xl">Mission</strong>
+              <h3 className="font-semibold mt-2">Creating Value</h3>
+              <p className="text-gray-600">Redefining the landscape of possibilities by creating enduring value and fostering a sense of belonging.</p>
             </div>
             <div className="bg-white rounded-lg p-6 shadow-sm">
-              <strong className="text-brand-red text-xl">2023</strong>
-              <h3 className="font-semibold mt-2">Expansion</h3>
-              <p className="text-gray-600">Pan-African network with 50+ premium properties</p>
-            </div>
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <strong className="text-brand-red text-xl">2025</strong>
-              <h3 className="font-semibold mt-2">Vision</h3>
-              <p className="text-gray-600">Leading Africa’s luxury residential transformation</p>
+              <strong className="text-brand-red text-xl">Focus</strong>
+              <h3 className="font-semibold mt-2">Quality & Affordability</h3>
+              <p className="text-gray-600">World-class housing emphasizing affordability, comfort, security, and genuine Certificate of Occupancy (C of O).</p>
             </div>
           </div>
         </div>
@@ -96,11 +90,37 @@ const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white rounded-lg p-8 shadow-sm">
               <h2 className="text-2xl font-serif font-semibold mb-4">Our Vision</h2>
-              <p className="text-gray-600">To redefine premium living across Africa through excellence in design, smart solutions, and superior customer experience.</p>
+              <p className="text-gray-600">To be catalysts for transformative experiences — crafting not just homes but narratives of lives well lived, creating enduring value and belonging.</p>
             </div>
             <div className="bg-white rounded-lg p-8 shadow-sm">
               <h2 className="text-2xl font-serif font-semibold mb-4">Our Mission</h2>
-              <p className="text-gray-600">Deliver luxury homes crafted with integrity, innovation, and uncompromising quality that elevate the African residential experience.</p>
+              <p className="text-gray-600">To provide quality and affordable accommodation while redefining possibilities in real estate with integrity, professionalism, and innovation.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Atlangrove Narrative & USPs */}
+      <section className="py-16 bg-gray-50">
+        <div className="section-container">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-lg p-8 shadow-sm">
+              <h2 className="text-2xl font-serif font-semibold mb-4">Who We Are</h2>
+              <p className="text-gray-600 mb-4">
+                Welcome to a vision where Atlangrove Homes Limited is not just a real estate endeavour but also a journey to turn aspirations into addressable realities.
+              </p>
+              <p className="text-gray-600">
+                The organisation was created by competent and professional realtors, estate agencies well trained and recognized by the Nigeria Institute of Estate Surveyors and Valuers.
+              </p>
+            </div>
+            <div className="bg-white rounded-lg p-8 shadow-sm">
+              <h2 className="text-2xl font-serif font-semibold mb-4">Unique Selling Propositions</h2>
+              <ul className="list-disc list-inside text-gray-600 space-y-2">
+                <li>Affordability</li>
+                <li>Genuine Certificate of Occupancy</li>
+                <li>Security</li>
+                <li>Comfort</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -166,15 +186,13 @@ const About = () => {
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Exclusive Estates Abuja Office Location"
+                  title="Atlangrove Heights Abuja Office Location"
                   className="w-full h-full"
                 />
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-serif font-medium mb-2">Abuja Office</h3>
-                <p className="text-gray-600">
-                  Wuse 2, Abuja, Nigeria
-                </p>
+                <p className="text-gray-600">Suite FF037, AICL Neighbourhood Shopping Centre, Garki Area 3, Abuja</p>
               </div>
             </div>
             <div className="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all slide-up animate-delay-200">
@@ -187,7 +205,7 @@ const About = () => {
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Exclusive Estates Lagos Office Location"
+                  title="Lagos Office Location"
                   className="w-full h-full"
                 />
               </div>
@@ -202,6 +220,35 @@ const About = () => {
         </div>
       </section>
 
+      {/* Leadership Section */}
+      <section className="py-16 bg-white">
+        <div className="section-container">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-8">Leadership</h2>
+            <div className="space-y-10">
+              <div>
+                <h3 className="text-2xl font-semibold">Bishop Israel Morakinyo — Chairman</h3>
+                <p className="text-gray-700 mt-2">
+                  A titan in real estate management with 25 years of entrepreneurial impact in Nigeria. Distinguished fellow of several professional bodies and the first African indigenous ordained Bishop in the State of Israel. Presiding Bishop of Family Altar Assembly International (US) and Chairman at Step Synergy. Currently Chairman of Atlangrove Heights Ltd., shaping the industry while mentoring youths and emerging leaders.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-2xl font-semibold">Mr. Ayodele O. Aroloye — Managing Director/CEO</h3>
+                <p className="text-gray-700 mt-2">
+                  Serial entrepreneur, inventor, and administrator with two decades of experience across manufacturing and multiple boards. Background in Industrial Mathematics; experience with NCR & Associates Limited, NNAR, and ESVARBON. Founder and CEO of Atlangrove Engineering and Homes Ltd., leading with innovation and excellence.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-2xl font-semibold">Ayomikun Fred Bulu — Chief Administrative Officer</h3>
+                <p className="text-gray-700 mt-2">
+                  Dynamic CAO with 5+ years post-university experience across business development, IMC, publishing, and training. Provides research, startup guidance, operations advisory, and brand equity building. Business & Strategic Development Consultant to Atlangrove Engineering and Homes Ltd., driving impactful growth across Africa.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <TeamSection />
       <CtaSection />
     </PageLayout>
@@ -209,3 +256,4 @@ const About = () => {
 };
 
 export default About;
+

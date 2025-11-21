@@ -12,7 +12,8 @@ const ContactInfo = () => {
           </div>
           <div>
             <h4 className="font-medium mb-1">Phone</h4>
-            <p className="text-gray-600">+234 813 799 0792</p>
+            <p className="text-gray-600">08066558355</p>
+            <p className="text-gray-600">08061720146</p>
           </div>
         </div>
         
@@ -22,7 +23,7 @@ const ContactInfo = () => {
           </div>
           <div>
             <h4 className="font-medium mb-1">Email</h4>
-            <p className="text-gray-600">exclusiveestates@gmail.com</p>
+            <p className="text-gray-600">info@atlangrovehomes.com</p>
           </div>
         </div>
         
@@ -32,8 +33,7 @@ const ContactInfo = () => {
           </div>
           <div>
             <h4 className="font-medium mb-1">Office Locations</h4>
-            <p className="text-gray-600 mb-2">No.6, Bakwu Street, Wuse 2, Abuja, Nigeria</p>
-            <p className="text-gray-600">Victoria Island, Lagos, Nigeria</p>
+            <p className="text-gray-600 mb-2">Suite FF037, AICL Neighbourhood Shopping Centre, Garki Area 3, Abuja</p>
           </div>
         </div>
         
@@ -57,7 +57,7 @@ const ContactInfo = () => {
         </p>
         <div className="flex space-x-4">
           <a 
-            href="https://facebook.com/EXCLUSIVEESTATES" 
+            href="https://facebook.com/atlangrovehomes" 
             target="_blank" 
             rel="noopener noreferrer"
             className="bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white p-2 rounded-full transition-colors"
@@ -73,7 +73,7 @@ const ContactInfo = () => {
             </svg>
           </a>
           <a 
-            href="https://instagram.com/EXCLUSIVEESTATES" 
+            href="https://instagram.com/atlangrovehomes" 
             target="_blank" 
             rel="noopener noreferrer"
             className="bg-pink-50 text-pink-600 hover:bg-pink-600 hover:text-white p-2 rounded-full transition-colors"
@@ -89,7 +89,7 @@ const ContactInfo = () => {
             </svg>
           </a>
           <a 
-            href="https://twitter.com/EXCLUSIVEESTATES" 
+            href="https://twitter.com/atlangrovehomes" 
             target="_blank" 
             rel="noopener noreferrer"
             className="bg-sky-50 text-sky-600 hover:bg-sky-600 hover:text-white p-2 rounded-full transition-colors"
@@ -111,3 +111,4 @@ const ContactInfo = () => {
 };
 
 export default ContactInfo;
+
