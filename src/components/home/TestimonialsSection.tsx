@@ -16,21 +16,21 @@ const testimonials: Testimonial[] = [
     name: 'Samuel Johnson',
     role: 'Property Investor',
   content: 'Exclusive Estates guided me through the entire process of acquiring investment property in Lagos. Their market knowledge and professionalism are unmatched.',
-    avatar: '',
+    avatar: '/lovable-uploads/SamuelJohnson.png',
   },
   {
     id: 2,
     name: 'Amina Ibrahim',
     role: 'First-time Homebuyer',
-  content: 'As a first-time buyer, I was nervous about the process, but the team at Exclusive Estates made everything simple and transparent. I couldn\'t be happier with my new home!',
-    avatar: '',
+  content: "As a first-time buyer, I was nervous about the process, but the team at Exclusive Estates made everything simple and transparent. I couldn't be happier with my new home!",
+    avatar: '/lovable-uploads/AminaIbrahim.png',
   },
   {
     id: 3,
     name: 'Chidi Okonkwo',
     role: 'Property Developer',
   content: 'Working with Exclusive Estates has significantly expanded our development portfolio. Their consulting services and market insights have been invaluable to our success.',
-    avatar: '',
+    avatar: '/lovable-uploads/ChidiOkonkwo.png',
   },
 ];
 
