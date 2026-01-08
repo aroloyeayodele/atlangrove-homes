@@ -8,11 +8,11 @@ const About = () => {
   return (
     <PageLayout>
       <Helmet>
-        <title>About Atlangrove Heights | Quality Real Estate in Nigeria</title>
-        <meta name="description" content="Learn about Atlangrove Heights — providing quality and affordable accommodation, crafting homes and transformative experiences across Nigeria." />
-        <meta name="keywords" content="Atlangrove Heights, Atlangrove Homes, real estate, Nigeria, Abuja, affordable homes, secure estates" />
-        <meta property="og:title" content="About Atlangrove Heights" />
-        <meta property="og:description" content="Atlangrove Heights creates quality, affordable homes and transformative living experiences across Nigeria." />
+        <title>About Atlangrove Homes | Quality Real Estate in Nigeria</title>
+        <meta name="description" content="Learn about Atlangrove Homes — providing quality and affordable accommodation, crafting homes and transformative experiences across Nigeria." />
+        <meta name="keywords" content="Atlangrove Homes, real estate, Nigeria, Abuja, affordable homes, secure estates" />
+        <meta property="og:title" content="About Atlangrove Homes" />
+        <meta property="og:description" content="Atlangrove Homes creates quality, affordable homes and transformative living experiences across Nigeria." />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/preview.jpg" />
         <script type="application/ld+json">{`
@@ -43,10 +43,10 @@ const About = () => {
         <div className="section-container">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-serif font-semibold mb-6 slide-up">
-              About <span className="text-brand-red">Atlangrove Heights</span>
+              About <span className="text-brand-red">Atlangrove Homes</span>
             </h1>
             <p className="text-lg text-gray-600 mb-8 slide-up animate-delay-200">
-              ATLANGROVE HEIGHTS was created on February 25, 2021 to provide quality and affordable accommodation to Nigerians who desire and deserve to live in a decent and comfortable environment.
+              ATLANGROVE HOMES was created on February 25, 2021 to provide quality and affordable accommodation to Nigerians who desire and deserve to live in a decent and comfortable environment.
             </p>
           </div>
         </div>
@@ -63,7 +63,7 @@ const About = () => {
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <strong className="text-brand-red text-xl">2021</strong>
               <h3 className="font-semibold mt-2">Founding</h3>
-              <p className="text-gray-600">Atlangrove Heights was established, led by competent and professional realtors accredited by the Nigeria Institute of Estate Surveyors and Valuers.</p>
+              <p className="text-gray-600">Atlangrove Homes was established, led by competent and professional realtors accredited by the Nigeria Institute of Estate Surveyors and Valuers.</p>
             </div>
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <strong className="text-brand-red text-xl">Vision</strong>
@@ -186,7 +186,7 @@ const About = () => {
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Atlangrove Heights Abuja Office Location"
+                  title="Atlangrove Homes Abuja Office Location"
                   className="w-full h-full"
                 />
               </div>
@@ -229,7 +229,7 @@ const About = () => {
               <div>
                 <h3 className="text-2xl font-semibold">Bishop Israel Morakinyo — Chairman</h3>
                 <p className="text-gray-700 mt-2">
-                  A titan in real estate management with 25 years of entrepreneurial impact in Nigeria. Distinguished fellow of several professional bodies and the first African indigenous ordained Bishop in the State of Israel. Presiding Bishop of Family Altar Assembly International (US) and Chairman at Step Synergy. Currently Chairman of Atlangrove Heights Ltd., shaping the industry while mentoring youths and emerging leaders.
+                  A titan in real estate management with 25 years of entrepreneurial impact in Nigeria. Distinguished fellow of several professional bodies and the first African indigenous ordained Bishop in the State of Israel. Presiding Bishop of Family Altar Assembly International (US) and Chairman at Step Synergy. Currently Chairman of Atlangrove Homes Ltd., shaping the industry while mentoring youths and emerging leaders.
                 </p>
               </div>
               <div>

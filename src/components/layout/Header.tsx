@@ -53,7 +53,7 @@ const Header = () => {
           <Link to="/" className="flex items-center">
             <img 
               src="/lovable-uploads/d8b82a03-78f9-4b90-ac43-39097201c852.png" 
-              alt="Atlangrove Heights Logo" 
+              alt="Atlangrove Homes Logo" 
               className="h-8 sm:h-10"
             />
           </Link>

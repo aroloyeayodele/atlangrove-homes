@@ -4,9 +4,9 @@ const MapSection = () => {
     <section className="py-12">
       <div className="section-container">
         <div className="max-w-3xl mx-auto text-center mb-10">
-          <h2 className="text-3xl font-serif font-semibold mb-3">Our Locations</h2>
+          <h2 className="text-3xl font-serif font-semibold mb-3">Our Office Address</h2>
           <p className="text-gray-600">
-            Visit us at our office in Wuse 2, Abuja. We're conveniently located to serve your real estate needs.
+            Visit us at our office in Atlangrove Homes, Suit FF037 Block C, AICL Neighbourhood Shopping Complex, Garki Area 3, Abuja.
           </p>
         </div>
         
@@ -20,7 +20,7 @@ const MapSection = () => {
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Exclusive Estates Abuja Office Location"
+            title="Atlangrove Homes"
             className="w-full"
           />
         </div>

@@ -18,9 +18,7 @@ const Footer = () => {
               />
             </Link>
             <p className="text-sm text-gray-600 mt-4">
-              Exclusive Estates specializes in property sales, rentals, acquisitions, 
-              and investment consultancy, delivering exceptional real estate 
-              solutions across Africa.
+             Atlangrove Homes provides quality and affordable accommodation while redefining possibilities in real estate with integrity, professionalism, and innovation.
             </p>
             <div className="flex space-x-4 pt-2">
               <a 
@@ -131,22 +129,22 @@ const Footer = () => {
             <div className="space-y-3">
               <p className="flex items-start text-sm">
                 <MapPin className="h-5 w-5 text-brand-red mr-2 mt-0.5" />
-                <span className="text-gray-600">Wuse 2, Abuja, Nigeria</span>
+                <span className="text-gray-600">Garki Area 3 Abuja</span>
               </p>
               <p className="flex items-start text-sm">
                 <Phone className="h-5 w-5 text-brand-red mr-2 mt-0.5" />
-                <span className="text-gray-600">+234 813 799 0792</span>
+                <span className="text-gray-600">+234 806 172 0146</span>
               </p>
               <p className="flex items-start text-sm">
                 <Mail className="h-5 w-5 text-brand-red mr-2 mt-0.5" />
-                <span className="text-gray-600">exclusiveestates@gmail.com</span>
+                <span className="text-gray-600">Atlangroveheights@gmail.com</span>
               </p>
             </div>
           </div>
         </div>
 
         <div className="border-t border-gray-200 mt-10 pt-6 text-center text-sm text-gray-500">
-          <p>&copy; {currentYear} Exclusive Estates. All rights reserved.</p>
+          <p>&copy; {currentYear} Atlangrove Homes. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -14,8 +14,8 @@ import { AlertCircle } from 'lucide-react';
 const fallbackProperties = [
   {
     id: '1',
-    title: 'Luxury Villa in Victoria Island',
-    location: 'Victoria Island, Lagos',
+    title: 'CommonWealth City',
+    location: 'Karshi, Nansarawa',
     price: 450000000,
     category: 'finished' as const,
     bedrooms: 5,
@@ -25,10 +25,10 @@ const fallbackProperties = [
   },
   {
     id: '2',
-    title: 'Modern Apartment in Abuja',
-    location: 'Wuse 2, Abuja',
+    title: "King's COurt Waru",
+    location: 'Waru, Abuja',
     price: 125000000,
-    category: 'finished' as const,
+    category: 'Land' as const,
     bedrooms: 3,
     bathrooms: 3,
     squareMeters: 180,
@@ -36,8 +36,8 @@ const fallbackProperties = [
   },
   {
     id: '3',
-    title: 'Commercial Space in Ikeja',
-    location: 'Ikeja, Lagos',
+    title: 'One Million Dollar View',
+    location: 'Guzape Abuja',
     price: 200000000,
     category: 'commercial' as const,
     bedrooms: 0,

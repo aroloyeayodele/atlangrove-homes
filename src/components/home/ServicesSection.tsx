@@ -44,7 +44,7 @@ const ServicesSection = () => {
             Our <span className="text-brand-red">Services</span>
           </h2>
           <p className="text-gray-600 slide-up animate-delay-200">
-            Exclusive Estates provides comprehensive real estate solutions tailored to your needs,
+            Atlangrove Homes provides eco-friendly, comprehensive real estate solutions tailored to your needs,
             whether you're buying, selling, renting, or investing.
           </p>
         </div>
