@@ -4,7 +4,7 @@ const services = [
   {
     id: 'sell',
     title: 'We Sell',
-    description: 'Find your dream property from our exclusive portfolio of premium real estate options across Nigeria.',
+    description: 'Find your dream property from our exclusive portfolio of premium real estate options across Nigeria. ',
     icon: Home,
     bgColor: 'bg-red-50',
     iconColor: 'text-brand-red',
