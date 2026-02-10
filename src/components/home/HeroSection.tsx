@@ -91,12 +91,12 @@ const HeroSection = () => {
 			{/* Content */}
 			<div className="section-container relative z-10 text-white">
 				<div className="max-w-3xl slide-up animate-delay-200">
-					<h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-semibold tracking-tight mb-6">
-						Discover Your Perfect <span className="text-brand-red">Property</span> in Nigeria
+					<h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-semibold text-white leading-tight mb-6 slide-up">
+						Redefining <span className="text-brand-red">Modern Living</span> in Nigeria
 					</h1>
-					<p className="text-lg text-gray-200 mb-8 max-w-2xl">
-						Atlangrove Homes provides quality and affordable accommodation while redefining possibilities in real estate with integrity, professionalism, and innovation.
-						
+					<p className="text-lg md:text-xl text-gray-200 font-light mb-8 max-w-2xl text-left slide-up animate-delay-200">
+						Discover premium residential communities that blend modern living with timeless design.
+						Experience architectural excellence and sustainable living with Atlangrove Homes.
 					</p>
 
 					{/* Search Form */}
@@ -154,7 +154,11 @@ const HeroSection = () => {
 								</Select>
 							</div>
 
-							<Button type="submit" size="default" className="bg-brand-red hover:bg-red-700 text-white">
+							<Button
+								type="submit"
+								size="lg"
+								className="bg-brand-blue hover:bg-blue-600 text-white text-base py-6 px-8 transition-colors duration-300 hover:shadow-lg hover:shadow-blue-500/20"
+							>
 								<Search className="mr-2 h-4 w-4" /> Search
 							</Button>
 						</form>

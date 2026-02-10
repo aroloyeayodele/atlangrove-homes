@@ -43,10 +43,12 @@ const About = () => {
         <div className="section-container">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-serif font-semibold mb-6 slide-up">
-              About <span className="text-brand-red">Atlangrove Homes</span>
+              About <span className="text-brand-red">Us</span>
             </h1>
             <p className="text-lg text-gray-600 mb-8 slide-up animate-delay-200">
-              ATLANGROVE HOMES was created on February 25, 2021 to provide quality and affordable accommodation to Nigerians who desire and deserve to live in a decent and comfortable environment.
+              Atlangrove Homes is a premier real estate development company dedicated to creating high-quality residential communities that blend modern living with timeless design. Founded with a vision to redefine the standards of urban and suburban living, Atlangrove Homes has earned a reputation for Excellence, Innovation and Integrity in the real estate sector.
+              <br /><br />
+              We specialize in the development of Master-planned communities, Luxury Homes and Sustainable Housing solutions that reflect the evolving needs of today's homeowners. Each of our project is a testament to our commitment in Architectural Excellence, Smart planning and Lasting value.
             </p>
           </div>
         </div>
@@ -84,99 +86,90 @@ const About = () => {
         </div>
       </section>
 
-      {/* Vision & Mission Section (Vision first) */}
+      {/* Core Values & USPs */}
       <section className="py-16 bg-white">
         <div className="section-container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white rounded-lg p-8 shadow-sm">
-              <h2 className="text-2xl font-serif font-semibold mb-4">Our Vision</h2>
-              <p className="text-gray-600">To be catalysts for transformative experiences — crafting not just homes but narratives of lives well lived, creating enduring value and belonging.</p>
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-serif font-semibold mb-12 text-center">Our Core Values</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+              <div className="bg-gray-50 p-6 rounded-lg hover:shadow-md transition-all">
+                <div className="w-12 h-12 bg-brand-red/10 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-brand-red mb-3">Integrity</h3>
+                <p className="text-gray-600">We conduct business with transparency, accountability and ethical practices.</p>
+              </div>
+              
+              <div className="bg-gray-50 p-6 rounded-lg hover:shadow-md transition-all">
+                <div className="w-12 h-12 bg-brand-red/10 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-brand-red mb-3">Innovation</h3>
+                <p className="text-gray-600">We embrace forward-thinking design, smart technologies and sustainable building practices.</p>
+              </div>
+              
+              <div className="bg-gray-50 p-6 rounded-lg hover:shadow-md transition-all">
+                <div className="w-12 h-12 bg-brand-red/10 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-brand-red mb-3">Excellence</h3>
+                <p className="text-gray-600">We strive for the highest standards in construction, design and customer satisfaction.</p>
+              </div>
+              
+              <div className="bg-gray-50 p-6 rounded-lg hover:shadow-md transition-all">
+                <div className="w-12 h-12 bg-brand-red/10 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-brand-red mb-3">Customer-Centricity</h3>
+                <p className="text-gray-600">We place our clients at the center of every decision, ensuring their needs and preferences guide our developments.</p>
+              </div>
+              
+              <div className="bg-gray-50 p-6 rounded-lg md:col-span-2 hover:shadow-md transition-all">
+                <div className="w-12 h-12 bg-brand-red/10 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-brand-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h3l-4 4-4-4h3V1h2v6zm-1 4v6h-2v-6H3l4-4 4 4h-3v2h2z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-brand-red mb-3">Sustainability</h3>
+                <p className="text-gray-600">We are committed to environmentally responsible development that protects and preserves resources for future generations.</p>
+              </div>
             </div>
-            <div className="bg-white rounded-lg p-8 shadow-sm">
-              <h2 className="text-2xl font-serif font-semibold mb-4">Our Mission</h2>
-              <p className="text-gray-600">To provide quality and affordable accommodation while redefining possibilities in real estate with integrity, professionalism, and innovation.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Atlangrove Narrative & USPs */}
-      <section className="py-16 bg-gray-50">
-        <div className="section-container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white rounded-lg p-8 shadow-sm">
-              <h2 className="text-2xl font-serif font-semibold mb-4">Who We Are</h2>
-              <p className="text-gray-600 mb-4">
-                Welcome to a vision where Atlangrove Homes Limited is not just a real estate endeavour but also a journey to turn aspirations into addressable realities.
-              </p>
-              <p className="text-gray-600">
-                The organisation was created by competent and professional realtors, estate agencies well trained and recognized by the Nigeria Institute of Estate Surveyors and Valuers.
-              </p>
-            </div>
-            <div className="bg-white rounded-lg p-8 shadow-sm">
-              <h2 className="text-2xl font-serif font-semibold mb-4">Unique Selling Propositions</h2>
-              <ul className="list-disc list-inside text-gray-600 space-y-2">
-                <li>Affordability</li>
+            
+            <div className="bg-gray-50 rounded-lg p-8 shadow-sm">
+              <h3 className="text-2xl font-serif font-semibold mb-4 text-center">Why Choose Atlangrove Homes?</h3>
+              <ul className="list-disc list-inside text-gray-600 space-y-2 max-w-2xl mx-auto">
+                <li>Affordability without compromising quality</li>
                 <li>Genuine Certificate of Occupancy</li>
-                <li>Security</li>
-                <li>Comfort</li>
+                <li>Secure and well-planned communities</li>
+                <li>Modern, comfortable living spaces</li>
               </ul>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Values Section */}
+      <TeamSection />
+      
+      {/* Location Section */}
       <section className="py-16 bg-gray-50">
         <div className="section-container">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-4 slide-up">Our Values</h2>
-            <p className="text-gray-600">Principles that guide everything we do</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            <div className="bg-white rounded-lg p-6 shadow-sm text-center">
-              <span className="inline-block mb-2 rounded-full bg-green-100 p-2"><img src="/icons/integrity.svg" alt="Integrity icon" className="h-8 w-8 text-green-600" /></span>
-              <h3 className="font-semibold mb-2 text-green-700">Integrity</h3>
-              <p className="text-gray-600 text-sm">Transparent and honest in every transaction</p>
-            </div>
-            <div className="bg-white rounded-lg p-6 shadow-sm text-center">
-              <span className="inline-block mb-2 rounded-full bg-yellow-100 p-2"><img src="/icons/excellence.svg" alt="Excellence icon" className="h-8 w-8 text-yellow-600" /></span>
-              <h3 className="font-semibold mb-2 text-yellow-700">Excellence</h3>
-              <p className="text-gray-600 text-sm">Uncompromising quality standards</p>
-            </div>
-            <div className="bg-white rounded-lg p-6 shadow-sm text-center">
-              <span className="inline-block mb-2 rounded-full bg-blue-100 p-2"><img src="/icons/professionalism.svg" alt="Professionalism icon" className="h-8 w-8 text-blue-600" /></span>
-              <h3 className="font-semibold mb-2 text-blue-700">Professionalism</h3>
-              <p className="text-gray-600 text-sm">Expert guidance and service</p>
-            </div>
-            <div className="bg-white rounded-lg p-6 shadow-sm text-center">
-              <span className="inline-block mb-2 rounded-full bg-purple-100 p-2"><img src="/icons/innovation.svg" alt="Innovation icon" className="h-8 w-8 text-purple-600" /></span>
-              <h3 className="font-semibold mb-2 text-purple-700">Innovation</h3>
-              <p className="text-gray-600 text-sm">Embracing smart solutions</p>
-            </div>
-            <div className="bg-white rounded-lg p-6 shadow-sm text-center">
-              <span className="inline-block mb-2 rounded-full bg-pink-100 p-2"><img src="/icons/customer.svg" alt="Customer-Centricity icon" className="h-8 w-8 text-pink-600" /></span>
-              <h3 className="font-semibold mb-2 text-pink-700">Customer-Centricity</h3>
-              <p className="text-gray-600 text-sm">Your satisfaction is our priority</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Locations Section */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="section-container">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-4 slide-up">
-              Our <span className="text-brand-red">Locations</span>
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-4">
+              Our <span className="text-brand-red">Location</span>
             </h2>
-            <p className="text-gray-600 slide-up animate-delay-200">
-              With offices in key Nigerian cities, we're positioned to serve clients 
-              nationwide with local expertise and personalized attention.
+            <p className="text-gray-600">
+              Visit our office in Abuja for personalized service and expert advice on your real estate needs.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-            <div className="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all slide-up">
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
               <div className="w-full" style={{ height: '320px' }}>
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15767.303325681223!2d7.47244!3d9.0761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e0b1a26736b4d%3A0xf2af578b0d9b992c!2sWuse%20II%2C%20Abuja!5e0!3m2!1sen!2sng!4v1695903213789!5m2!1sen!2sng"
@@ -190,66 +183,14 @@ const About = () => {
                   className="w-full h-full"
                 />
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-serif font-medium mb-2">Abuja Office</h3>
-                <p className="text-gray-600">Suite FF037, AICL Neighbourhood Shopping Centre, Garki Area 3, Abuja</p>
-              </div>
-            </div>
-            <div className="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all slide-up animate-delay-200">
-              <div className="w-full" style={{ height: '320px' }}>
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15856.605109766984!2d3.4142!3d6.4300!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf53aec4dd92d%3A0x5e34fe6a84cdcd80!2sVictoria%20Island%2C%20Lagos!5e0!3m2!1sen!2sng!4v1695903350123!5m2!1sen!2sng"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0, minHeight: '320px' }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Lagos Office Location"
-                  className="w-full h-full"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-serif font-medium mb-2">Lagos Office</h3>
-                <p className="text-gray-600">
-                  Victoria Island, Lagos, Nigeria
-                </p>
+              <div className="p-6 text-center">
+                <h3 className="text-xl font-serif font-medium mb-2">Head Office</h3>
+                <p className="text-gray-600">Suite FF037, AICL Neighbourhood Shopping Centre,<br />Garki Area 3, Abuja, Nigeria</p>
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Leadership Section */}
-      <section className="py-16 bg-white">
-        <div className="section-container">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-8">Leadership</h2>
-            <div className="space-y-10">
-              <div>
-                <h3 className="text-2xl font-semibold">Bishop Israel Morakinyo — Chairman</h3>
-                <p className="text-gray-700 mt-2">
-                  A titan in real estate management with 25 years of entrepreneurial impact in Nigeria. Distinguished fellow of several professional bodies and the first African indigenous ordained Bishop in the State of Israel. Presiding Bishop of Family Altar Assembly International (US) and Chairman at Step Synergy. Currently Chairman of Atlangrove Homes Ltd., shaping the industry while mentoring youths and emerging leaders.
-                </p>
-              </div>
-              <div>
-                <h3 className="text-2xl font-semibold">Mr. Ayodele O. Aroloye — Managing Director/CEO</h3>
-                <p className="text-gray-700 mt-2">
-                  Serial entrepreneur, inventor, and administrator with two decades of experience across manufacturing and multiple boards. Background in Industrial Mathematics; experience with NCR & Associates Limited, NNAR, and ESVARBON. Founder and CEO of Atlangrove Engineering and Homes Ltd., leading with innovation and excellence.
-                </p>
-              </div>
-              <div>
-                <h3 className="text-2xl font-semibold">Ayomikun Fred Bulu — Chief Administrative Officer</h3>
-                <p className="text-gray-700 mt-2">
-                  Dynamic CAO with 5+ years post-university experience across business development, IMC, publishing, and training. Provides research, startup guidance, operations advisory, and brand equity building. Business & Strategic Development Consultant to Atlangrove Engineering and Homes Ltd., driving impactful growth across Africa.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <TeamSection />
       <CtaSection />
     </PageLayout>
   );

@@ -2,33 +2,33 @@ import { Home, Search, Key, TrendingUp } from 'lucide-react';
 
 const services = [
   {
-    id: 'sell',
-    title: 'We Sell',
-    description: 'Find your dream property from our exclusive portfolio of premium real estate options across Nigeria.',
+    id: 'residential',
+    title: 'Residential Development',
+    description: 'High-quality residential communities that blend modern living with timeless design and architectural excellence.',
     icon: Home,
     bgColor: 'bg-red-50',
     iconColor: 'text-brand-red',
   },
   {
-    id: 'buy',
-    title: 'We Buy',
-    description: 'Looking to sell your property? We offer competitive valuations and a hassle-free selling experience.',
+    id: 'master-planned',
+    title: 'Master-Planned Communities',
+    description: 'Thoughtfully designed communities that offer a complete living experience with amenities and green spaces.',
     icon: Search,
     bgColor: 'bg-blue-50',
-    iconColor: 'text-blue-600',
+    iconColor: 'text-brand-blue',
   },
   {
-    id: 'rent',
-    title: 'We Rent',
-    description: 'Explore our selection of rental properties, from luxury apartments to commercial spaces.',
+    id: 'luxury-homes',
+    title: 'Luxury Homes',
+    description: 'Exquisite homes featuring premium finishes, smart technologies, and exceptional craftsmanship.',
     icon: Key,
     bgColor: 'bg-amber-50',
     iconColor: 'text-amber-600',
   },
   {
-    id: 'invest',
-    title: 'Investment Advisory',
-    description: 'Make informed real estate investment decisions with our expert consultancy services.',
+    id: 'sustainable',
+    title: 'Sustainable Housing',
+    description: 'Eco-friendly homes designed with sustainable materials and energy-efficient technologies.',
     icon: TrendingUp,
     bgColor: 'bg-green-50',
     iconColor: 'text-green-600',
@@ -44,8 +44,8 @@ const ServicesSection = () => {
             Our <span className="text-brand-red">Services</span>
           </h2>
           <p className="text-gray-600 slide-up animate-delay-200">
-            Atlangrove Homes provides eco-friendly, comprehensive real estate solutions tailored to your needs,
-            whether you're buying, selling, renting, or investing.
+            Atlangrove Homes specializes in creating high-quality residential communities that blend modern living with timeless design. 
+            Our services reflect our commitment to excellence, innovation, and sustainable development.
           </p>
         </div>
 

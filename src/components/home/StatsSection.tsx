@@ -15,7 +15,7 @@ const stats = [
     value: '20+',
     description: 'Prime cities and neighborhoods',
     icon: Map,
-    color: 'text-blue-600',
+    color: 'text-brand-blue',
   },
   {
     id: 'clients',

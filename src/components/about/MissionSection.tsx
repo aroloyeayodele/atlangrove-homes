@@ -1,25 +1,30 @@
-import { Sparkles, Users, ShieldCheck, TrendingUp } from 'lucide-react';
+import { Shield, TrendingUp, Award, Heart, Leaf } from 'lucide-react';
 
 const values = [
   {
-    icon: Sparkles,
-    title: 'Excellence',
-    description: 'We are committed to delivering exceptional service and results for every client.'
-  },
-  {
-    icon: Users,
-    title: 'Client-Centered',
-    description: 'Your goals and satisfaction are at the heart of everything we do.'
-  },
-  {
-    icon: ShieldCheck,
+    icon: Shield,
     title: 'Integrity',
-    description: 'We operate with honesty, transparency, and ethical practices in all our dealings.'
+    description: 'We conduct business with transparency, accountability and ethical practices.'
   },
   {
     icon: TrendingUp,
     title: 'Innovation',
-    description: 'We continuously adapt and improve to deliver the best real estate solutions.'
+    description: 'We embrace forward-thinking design, smart technologies and sustainable building practices.'
+  },
+  {
+    icon: Award,
+    title: 'Excellence',
+    description: 'We strive for the highest standards in construction, design and customer satisfaction.'
+  },
+  {
+    icon: Heart,
+    title: 'Customer-Centricity',
+    description: 'We place our clients at the center of every decision, ensuring their needs and preferences guide our developments.'
+  },
+  {
+    icon: Leaf,
+    title: 'Sustainability',
+    description: 'We are committed to environmentally responsible development that protects and preserves resources for future generations.'
   }
 ];
 
@@ -51,27 +56,28 @@ const MissionSection = () => {
               Our <span className="text-brand-red">Mission</span>
             </h2>
             <p className="text-gray-600">
-              Founded on principles of excellence and integrity, iHomes Africa has grown to become 
-              a leading real estate firm in Nigeria. Our mission is to transform the real estate 
-              experience through personalized service, market expertise, and innovative solutions.
-            </p>
-            <p className="text-gray-600">
-              We are committed to helping our clients make informed decisions by providing transparent, 
-              data-driven insights and guidance throughout their real estate journey.
+              To build vibrant and sustainable communities that enhance the lives of residents and contribute positively to the broader urban landscape.
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
-              {values.map((value, index) => (
-                <div key={index} className="flex space-x-4">
-                  <div className="bg-red-50 rounded-lg p-3 h-fit">
-                    <value.icon className="h-6 w-6 text-brand-red" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-lg mb-1">{value.title}</h3>
-                    <p className="text-gray-600 text-sm">{value.description}</p>
-                  </div>
+              <div className="flex space-x-4">
+                <div className="bg-red-50 rounded-lg p-3 h-fit">
+                  <Award className="h-6 w-6 text-brand-red" />
                 </div>
-              ))}
+                <div>
+                  <h3 className="text-2xl font-semibold mb-6">Our Vision</h3>
+                  <p className="text-gray-600 mb-8">
+                    To be recognized as a leading force in real estate development—where quality, design and trust come together to create exceptional living experiences.
+                  </p>
+                  <h3 className="text-2xl font-semibold mb-6">Core Values</h3>
+                  {values.map((value, index) => (
+                    <div key={index} className="mb-4">
+                      <h3 className="font-medium text-lg mb-1">{value.title}</h3>
+                      <p className="text-gray-600 text-sm">{value.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

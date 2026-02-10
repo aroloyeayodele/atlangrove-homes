@@ -60,7 +60,7 @@ const ContactInfo = () => {
             href="https://facebook.com/atlangrovehomes" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white p-2 rounded-full transition-colors"
+            className="bg-blue-50 text-brand-blue hover:bg-brand-blue hover:text-white p-2 rounded-full transition-colors"
             aria-label="Facebook"
           >
             <svg 

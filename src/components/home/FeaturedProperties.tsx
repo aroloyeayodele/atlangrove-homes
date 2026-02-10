@@ -89,7 +89,7 @@ const FeaturedProperties = () => {
               From luxury apartments to commercial spaces, we have something for everyone.
             </p>
           </div>
-          <Button asChild variant="ghost" className="slide-up animate-delay-400">
+          <Button asChild variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white">
             <Link to="/properties" className="flex items-center font-medium">
               View All Properties <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
