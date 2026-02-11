@@ -7,13 +7,28 @@ async function fetchApi(path: string, options: RequestInit = {}) {
     'Content-Type': 'application/json',
     ...options.headers,
   };
+
   const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
+
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ message: 'An unknown error occurred' }));
-    throw new Error(errorData.err || 'API request failed');
+    let error;
+    try {
+      // First, try to parse the error as JSON, which is the expected format
+      const errorData = await response.json();
+      error = new Error(errorData.err || errorData.message || 'An unknown API error occurred.');
+    } catch (e) {
+      // If JSON parsing fails, it's likely an unexpected server crash (like the 500 error)
+      const errorText = await response.text();
+      error = new Error(errorText || 'API request failed with a non-JSON response.');
+    }
+    throw error;
   }
-  return response.json();
+
+  // If the request was successful, but the response is empty, return null
+  const text = await response.text();
+  return text ? JSON.parse(text) : null;
 }
+
 
 // === Authentication ===
 export const login = (username: string, password: string) => {
