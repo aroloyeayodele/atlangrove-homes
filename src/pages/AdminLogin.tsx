@@ -1,33 +1,36 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/lib/supabase';
+import * as api from '@/services/api';
+import { useToast } from '@/hooks/use-toast';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Debug: log attempt (do not log password in production)
-    console.log('Admin login attempt', { email });
+    setError('');
+    setLoading(true);
     try {
-      const resp = await supabase.auth.signInWithPassword({ email, password });
-      console.log('Supabase signInWithPassword response:', resp);
-
-      const { data, error: signInError } = resp as any;
-
-      if (signInError) {
-        console.error('Sign-in error details:', signInError);
-        setError(signInError.message ?? 'Invalid credentials');
-      } else {
-        setError('');
+      const response = await api.login(email, password);
+      // Assuming the API returns a token that we need to store
+      if (response.token) {
+        sessionStorage.setItem('authToken', response.token);
+        toast({ title: 'Login Successful', description: 'Redirecting to dashboard...' });
         navigate('/admin/dashboard');
+      } else {
+        throw new Error('No token received');
       }
-    } catch (err) {
-      console.error('Unexpected sign-in error:', err);
-      setError('An error occurred. Please try again.');
+    } catch (err: any) {
+      setError(err.message || 'An unknown error occurred');
+      toast({ title: 'Login Failed', description: err.message, variant: 'destructive' });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,6 +47,7 @@ const AdminLogin = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-red"
             required
+            disabled={loading}
           />
         </div>
         <div className="mb-4">
@@ -55,14 +59,16 @@ const AdminLogin = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-red"
             required
+            disabled={loading}
           />
         </div>
         {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
         <button
           type="submit"
-          className="w-full bg-brand-red text-white py-2 rounded-lg font-semibold hover:bg-red-700 transition-colors"
+          className="w-full bg-brand-red text-white py-2 rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:bg-gray-400"
+          disabled={loading}
         >
-          Login
+          {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
     </div>

@@ -1,0 +1,13 @@
+
+name = "worker"
+main = "src/index.ts"
+compatibility_date = "2024-04-05"
+
+[[d1_databases]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "atlangrove-homes-d1"
+database_id = "a39b3095-7aa3-4646-85ee-cc9f6798566a"
+
+[[r2_buckets]]
+binding = "MEDIA_BUCKET"
+bucket_name = "atlangrove-homes-media"

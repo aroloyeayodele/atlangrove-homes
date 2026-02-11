@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import * as api from '@/services/api';
 
 const ContactForm = () => {
   const { toast } = useToast();
@@ -12,8 +13,8 @@ const ContactForm = () => {
     name: '',
     email: '',
     phone: '',
-    subject: '',
     message: '',
+    subject: '' // Added for completeness, though not in original API
   });
 
   const handleChange = (
@@ -27,15 +28,17 @@ const ContactForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
     try {
-      // Add actual API call here when connected to Supabase
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await api.submitContactForm({ 
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message
+      });
       
       toast({
         title: "Message Sent",
         description: "Thank you! We'll get back to you shortly.",
-        variant: "default",
       });
       
       // Reset form
@@ -43,9 +46,10 @@ const ContactForm = () => {
         name: '',
         email: '',
         phone: '',
-        subject: '',
         message: '',
+        subject: ''
       });
+
     } catch (error) {
       toast({
         title: "Error",
@@ -59,93 +63,33 @@ const ContactForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <label htmlFor="name" className="block text-sm font-medium">
-            Full Name
-          </label>
-          <Input
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Your name"
-            required
-            className="w-full"
-          />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="space-y-2">
+                <label htmlFor="name">Full Name</label>
+                <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Your name" required />
+            </div>
+            <div className="space-y-2">
+                <label htmlFor="email">Email Address</label>
+                <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Your email" required />
+            </div>
         </div>
-
-        <div className="space-y-2">
-          <label htmlFor="email" className="block text-sm font-medium">
-            Email Address
-          </label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Your email"
-            required
-            className="w-full"
-          />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="space-y-2">
+                <label htmlFor="phone">Phone Number</label>
+                <Input id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="(Optional)" />
+            </div>
+            <div className="space-y-2">
+                 <label htmlFor="subject">Subject</label>
+                 <Input id="subject" name="subject" value={formData.subject} onChange={handleChange} placeholder="Inquiry about..." required />
+            </div>
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <label htmlFor="phone" className="block text-sm font-medium">
-            Phone Number
-          </label>
-          <Input
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder="Your phone number"
-            className="w-full"
-          />
+            <label htmlFor="message">Your Message</label>
+            <Textarea id="message" name="message" value={formData.message} onChange={handleChange} placeholder="How can we help?" rows={6} required />
         </div>
-
-        <div className="space-y-2">
-          <label htmlFor="subject" className="block text-sm font-medium">
-            Subject
-          </label>
-          <Input
-            id="subject"
-            name="subject"
-            value={formData.subject}
-            onChange={handleChange}
-            placeholder="What is this regarding?"
-            required
-            className="w-full"
-          />
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <label htmlFor="message" className="block text-sm font-medium">
-          Your Message
-        </label>
-        <Textarea
-          id="message"
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          placeholder="How can we help you?"
-          rows={6}
-          required
-          className="w-full resize-none"
-        />
-      </div>
-
-      <Button
-        type="submit"
-        className="w-full sm:w-auto px-8"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? 'Sending...' : 'Send Message'}
-      </Button>
+        <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Sending...' : 'Send Message'}
+        </Button>
     </form>
   );
 };

@@ -1,0 +1,6 @@
+name = "my-worker"
+main = "src/worker.ts"
+compatibility_date = "2023-01-01"
+
+[vars]
+ENV = "development"

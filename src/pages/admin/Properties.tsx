@@ -1,9 +1,11 @@
+
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/lib/supabase';
+import * as api from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
+// These types can be moved to a shared `types.ts` file later
 type Category = 'land' | 'carcass' | 'finished';
 
 type Property = {
@@ -17,9 +19,12 @@ type Property = {
   bathrooms?: number | null;
   square_meters?: number | null;
   created_at?: string;
+  // These will be populated by the backend
+  gallery?: { id: number; url: string; }[];
+  features?: { id: number; feature: string; }[];
 };
 
-const emptyForm: Omit<Property, 'id'> = {
+const emptyForm: Omit<Property, 'id' | 'created_at' | 'gallery' | 'features'> = {
   title: '',
   price: 0,
   location: '',
@@ -35,51 +40,51 @@ const PropertiesAdmin = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState<Property[]>([]);
-  const [form, setForm] = useState<Omit<Property, 'id'>>(emptyForm);
+  const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [gallery, setGallery] = useState<{ id: number; url: string; sort_order: number }[]>([]);
-  const [newFeature, setNewFeature] = useState('');
-  const [features, setFeatures] = useState<{ id: number; feature: string; sort_order: number }[]>([]);
+  const [authToken, setAuthToken] = useState<string | null>(null);
 
-  const categories = useMemo(() => ['land','carcass','finished'] as Category[], []);
+  // State for related items (gallery, features)
+  const [gallery, setGallery] = useState<{ id: number; url: string; }[]>([]);
+  const [features, setFeatures] = useState<{ id: number; feature: string; }[]>([]);
+  const [newFeature, setNewFeature] = useState('');
+
+  const categories = useMemo(() => ['land', 'carcass', 'finished'] as Category[], []);
 
   useEffect(() => {
-    const init = async () => {
-      const { data } = await supabase.auth.getUser();
-      if (!data.user) {
-        navigate('/admin');
-        return;
-      }
-      setUserId(data.user.id);
-      await refresh();
-    };
-    init();
-  }, [navigate]);
+    const token = sessionStorage.getItem('authToken');
+    if (!token) {
+      toast({ title: 'Unauthorized', description: 'Please log in to continue.', variant: 'destructive' });
+      navigate('/admin');
+      return;
+    }
+    setAuthToken(token);
+    refresh(token);
+  }, [navigate, toast]);
 
-  const refresh = async () => {
+  const refresh = async (token: string) => {
     setLoading(true);
     setError(null);
-    const { data, error } = await supabase
-      .from('properties')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (error) setError(error.message);
-    setItems((data as Property[]) || []);
-    setLoading(false);
+    try {
+      const data = await api.getAdminProperties(token);
+      setItems(data || []);
+    } catch (err: any) {
+      setError(err.message);
+      toast({ title: 'Error', description: 'Could not fetch properties.', variant: 'destructive' });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target as any;
-    if (['price','bedrooms','bathrooms','square_meters'].includes(name)) {
+    const { name, value } = e.target;
+    if (['price', 'bedrooms', 'bathrooms', 'square_meters'].includes(name)) {
       setForm((prev) => ({ ...prev, [name]: value === '' ? null : Number(value) }));
-    } else if (name === 'category') {
-      setForm((prev) => ({ ...prev, [name]: value as Category }));
     } else {
-      setForm((prev) => ({ ...prev, [name]: value }));
+      setForm((prev) => ({ ...prev, [name]: value as any }));
     }
   };
 
@@ -87,64 +92,42 @@ const PropertiesAdmin = () => {
     setForm(emptyForm);
     setEditingId(null);
     setFile(null);
-  };
-
-  const uploadImageIfNeeded = async (): Promise<string | null> => {
-    if (!file) return form.image_url || null;
-    if (!userId) throw new Error('No user session. Please sign in again.');
-    const fileExt = file.name.split('.').pop();
-    const path = `${userId}/${Date.now()}.${fileExt}`;
-    const { error: upErr } = await supabase.storage
-      .from('property-images')
-      .upload(path, file, { upsert: true, cacheControl: '3600', contentType: file.type });
-    if (upErr) throw upErr;
-    const { data: pub } = supabase.storage.from('property-images').getPublicUrl(path);
-    return pub?.publicUrl ?? null;
+    setGallery([]);
+    setFeatures([]);
+    setNewFeature('');
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!authToken) return;
+
     setSaving(true);
     setError(null);
+
     try {
-      const uploadedUrl = await uploadImageIfNeeded();
+      let uploadedUrl = form.image_url;
+      if (file) {
+        toast({ title: 'Uploading Image...', description: 'Please wait.' });
+        const uploadResponse = await api.uploadImage(file, authToken);
+        uploadedUrl = uploadResponse.url; // Assuming API returns { url: '...' }
+        toast({ title: 'Upload Successful', description: 'Image has been uploaded.' });
+      }
+
+      const propertyData = { ...form, image_url: uploadedUrl };
+
       if (editingId) {
-        const { error } = await supabase
-          .from('properties')
-          .update({
-            title: form.title,
-            price: form.price,
-            location: form.location,
-            category: form.category,
-            image_url: uploadedUrl,
-            bedrooms: form.bedrooms,
-            bathrooms: form.bathrooms,
-            square_meters: form.square_meters,
-          })
-          .eq('id', editingId);
-        if (error) throw error;
+        await api.updateProperty(editingId, propertyData, authToken);
         toast({ title: 'Saved', description: 'Property updated successfully' });
       } else {
-        const { error } = await supabase
-          .from('properties')
-          .insert({
-            title: form.title,
-            price: form.price,
-            location: form.location,
-            category: form.category,
-            image_url: uploadedUrl,
-            bedrooms: form.bedrooms,
-            bathrooms: form.bathrooms,
-            square_meters: form.square_meters,
-          });
-        if (error) throw error;
+        await api.createProperty(propertyData, authToken);
         toast({ title: 'Created', description: 'Property added successfully' });
       }
       resetForm();
-      await refresh();
+      await refresh(authToken);
     } catch (err: any) {
-      setError(err.message || 'Failed to save');
-      toast({ title: 'Error', description: err.message || 'Failed to save', variant: 'destructive' });
+      const errMsg = err.message || 'Failed to save property';
+      setError(errMsg);
+      toast({ title: 'Error', description: errMsg, variant: 'destructive' });
     } finally {
       setSaving(false);
     }
@@ -162,103 +145,30 @@ const PropertiesAdmin = () => {
       bathrooms: p.bathrooms ?? null,
       square_meters: p.square_meters ?? null,
     });
+    setGallery(p.gallery || []);
+    setFeatures(p.features || []);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    // load gallery and features for this property
-    loadRelated(p.id);
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Delete this property? This cannot be undone.')) return;
-    const { error } = await supabase.from('properties').delete().eq('id', id);
-    if (error) {
-      setError(error.message);
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    } else {
-      toast({ title: 'Deleted', description: 'Property removed' });
-      await refresh();
-    }
-  };
-
-  const loadRelated = async (propId: string) => {
-    const { data: imgs } = await supabase
-      .from('property_images')
-      .select('id, url, sort_order')
-      .eq('property_id', propId)
-      .order('sort_order', { ascending: true });
-    setGallery((imgs as any[])?.map(r => ({ id: r.id, url: r.url, sort_order: r.sort_order })) || []);
-    const { data: feats } = await supabase
-      .from('property_features')
-      .select('id, feature, sort_order')
-      .eq('property_id', propId)
-      .order('sort_order', { ascending: true });
-    setFeatures((feats as any[])?.map(r => ({ id: r.id, feature: r.feature, sort_order: r.sort_order })) || []);
-  };
-
-  const addGalleryImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!editingId) return;
-    const f = e.target.files?.[0];
-    if (!f || !userId) return;
+    if (!authToken || !confirm('Delete this property? This cannot be undone.')) return;
     try {
-      const fileExt = f.name.split('.').pop();
-      const path = `${userId}/${Date.now()}-gallery.${fileExt}`;
-      const { error: upErr } = await supabase.storage
-        .from('property-images')
-        .upload(path, f, { upsert: true, cacheControl: '3600', contentType: f.type });
-      if (upErr) throw upErr;
-      const { data: pub } = supabase.storage.from('property-images').getPublicUrl(path);
-      const url = pub?.publicUrl;
-      if (!url) throw new Error('Failed to get public URL');
-      // find next sort order
-      const nextSort = (gallery[gallery.length - 1]?.sort_order ?? -1) + 1;
-      const { error } = await supabase
-        .from('property_images')
-        .insert({ property_id: editingId, url, sort_order: nextSort });
-      if (error) throw error;
-      toast({ title: 'Image added' });
-      await loadRelated(editingId);
+      await api.deleteProperty(id, authToken);
+      toast({ title: 'Deleted', description: 'Property removed' });
+      if (editingId === id) {
+        resetForm();
+      }
+      await refresh(authToken);
     } catch (err: any) {
-      toast({ title: 'Upload failed', description: err.message || 'Unable to upload', variant: 'destructive' });
-    } finally {
-      // reset input value so same file can be chosen again later
-      e.target.value = '';
+      setError(err.message);
+      toast({ title: 'Error', description: err.message, variant: 'destructive' });
     }
   };
 
-  const removeGalleryImage = async (imgId: number) => {
-    if (!editingId) return;
-    const { error } = await supabase.from('property_images').delete().eq('id', imgId);
-    if (error) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    } else {
-      toast({ title: 'Image removed' });
-      await loadRelated(editingId);
-    }
-  };
-
-  const addFeature = async () => {
-    if (!editingId || !newFeature.trim()) return;
-    const nextSort = (features[features.length - 1]?.sort_order ?? -1) + 1;
-    const { error } = await supabase
-      .from('property_features')
-      .insert({ property_id: editingId, feature: newFeature.trim(), sort_order: nextSort });
-    if (error) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
-      return;
-    }
-    setNewFeature('');
-    toast({ title: 'Feature added' });
-    await loadRelated(editingId);
-  };
-
-  const removeFeature = async (featId: number) => {
-    const { error } = await supabase.from('property_features').delete().eq('id', featId);
-    if (error) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    } else {
-      toast({ title: 'Feature removed' });
-      if (editingId) await loadRelated(editingId);
-    }
-  };
+  // Note: Full Gallery and Feature management will require dedicated API endpoints.
+  const handleDummyAction = () => {
+      toast({ title: 'Coming Soon', description: 'This feature will be enabled once the backend is complete.' });
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -268,7 +178,9 @@ const PropertiesAdmin = () => {
           <Button variant="outline" onClick={() => navigate('/admin/dashboard')}>Back to Dashboard</Button>
         </div>
 
+        {/* Form -- UI is the same */}
         <form onSubmit={handleSave} className="rounded-xl border bg-white p-5 sm:p-6 mb-6">
+          <h2 className="text-lg font-medium mb-4 border-b pb-3">{editingId ? 'Edit Property' : 'Add New Property'}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-sm text-gray-700">Title</label>
@@ -286,7 +198,7 @@ const PropertiesAdmin = () => {
               <label className="text-sm text-gray-700">Category</label>
               <select name="category" value={form.category} onChange={onChange} className="mt-1 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-red">
                 {categories.map((c) => (
-                  <option key={c} value={c}>{c}</option>
+                  <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
                 ))}
               </select>
             </div>
@@ -296,10 +208,10 @@ const PropertiesAdmin = () => {
                 type="file"
                 accept="image/*"
                 onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                className="mt-1 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-red"
+                className="mt-1 w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-red/10 file:text-brand-red hover:file:bg-brand-red/20"
               />
-              {form.image_url && (
-                <p className="text-xs text-gray-500 mt-1">Current image set. Uploading a new image will replace it.</p>
+              {editingId && form.image_url && !file && (
+                <p className="text-xs text-gray-500 mt-1">Current image is set. Uploading a new one will replace it.</p>
               )}
             </div>
             <div>
@@ -316,54 +228,55 @@ const PropertiesAdmin = () => {
             </div>
           </div>
           {error && <p className="text-sm text-red-600 mt-3">{error}</p>}
-          <div className="mt-4 flex flex-col sm:flex-row gap-3">
-            <Button type="submit" disabled={saving} className="bg-brand-red hover:bg-brand-red/90 text-white">
-              {editingId ? 'Save Changes' : 'Add Property'}
+          <div className="mt-4 flex flex-col sm:flex-row gap-3 pt-4 border-t">
+            <Button type="submit" disabled={saving || !authToken} className="bg-brand-red hover:bg-brand-red/90 text-white">
+              {saving ? 'Saving...' : (editingId ? 'Save Changes' : 'Add Property')}
             </Button>
             {editingId && (
               <Button type="button" variant="outline" onClick={resetForm}>
-                Cancel
+                Cancel Edit
               </Button>
             )}
           </div>
         </form>
 
+        {/* Property List Table -- UI is the same */}
         <div className="rounded-xl border bg-white overflow-x-auto">
           <table className="min-w-full text-sm">
-            <thead className="bg-gray-50">
+             <thead className="bg-gray-50">
               <tr className="text-left">
-                <th className="p-3">Title</th>
-                <th className="p-3">Category</th>
-                <th className="p-3">Price</th>
-                <th className="p-3">Location</th>
-                <th className="p-3">Beds</th>
-                <th className="p-3">Baths</th>
-                <th className="p-3">m²</th>
-                <th className="p-3 text-right">Actions</th>
+                <th className="p-3 font-medium">Title</th>
+                <th className="p-3 font-medium">Category</th>
+                <th className="p-3 font-medium">Price</th>
+                <th className="p-3 font-medium">Location</th>
+                <th className="p-3 font-medium">Beds</th>
+                <th className="p-3 font-medium">Baths</th>
+                <th className="p-3 font-medium">m²</th>
+                <th className="p-3 font-medium text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td className="p-4" colSpan={8}>Loading...</td>
+                  <td className="p-4 text-center text-gray-500" colSpan={8}>Loading properties...</td>
                 </tr>
               ) : items.length === 0 ? (
                 <tr>
-                  <td className="p-4" colSpan={8}>No properties yet.</td>
+                  <td className="p-4 text-center text-gray-500" colSpan={8}>No properties found. Add one above to get started.</td>
                 </tr>
               ) : (
                 items.map((p) => (
-                  <tr key={p.id} className="border-t">
-                    <td className="p-3">
+                  <tr key={p.id} className="border-t hover:bg-gray-50">
+                    <td className="p-3 align-top">
                       <div className="font-medium line-clamp-2 max-w-[260px]">{p.title}</div>
                     </td>
-                    <td className="p-3 capitalize">{p.category}</td>
-                    <td className="p-3">{new Intl.NumberFormat('en-NG',{ style:'currency', currency:'NGN'}).format(p.price)}</td>
-                    <td className="p-3">{p.location}</td>
-                    <td className="p-3">{p.bedrooms ?? '-'}</td>
-                    <td className="p-3">{p.bathrooms ?? '-'}</td>
-                    <td className="p-3">{p.square_meters ?? '-'}</td>
-                    <td className="p-3">
+                    <td className="p-3 align-top capitalize">{p.category}</td>
+                    <td className="p-3 align-top">{new Intl.NumberFormat('en-NG',{ style:'currency', currency:'NGN'}).format(p.price)}</td>
+                    <td className="p-3 align-top">{p.location}</td>
+                    <td className="p-3 align-top">{p.bedrooms ?? '-'}</td>
+                    <td className="p-3 align-top">{p.bathrooms ?? '-'}</td>
+                    <td className="p-3 align-top">{p.square_meters ?? '-'}</td>
+                    <td className="p-3 align-top">
                       <div className="flex justify-end gap-2">
                         <Button size="sm" variant="outline" onClick={() => handleEdit(p)}>Edit</Button>
                         <Button size="sm" variant="destructive" onClick={() => handleDelete(p.id)}>Delete</Button>
@@ -376,52 +289,42 @@ const PropertiesAdmin = () => {
           </table>
         </div>
 
+        {/* Gallery & Features placeholders */}
         {editingId && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-            {/* Gallery Manager */}
             <div className="rounded-xl border bg-white p-5 sm:p-6">
               <div className="flex items-center justify-between mb-3">
                 <h2 className="font-medium">Gallery Images</h2>
-                <label className="text-sm text-brand-red cursor-pointer">
-                  <input type="file" accept="image/*" className="hidden" onChange={addGalleryImage} />
-                  + Add Image
-                </label>
+                <Button size="sm" variant="outline" onClick={handleDummyAction}>+ Add Image</Button>
               </div>
-              {gallery.length === 0 ? (
-                <p className="text-sm text-gray-600">No gallery images yet.</p>
-              ) : (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {gallery.map(g => (
-                    <div key={g.id} className="relative group border rounded overflow-hidden">
-                      <img src={g.url} alt="Gallery" className="aspect-[4/3] w-full object-cover" />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                        <Button size="sm" variant="destructive" className="opacity-0 group-hover:opacity-100" onClick={() => removeGalleryImage(g.id)}>Delete</Button>
-                      </div>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {gallery.length > 0 ? gallery.map(g => (
+                  <div key={g.id} className="relative group border rounded overflow-hidden">
+                    <img src={g.url} alt="Gallery" className="aspect-[4/3] w-full object-cover" />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                      <Button size="sm" variant="destructive" className="opacity-0 group-hover:opacity-100" onClick={handleDummyAction}>Delete</Button>
                     </div>
-                  ))}
-                </div>
-              )}
+                  </div>
+                )) : <p className="text-sm text-gray-500 col-span-full">No gallery images yet.</p>}
+              </div>
             </div>
 
-            {/* Features Manager */}
             <div className="rounded-xl border bg-white p-5 sm:p-6">
               <h2 className="font-medium mb-3">Features</h2>
               <div className="flex gap-2 mb-4">
                 <input value={newFeature} onChange={(e) => setNewFeature(e.target.value)} placeholder="e.g., Private swimming pool" className="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-red" />
-                <Button onClick={addFeature} className="bg-brand-red hover:bg-brand-red/90 text-white">Add</Button>
+                <Button onClick={handleDummyAction} className="bg-brand-red hover:bg-brand-red/90 text-white">Add</Button>
               </div>
-              {features.length === 0 ? (
-                <p className="text-sm text-gray-600">No features yet.</p>
-              ) : (
+              {features.length > 0 ? (
                 <ul className="space-y-2">
                   {features.map(f => (
-                    <li key={f.id} className="flex items-center justify-between border rounded px-3 py-2">
+                    <li key={f.id} className="flex items-center justify-between border rounded px-3 py-2 bg-gray-50">
                       <span>{f.feature}</span>
-                      <Button size="sm" variant="outline" onClick={() => removeFeature(f.id)}>Remove</Button>
+                      <Button size="sm" variant="ghost" onClick={handleDummyAction}>Remove</Button>
                     </li>
                   ))}
                 </ul>
-              )}
+              ) : <p className="text-sm text-gray-500">No features have been added.</p>}
             </div>
           </div>
         )}

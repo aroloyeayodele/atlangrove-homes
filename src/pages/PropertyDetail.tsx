@@ -9,7 +9,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import PageLayout from '@/components/layout/PageLayout';
 import { PropertyData } from '@/components/property/PropertyCard';
 import { formatCurrency, generateWhatsAppLink } from '@/utils/format';
-import { supabase } from '@/lib/supabase';
 
 const PropertyDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,37 +27,39 @@ const PropertyDetail = () => {
     const load = async () => {
       try {
         if (!id) return;
-        // Main property from view (camelCase fields)
-        const { data: prop, error: pErr } = await supabase
-          .from('properties_view')
-          .select('*')
-          .eq('id', id)
-          .single();
-        if (pErr || !prop) throw pErr || new Error('Not found');
+        
+        const mockProperty = {
+          id: id,
+          title: 'Modern Apartment in Downtown',
+          description: 'A beautiful and modern apartment located in the heart of the city. Comes with all the amenities you could ask for.',
+          price: 1200000,
+          location: 'Downtown, Cityville',
+          category: 'finished' as const,
+          imageUrl: 'https://via.placeholder.com/800x600.png?text=Property+Image+1',
+          bedrooms: 3,
+          bathrooms: 2,
+          squareMeters: 150,
+          status: 'Available' as const,
+          listedDate: new Date().toISOString(),
+          propertySize: '150 sqm',
+          contactPhone: '+1234567890',
+          images: [
+            'https://via.placeholder.com/800x600.png?text=Property+Image+1',
+            'https://via.placeholder.com/800x600.png?text=Property+Image+2',
+            'https://via.placeholder.com/800x600.png?text=Property+Image+3',
+          ],
+          features: [
+            'Swimming Pool',
+            'Gymnasium',
+            '24/7 Security',
+            'Parking Garage',
+            'Balcony',
+            'Modern Kitchen'
+          ],
+        };
 
-        // Gallery images
-        const { data: imgs } = await supabase
-          .from('property_images')
-          .select('url, sort_order')
-          .eq('property_id', id)
-          .order('sort_order', { ascending: true });
-        // Features
-        const { data: feats } = await supabase
-          .from('property_features')
-          .select('feature, sort_order')
-          .eq('property_id', id)
-          .order('sort_order', { ascending: true });
+        setProperty(mockProperty);
 
-        const images = (imgs?.map(i => i.url) || []).length > 0
-          ? (imgs as any[]).map(i => i.url as string)
-          : [prop.imageUrl].filter(Boolean);
-        const features = (feats as any[] | null)?.map(f => f.feature as string) || [];
-
-        setProperty({
-          ...(prop as any),
-          images,
-          features,
-        });
       } catch (e) {
         console.error('Failed to load property', e);
       } finally {
