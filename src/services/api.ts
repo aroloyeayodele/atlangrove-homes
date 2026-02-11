@@ -10,23 +10,25 @@ async function fetchApi(path: string, options: RequestInit = {}) {
 
   const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
 
+  // Read the response body as text ONCE.
+  const responseText = await response.text();
+
   if (!response.ok) {
     let error;
     try {
-      // First, try to parse the error as JSON, which is the expected format
-      const errorData = await response.json();
-      error = new Error(errorData.err || errorData.message || 'An unknown API error occurred.');
+      // Try to parse the text as JSON. If it works, we have a structured error.
+      const errorJson = JSON.parse(responseText);
+      error = new Error(errorJson.err || errorJson.message || 'An unknown API error occurred.');
     } catch (e) {
-      // If JSON parsing fails, it's likely an unexpected server crash (like the 500 error)
-      const errorText = await response.text();
-      error = new Error(errorText || 'API request failed with a non-JSON response.');
+      // If parsing fails, the error is the raw text (e.g., an HTML error page).
+      error = new Error(responseText || 'An unknown error occurred.');
     }
     throw error;
   }
 
-  // If the request was successful, but the response is empty, return null
-  const text = await response.text();
-  return text ? JSON.parse(text) : null;
+  // If the response was successful, parse the text we've already read.
+  // If the responseText is empty, return null.
+  return responseText ? JSON.parse(responseText) : null;
 }
 
 
