@@ -76,6 +76,12 @@ export const deleteProperty = (id: string, token: string) => {
     });
 };
 
+// === Admin: Inquiries ===
+export const getInquiries = (token: string) => {
+    return fetchApi('/admin/inquiries', { headers: { 'Authorization': `Bearer ${token}` } });
+};
+
+
 // === Admin: Image Upload ===
 export const uploadImage = (file: File, token: string) => {
     const formData = new FormData();

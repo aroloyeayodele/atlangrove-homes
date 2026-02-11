@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import Dashboard from "./pages/admin/Dashboard";
 import AdminProperties from "./pages/admin/Properties";
+import InquiriesPage from "./pages/admin/Inquiries"; // Import the new page
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/properties" element={<AdminProperties />} />
+          <Route path="/admin/inquiries" element={<InquiriesPage />} /> {/* Add the new route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

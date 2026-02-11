@@ -39,8 +39,8 @@ const Dashboard = () => {
             <p className="text-sm text-gray-600 mt-2 mb-4">
               Review and respond to customer messages sent via the website.
             </p>
-            <Button asChild variant="outline" className="border-brand-red/30 text-brand-red hover:bg-brand-red/10">
-              <Link to="/contact">Go to Contact Page</Link>
+            <Button asChild className="bg-brand-red hover:bg-brand-red/90 text-white">
+              <Link to="/admin/inquiries">View Inquiries</Link>
             </Button>
           </div>
 

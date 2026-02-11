@@ -14,6 +14,30 @@ const app = new Hono<{ Bindings: Env }>();
 // Add CORS middleware to allow cross-origin requests
 app.use('/api/*', cors());
 
+// --- CONTACT FORM ROUTE ---
+
+app.post('/api/contact', async (c) => {
+  const { name, email, phone, message } = await c.req.json();
+
+  if (!name || !email || !message) {
+    return c.json({ err: 'Name, email, and message are required' }, 400);
+  }
+
+  try {
+    await c.env.DB.prepare(
+      'INSERT INTO inquiries (name, email, phone, message) VALUES (?, ?, ?, ?)'
+    ).bind(name, email, phone, message).run();
+
+    return c.json({ message: 'Inquiry submitted successfully' });
+
+  } catch (e) {
+    const error = e as Error;
+    console.error('Error submitting inquiry:', error.message);
+    return c.json({ err: 'Failed to submit inquiry' }, 500);
+  }
+});
+
+
 // --- BLOG ROUTES ---
 
 // Route for fetching all blog posts
@@ -109,15 +133,31 @@ app.post('/api/admin/login', async (c) => {
 
 
 // Middleware for protected routes
-app.use('/api/admin/properties/*', async (c, next) => {
+const authMiddleware = async (c: any, next: any) => {
   const auth = jwt({ secret: c.env.JWT_SECRET });
   return auth(c, next);
-});
+};
+
+app.use('/api/admin/properties/*', authMiddleware);
+app.use('/api/admin/inquiries', authMiddleware);
+app.use('/api/admin/upload', authMiddleware);
 
 
 app.get('/api/admin/properties', async (c) => {
   try {
     const { results } = await c.env.DB.prepare('SELECT * FROM properties').all();
+    return c.json(results);
+  } catch (e) {
+    const error = e as Error;
+    return c.json({ err: error.message }, 500);
+  }
+});
+
+
+// Route for fetching all inquiries
+app.get('/api/admin/inquiries', async (c) => {
+  try {
+    const { results } = await c.env.DB.prepare('SELECT * FROM inquiries ORDER BY submitted_at DESC').all();
     return c.json(results);
   } catch (e) {
     const error = e as Error;

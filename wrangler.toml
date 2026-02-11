@@ -4,3 +4,9 @@ compatibility_date = "2023-01-01"
 
 [vars]
 ENV = "development"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "atlangrove_db"
+database_id = "842a15f7-669c-4f13-8835-7880b9d9c572"
+migrations_dir = "worker/migrations"
