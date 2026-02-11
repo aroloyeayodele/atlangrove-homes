@@ -141,7 +141,7 @@ const authMiddleware = async (c: any, next: any) => {
 app.use('/api/admin/properties/*', authMiddleware);
 app.use('/api/admin/inquiries', authMiddleware);
 app.use('/api/admin/upload', authMiddleware);
-
+app.use('/api/admin/blogs/*', authMiddleware);
 
 app.get('/api/admin/properties', async (c) => {
   try {
@@ -152,7 +152,6 @@ app.get('/api/admin/properties', async (c) => {
     return c.json({ err: error.message }, 500);
   }
 });
-
 
 // Route for fetching all inquiries
 app.get('/api/admin/inquiries', async (c) => {
@@ -165,6 +164,72 @@ app.get('/api/admin/inquiries', async (c) => {
   }
 });
 
+// Route for fetching all blog posts (admin)
+app.get('/api/admin/blogs', async (c) => {
+  try {
+    const { results } = await c.env.DB.prepare('SELECT * FROM blogs ORDER BY created_at DESC').all();
+    return c.json(results);
+  } catch (e) {
+    const error = e as Error;
+    return c.json({ err: error.message }, 500);
+  }
+});
+
+// Route for fetching a single blog post (admin)
+app.get('/api/admin/blogs/:id', async (c) => {
+  const id = c.req.param('id');
+  try {
+    const post = await c.env.DB.prepare('SELECT * FROM blogs WHERE id = ?').bind(id).first();
+    if (!post) {
+      return c.json({ err: 'Blog post not found' }, 404);
+    }
+    return c.json(post);
+  } catch (e) {
+    const error = e as Error;
+    return c.json({ err: error.message }, 500);
+  }
+});
+
+// Route for creating a new blog post
+app.post('/api/admin/blogs', async (c) => {
+  const { title, content, status, image_url } = await c.req.json();
+  try {
+    const { results } = await c.env.DB.prepare(
+      'INSERT INTO blogs (title, content, status, image_url) VALUES (?, ?, ?, ?)'
+    ).bind(title, content, status, image_url).run();
+    return c.json({ id: results.last_row_id });
+  } catch (e) {
+    const error = e as Error;
+    return c.json({ err: error.message }, 500);
+  }
+});
+
+// Route for updating a blog post
+app.put('/api/admin/blogs/:id', async (c) => {
+  const id = c.req.param('id');
+  const { title, content, status, image_url } = await c.req.json();
+  try {
+    await c.env.DB.prepare(
+      'UPDATE blogs SET title = ?, content = ?, status = ?, image_url = ? WHERE id = ?'
+    ).bind(title, content, status, image_url, id).run();
+    return c.json({ message: 'Blog post updated successfully' });
+  } catch (e) {
+    const error = e as Error;
+    return c.json({ err: error.message }, 500);
+  }
+});
+
+// Route for deleting a blog post
+app.delete('/api/admin/blogs/:id', async (c) => {
+  const id = c.req.param('id');
+  try {
+    await c.env.DB.prepare('DELETE FROM blogs WHERE id = ?').bind(id).run();
+    return c.json({ message: 'Blog post deleted successfully' });
+  } catch (e) {
+    const error = e as Error;
+    return c.json({ err: error.message }, 500);
+  }
+});
 
 // Route for uploading files to R2
 app.post('/api/admin/upload', async (c) => {
@@ -188,6 +253,5 @@ app.post('/api/admin/upload', async (c) => {
     return c.json({ err: error.message }, 500);
   }
 });
-
 
 export default app;

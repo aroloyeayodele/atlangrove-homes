@@ -81,6 +81,38 @@ export const getInquiries = (token: string) => {
     return fetchApi('/admin/inquiries', { headers: { 'Authorization': `Bearer ${token}` } });
 };
 
+// === Admin: Blogs CRUD ===
+export const getAdminBlogs = (token: string) => {
+    return fetchApi('/admin/blogs', { headers: { 'Authorization': `Bearer ${token}` } });
+};
+
+export const getAdminBlogById = (id: string, token: string) => {
+    return fetchApi(`/admin/blogs/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
+};
+
+export const createBlog = (blogData: any, token: string) => {
+    return fetchApi('/admin/blogs', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(blogData),
+    });
+};
+
+export const updateBlog = (id: string, blogData: any, token: string) => {
+    return fetchApi(`/admin/blogs/${id}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(blogData),
+    });
+};
+
+export const deleteBlog = (id: string, token: string) => {
+    return fetchApi(`/admin/blogs/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` },
+    });
+};
+
 
 // === Admin: Image Upload ===
 export const uploadImage = (file: File, token: string) => {
