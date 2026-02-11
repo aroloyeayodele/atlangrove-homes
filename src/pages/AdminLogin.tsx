@@ -17,9 +17,14 @@ const AdminLogin = () => {
     setError('');
     setLoading(true);
     try {
-      await api.login(username, password);
-      toast({ title: 'Login Successful', description: 'Redirecting to dashboard...' });
-      navigate('/admin/dashboard');
+      const response = await api.login(username, password);
+      if (response.token) {
+        sessionStorage.setItem('authToken', response.token);
+        toast({ title: 'Login Successful', description: 'Redirecting to dashboard...' });
+        navigate('/admin/dashboard');
+      } else {
+        throw new Error('No token received');
+      }
     } catch (err: any) {
       setError(err.message || 'An unknown error occurred');
       toast({ title: 'Login Failed', description: err.message, variant: 'destructive' });

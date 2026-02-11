@@ -45,7 +45,7 @@ const PropertiesAdmin = () => {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [authToken, setAuthToken] = useState<string | null>("DUMMY_TOKEN");
+  const [authToken, setAuthToken] = useState<string | null>(null);
 
   // State for related items (gallery, features)
   const [gallery, setGallery] = useState<{ id: number; url: string; }[]>([]);
@@ -55,14 +55,14 @@ const PropertiesAdmin = () => {
   const categories = useMemo(() => ['land', 'carcass', 'finished'] as Category[], []);
 
   useEffect(() => {
-    /* const token = sessionStorage.getItem('authToken');
+    const token = sessionStorage.getItem('authToken');
     if (!token) {
       toast({ title: 'Unauthorized', description: 'Please log in to continue.', variant: 'destructive' });
       navigate('/admin');
       return;
     }
     setAuthToken(token);
-    refresh(token); */
+    refresh(token);
   }, [navigate, toast]);
 
   const refresh = async (token: string) => {
@@ -162,7 +162,7 @@ const PropertiesAdmin = () => {
     } catch (err: any) {
       setError(err.message);
       toast({ title: 'Error', description: err.message, variant: 'destructive' });
-    } 
+    }
   };
 
   // Note: Full Gallery and Feature management will require dedicated API endpoints.
