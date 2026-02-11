@@ -62,7 +62,7 @@ export const deleteProperty = (id: string, token: string) => {
 // === Admin: Image Upload ===
 export const uploadImage = (file: File, token: string) => {
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append('file', file);
     
     return fetch(`${API_BASE_URL}/admin/upload`, {
         method: 'POST',

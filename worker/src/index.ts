@@ -1,10 +1,12 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import { jwt, sign } from 'hono/jwt';
 
 // Define the database and R2 bucket bindings
 interface Env {
   DB: D1Database;
   MEDIA_BUCKET: R2Bucket;
+  JWT_SECRET: string;
 }
 
 const app = new Hono<{ Bindings: Env }>();
@@ -96,12 +98,33 @@ app.post('/api/admin/login', async (c) => {
             return c.json({ err: 'Invalid username or password' }, 401);
         }
 
-        return c.json({ message: 'Login successful' });
+        const token = await sign({ id: user.id, username: user.username }, c.env.JWT_SECRET);
+
+        return c.json({ token: token, message: 'Login successful' });
     } catch (e) {
         const error = e as Error;
         return c.json({ err: error.message }, 500);
     }
 });
+
+
+// Middleware for protected routes
+app.use('/api/admin/properties/*', async (c, next) => {
+  const auth = jwt({ secret: c.env.JWT_SECRET });
+  return auth(c, next);
+});
+
+
+app.get('/api/admin/properties', async (c) => {
+  try {
+    const { results } = await c.env.DB.prepare('SELECT * FROM properties').all();
+    return c.json(results);
+  } catch (e) {
+    const error = e as Error;
+    return c.json({ err: error.message }, 500);
+  }
+});
+
 
 // Route for uploading files to R2
 app.post('/api/admin/upload', async (c) => {

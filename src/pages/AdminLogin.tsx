@@ -18,12 +18,12 @@ const AdminLogin = () => {
     setLoading(true);
     try {
       const response = await api.login(username, password);
-      if (response.token) {
+      if (response && response.token) {
         sessionStorage.setItem('authToken', response.token);
         toast({ title: 'Login Successful', description: 'Redirecting to dashboard...' });
         navigate('/admin/dashboard');
       } else {
-        throw new Error('No token received');
+        throw new Error('No token in response: ' + JSON.stringify(response));
       }
     } catch (err: any) {
       setError(err.message || 'An unknown error occurred');
