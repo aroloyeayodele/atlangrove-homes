@@ -1,5 +1,5 @@
 
-const API_BASE_URL = '/api'; // We will proxy this to our Express server
+const API_BASE_URL = 'https://worker.aroloyeayodele61.workers.dev/api';
 
 // Helper function for fetching data
 async function fetchApi(path: string, options: RequestInit = {}) {
@@ -10,16 +10,16 @@ async function fetchApi(path: string, options: RequestInit = {}) {
   const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({ message: 'An unknown error occurred' }));
-    throw new Error(errorData.message || 'API request failed');
+    throw new Error(errorData.err || 'API request failed');
   }
   return response.json();
 }
 
 // === Authentication ===
-export const login = (email: string, password: string) => {
-  return fetchApi('/auth/login', {
+export const login = (username: string, password: string) => {
+  return fetchApi('/admin/login', {
     method: 'POST',
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ username, password }),
   });
 };
 
