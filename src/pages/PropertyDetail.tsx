@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getPropertyById, submitInquiry } from '../services/api';
+import { getPropertyById, submitContactForm } from '../services/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -34,10 +34,10 @@ const PropertyDetailPage = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleInquirySubmit = async (e: React.FormEvent) => {
+    const handleContactFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await submitInquiry({ ...formData, message: `Inquiry for ${property.name}: ${formData.message}` });
+            await submitContactForm({ ...formData, message: `Inquiry for ${property.name}: ${formData.message}` });
             toast({ title: 'Inquiry Sent', description: 'Thank you for your interest! We will get back to you shortly.' });
             setFormData({ name: '', email: '', phone: '', message: '' });
         } catch (err) {
@@ -94,7 +94,7 @@ const PropertyDetailPage = () => {
                     
                     <div className="bg-gray-100 p-6 rounded-lg">
                         <h2 className="text-2xl font-semibold mb-4">Contact Us About This Property</h2>
-                        <form onSubmit={handleInquirySubmit}>
+                        <form onSubmit={handleContactFormSubmit}>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <Input name="name" value={formData.name} onChange={handleInputChange} placeholder="Your Name" required />
                                 <Input name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="Your Email" required />

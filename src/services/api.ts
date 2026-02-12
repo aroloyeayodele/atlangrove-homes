@@ -41,16 +41,32 @@ export const login = (username: string, password: string) => {
 };
 
 // === Properties ===
-export const getFeaturedProperties = () => fetchApi('/properties/featured');
-export const getAllProperties = (category?: string) => {
+export const getFeaturedProperties = async () => {
+    const properties = await fetchApi('/properties/featured');
+    return Array.isArray(properties) ? properties : [];
+};
+export const getAllProperties = async (category?: string) => {
     const query = category && category !== 'all' ? `?category=${category}` : '';
-    return fetchApi(`/properties${query}`);
+    const properties = await fetchApi(`/properties${query}`);
+    return Array.isArray(properties) ? properties : [];
 };
 export const getPropertyById = (id: string) => fetchApi(`/properties/${id}`);
+
+
+// === Blogs ===
+export const getAllBlogs = async () => {
+    const blogs = await fetchApi('/blogs');
+    return Array.isArray(blogs) ? blogs : [];
+}
+export const getBlogById = (id: string) => fetchApi(`/blogs/${id}`);
 
 // === Admin: Properties CRUD ===
 export const getAdminProperties = (token: string) => {
     return fetchApi('/admin/properties', { headers: { 'Authorization': `Bearer ${token}` } });
+};
+
+export const getAdminPropertyById = (id: string, token: string) => {
+    return fetchApi(`/admin/properties/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
 };
 
 export const createProperty = (propertyData: any, token: string) => {
@@ -82,8 +98,9 @@ export const getInquiries = (token: string) => {
 };
 
 // === Admin: Blogs CRUD ===
-export const getAdminBlogs = (token: string) => {
-    return fetchApi('/admin/blogs', { headers: { 'Authorization': `Bearer ${token}` } });
+export const getAdminBlogs = async (token: string) => {
+    const blogs = await fetchApi('/admin/blogs', { headers: { 'Authorization': `Bearer ${token}` } });
+    return Array.isArray(blogs) ? blogs : [];
 };
 
 export const getAdminBlogById = (id: string, token: string) => {

@@ -50,7 +50,7 @@ const fallbackProperties = [
 const FeaturedProperties = () => {
   const { toast } = useToast();
   
-  const { data: properties = [], isLoading, error } = useQuery({
+  const { data: properties, isLoading, error } = useQuery({
     queryKey: ['featuredProperties'],
     queryFn: getFeaturedProperties,
     retry: 1, // Only retry once
@@ -59,7 +59,7 @@ const FeaturedProperties = () => {
   });
 
   // Use fallback data when there's an error or no data
-  const displayProperties = error || properties.length === 0 ? fallbackProperties : properties;
+  const displayProperties = error || !Array.isArray(properties) || properties.length === 0 ? fallbackProperties : properties;
 
   // Handle errors with an effect but don't show toast for API errors in production
   useEffect(() => {

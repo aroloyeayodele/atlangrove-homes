@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getProperties } from '../services/api';
+import { getAllProperties } from '../services/api';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -14,7 +14,7 @@ const PropertiesPage = () => {
         const fetchProperties = async () => {
             setLoading(true);
             try {
-                const data = await getProperties(category);
+                const data = await getAllProperties(category);
                 setProperties(data || []);
             } catch (err: any) {
                 setError(err.message || 'Failed to fetch properties');

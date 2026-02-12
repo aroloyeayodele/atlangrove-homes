@@ -12,8 +12,13 @@ const BlogGrid = () => {
     const fetchBlogs = async () => {
       try {
         const response = await getAllBlogs();
-        setBlogs(response);
-      } catch (err) {
+        if (Array.isArray(response)) {
+          setBlogs(response);
+        } else {
+          // Set blogs to an empty array if the response is not an array
+          setBlogs([]); 
+        }
+      } catch (err) { 
         setError('Failed to fetch blog posts.');
       } finally {
         setLoading(false);
@@ -33,9 +38,11 @@ const BlogGrid = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {Array.isArray(blogs) && blogs.map((post) => (
-        <BlogCard key={post._id} post={post} />
-      ))}
+      {Array.isArray(blogs) && blogs.length > 0 ? (
+        blogs.map((post) => <BlogCard key={post._id} post={post} />)
+      ) : (
+        <div>No blog posts found.</div>
+      )}
     </div>
   );
 };
