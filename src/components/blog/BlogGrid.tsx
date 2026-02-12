@@ -12,7 +12,7 @@ const BlogGrid = () => {
     const fetchBlogs = async () => {
       try {
         const response = await getAllBlogs();
-        setBlogs(response.data);
+        setBlogs(response);
       } catch (err) {
         setError('Failed to fetch blog posts.');
       } finally {
@@ -33,7 +33,7 @@ const BlogGrid = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {blogs.map((post) => (
+      {Array.isArray(blogs) && blogs.map((post) => (
         <BlogCard key={post._id} post={post} />
       ))}
     </div>
