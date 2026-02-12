@@ -12,6 +12,12 @@ interface Env {
 
 const app = new Hono<{ Bindings: Env }>();
 
+// Add a global error handler
+app.onError((err, c) => {
+  console.error(`Unhandled error: ${err}`, err.stack);
+  return c.json({ err: 'An internal server error occurred', message: err.message }, 500);
+});
+
 // Add CORS middleware to allow cross-origin requests
 app.use('/api/*', cors());
 
@@ -140,9 +146,21 @@ const admin = new Hono<{ Bindings: Env }>();
 
 // Apply JWT middleware to the entire admin sub-app
 admin.use('/*', async (c, next) => {
-  const auth = jwt({ secret: c.env.JWT_SECRET });
-  return auth(c, next);
+  try {
+    const secret = c.env.JWT_SECRET;
+    if (!secret) {
+        console.error("JWT_SECRET is not defined in the environment.");
+        return c.json({ err: 'JWT secret is not configured on the server.' }, 500);
+    }
+    const jwtMiddleware = jwt({ secret });
+    return await jwtMiddleware(c, next);
+  } catch (e) {
+    const error = e as Error;
+    console.error("Middleware Error:", error.stack);
+    return c.json({ err: 'Authentication middleware error', details: error.message }, 500);
+  }
 });
+
 
 // --- Admin: Inquiries ---
 admin.get('/inquiries', async (c) => {
