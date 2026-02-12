@@ -154,7 +154,9 @@ const authMiddleware = jwt({ secret: c.env.JWT_SECRET });
 
 app.use('/api/admin/inquiries', authMiddleware);
 app.use('/api/admin/upload', authMiddleware);
+app.use('/api/admin/blogs', authMiddleware);
 app.use('/api/admin/blogs/*', authMiddleware);
+app.use('/api/admin/properties', authMiddleware);
 app.use('/api/admin/properties/*', authMiddleware);
 
 // --- Admin: Inquiries ---
