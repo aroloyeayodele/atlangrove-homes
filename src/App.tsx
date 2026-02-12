@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import Dashboard from "./pages/admin/Dashboard";
 import AdminProperties from "./pages/admin/Properties";
+import PropertyForm from "./pages/admin/PropertyForm";
 import InquiriesPage from "./pages/admin/Inquiries";
 import AdminBlogsPage from "./pages/admin/Blogs";
 import BlogForm from "./pages/admin/BlogForm";
@@ -33,6 +34,8 @@ const App = () => (
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/properties" element={<AdminProperties />} />
+          <Route path="/admin/properties/new" element={<PropertyForm />} />
+          <Route path="/admin/properties/edit/:id" element={<PropertyForm />} />
           <Route path="/admin/inquiries" element={<InquiriesPage />} />
           <Route path="/admin/blogs" element={<AdminBlogsPage />} />
           <Route path="/admin/blogs/new" element={<BlogForm />} />

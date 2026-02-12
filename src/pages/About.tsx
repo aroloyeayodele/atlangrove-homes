@@ -19,14 +19,14 @@ const About = () => {
           {
             "@context": "https://schema.org",
             "@type": "Organization",
-            "name": "Atlangrove Heights",
+            "name": "Atlangrove Homes",
             "url": "https://www.atlangrovehomes.com/",
             "logo": "/lovable-uploads/d8b82a03-78f9-4b90-ac43-39097201c852.png",
             "contactPoint": [{
               "@type": "ContactPoint",
               "telephone": "+234 806 655 8355",
               "contactType": "customer service",
-              "email": "info@example.com"
+              "email": "info@atlangrovehomes.com"
             }],
             "address": {
               "@type": "PostalAddress",

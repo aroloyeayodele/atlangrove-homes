@@ -13,7 +13,7 @@ const Footer = () => {
             <Link to="/" className="inline-block">
               <img 
                 src="/lovable-uploads/d8b82a03-78f9-4b90-ac43-39097201c852.png" 
-                alt="Exclusive Estates Logo" 
+                alt="Atlangrove Homes Logo" 
                 className="h-8"
               />
             </Link>
@@ -22,7 +22,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4 pt-2">
               <a 
-                href="https://web.facebook.com/people/ExclusiveEstates/61582368710899/" 
+                href="https://facebook.com/atlangrovehomes" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-brand-red transition-colors"
@@ -31,7 +31,7 @@ const Footer = () => {
                 <Facebook className="h-5 w-5" />
               </a>
               <a 
-                href="https://www.instagram.com/exclusiveestates/" 
+                href="https://instagram.com/atlangrovehomes" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-brand-red transition-colors"
@@ -137,7 +137,7 @@ const Footer = () => {
               </p>
               <p className="flex items-start text-sm">
                 <Mail className="h-5 w-5 text-brand-red mr-2 mt-0.5" />
-                <span className="text-gray-600">Atlangroveheights@gmail.com</span>
+                <span className="text-gray-600">info@atlangrovehomes.com</span>
               </p>
             </div>
           </div>
