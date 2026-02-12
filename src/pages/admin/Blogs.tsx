@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getAdminBlogs, deleteBlog } from '../../services/api';
-import { useAuth } from '../../context/AuthContext';
+import { getAdminBlogs, deleteBlog } from '@/services/api';
+import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 
 const AdminBlogsPage = () => {
