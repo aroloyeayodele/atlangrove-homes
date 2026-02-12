@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAdminBlogs, deleteBlog } from '@/services/api';
-import { useAuth } from '../../context/AuthContext';
 import { Button } from '@/components/ui/button';
 
 const AdminBlogsPage = () => {
     const [blogs, setBlogs] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const { token } = useAuth();
 
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
+                const token = sessionStorage.getItem('authToken');
                 if (!token) throw new Error('Token not found');
                 const data = await getAdminBlogs(token);
                 setBlogs(data || []);
@@ -23,11 +22,12 @@ const AdminBlogsPage = () => {
             }
         };
         fetchBlogs();
-    }, [token]);
+    }, []);
 
     const handleDelete = async (id: string) => {
         if (window.confirm('Are you sure you want to delete this post?')) {
             try {
+                const token = sessionStorage.getItem('authToken');
                 if (!token) throw new Error('Token not found');
                 await deleteBlog(id, token);
                 setBlogs(blogs.filter(blog => blog.id !== id));

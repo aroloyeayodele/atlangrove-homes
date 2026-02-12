@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAdminProperties, deleteProperty } from '../../services/api';
-import { useAuth } from '../../context/AuthContext';
 import { Button } from '@/components/ui/button';
 
 const AdminPropertiesPage = () => {
     const [properties, setProperties] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const { token } = useAuth();
 
     useEffect(() => {
         const fetchProperties = async () => {
             try {
+                const token = sessionStorage.getItem('authToken');
                 if (!token) throw new Error('Token not found');
                 const data = await getAdminProperties(token);
                 setProperties(data || []);
@@ -23,11 +22,12 @@ const AdminPropertiesPage = () => {
             }
         };
         fetchProperties();
-    }, [token]);
+    }, []);
 
     const handleDelete = async (id: string) => {
         if (window.confirm('Are you sure you want to delete this property?')) {
             try {
+                const token = sessionStorage.getItem('authToken');
                 if (!token) throw new Error('Token not found');
                 await deleteProperty(id, token);
                 setProperties(properties.filter(prop => prop.id !== id));
