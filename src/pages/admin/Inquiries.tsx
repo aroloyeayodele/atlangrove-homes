@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getInquiries } from '../../services/api';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 
 const InquiriesPage = () => {
     const [inquiries, setInquiries] = useState<any[]>([]);
