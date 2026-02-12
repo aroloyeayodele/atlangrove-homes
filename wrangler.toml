@@ -11,13 +11,9 @@ bucket = "./dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "atlangrove_db"
-database_id = "842a15f7-669c-4f13-8835-7880b9d9c572"
+database_id = "8ce477f7-bdfa-43cf-b231-3de132211292"
 migrations_dir = "worker/migrations"
 
 [[r2_buckets]]
 binding = "MEDIA_BUCKET"
 bucket_name = "atlangrove-media"
-
-[[kv_namespaces]]
-binding = "__STATIC_CONTENT"
-id = "662a2a1be4894aaa8bc3ec1f9d1d50cf"

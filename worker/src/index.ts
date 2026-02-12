@@ -150,7 +150,7 @@ app.post('/api/admin/login', async (c) => {
 });
 
 // Middleware for protected routes
-const authMiddleware = jwt({ secret: c.env.JWT_SECRET });
+const authMiddleware = (c, next) => jwt({ secret: c.env.JWT_SECRET })(c, next);
 
 app.use('/api/admin/inquiries', authMiddleware);
 app.use('/api/admin/upload', authMiddleware);
