@@ -14,8 +14,8 @@ const app = new Hono<{ Bindings: Env }>();
 
 // Add a global error handler
 app.onError((err, c) => {
-  console.error(`Unhandled error: ${err}`, err.stack);
-  return c.json({ err: 'An internal server error occurred', message: err.message }, 500);
+  console.error(`Unhandled error: ${err.message}`, err.stack);
+  return c.json({ err: 'An internal server error occurred', message: err.message, stack: err.stack }, 500);
 });
 
 // Add CORS middleware to allow cross-origin requests
@@ -29,7 +29,9 @@ app.post('/api/contact', async (c) => {
     return c.json({ err: 'Name, email, and message are required' }, 400);
   }
   try {
-    await c.env.DB.prepare('INSERT INTO inquiries (name, email, phone, message) VALUES (?, ?, ?, ?)').bind(name, email, phone, message).run();
+    await c.env.DB.prepare('INSERT INTO inquiries (name, email, phone, message) VALUES (?, ?, ?, ?)')
+      .bind(name, email, phone, message)
+      .run();
     return c.json({ message: 'Inquiry submitted successfully' });
   } catch (e) {
     const error = e as Error;
@@ -40,7 +42,9 @@ app.post('/api/contact', async (c) => {
 
 app.get('/api/blogs', async (c) => {
   try {
-    const { results } = await c.env.DB.prepare('SELECT * FROM blogs WHERE status = ? ORDER BY created_at DESC').bind('published').all();
+    const { results } = await c.env.DB.prepare('SELECT * FROM blogs WHERE status = ? ORDER BY created_at DESC')
+      .bind('published')
+      .all();
     return c.json(results);
   } catch (e) {
     const error = e as Error;
@@ -51,7 +55,9 @@ app.get('/api/blogs', async (c) => {
 app.get('/api/blogs/:id', async (c) => {
   const id = c.req.param('id');
   try {
-    const post = await c.env.DB.prepare('SELECT * FROM blogs WHERE id = ? AND status = ?').bind(id, 'published').first();
+    const post = await c.env.DB.prepare('SELECT * FROM blogs WHERE id = ? AND status = ?')
+      .bind(id, 'published')
+      .first();
     if (!post) {
       return c.json({ err: 'Blog post not found' }, 404);
     }
@@ -63,13 +69,15 @@ app.get('/api/blogs/:id', async (c) => {
 });
 
 app.get('/api/properties/featured', async (c) => {
-    try {
-        const { results } = await c.env.DB.prepare('SELECT * FROM properties WHERE status = ? ORDER BY created_at DESC LIMIT 3').bind('available').all();
-        return c.json(results);
-    } catch (e) {
-        const error = e as Error;
-        return c.json({ err: error.message }, 500);
-    }
+  try {
+    const { results } = await c.env.DB.prepare('SELECT * FROM properties WHERE status = ? ORDER BY created_at DESC LIMIT 3')
+      .bind('available')
+      .all();
+    return c.json(results);
+  } catch (e) {
+    const error = e as Error;
+    return c.json({ err: error.message }, 500);
+  }
 });
 
 app.get('/api/properties', async (c) => {
@@ -77,9 +85,11 @@ app.get('/api/properties', async (c) => {
   try {
     let query;
     if (category && category !== 'all') {
-      query = c.env.DB.prepare('SELECT * FROM properties WHERE status = ? AND property_type = ? ORDER BY created_at DESC').bind('available', category);
+      query = c.env.DB.prepare('SELECT * FROM properties WHERE status = ? AND property_type = ? ORDER BY created_at DESC')
+        .bind('available', category);
     } else {
-      query = c.env.DB.prepare('SELECT * FROM properties WHERE status = ? ORDER BY created_at DESC').bind('available');
+      query = c.env.DB.prepare('SELECT * FROM properties WHERE status = ? ORDER BY created_at DESC')
+        .bind('available');
     }
     const { results } = await query.all();
     return c.json(results);
@@ -124,21 +134,21 @@ app.get('/media/:key', async (c) => {
 
 // Public login route
 app.post('/api/admin/login', async (c) => {
-    const { username, password } = await c.req.json();
-    if (!username || !password) {
-        return c.json({ err: 'Username and password are required' }, 400);
+  const { username, password } = await c.req.json();
+  if (!username || !password) {
+    return c.json({ err: 'Username and password are required' }, 400);
+  }
+  try {
+    const user = await c.env.DB.prepare('SELECT * FROM users WHERE username = ?').bind(username).first();
+    if (!user || password !== user.password) { // In a real app, use a secure password hashing library like bcrypt
+      return c.json({ err: 'Invalid username or password' }, 401);
     }
-    try {
-        const user = await c.env.DB.prepare('SELECT * FROM users WHERE username = ?').bind(username).first();
-        if (!user || password !== user.password) { // In a real app, use a secure password hashing library like bcrypt
-            return c.json({ err: 'Invalid username or password' }, 401);
-        }
-        const token = await sign({ id: user.id, username: user.username }, c.env.JWT_SECRET);
-        return c.json({ token: token, message: 'Login successful' });
-    } catch (e) {
-        const error = e as Error;
-        return c.json({ err: error.message }, 500);
-    }
+    const token = await sign({ id: user.id, username: user.username }, c.env.JWT_SECRET);
+    return c.json({ token: token, message: 'Login successful' });
+  } catch (e) {
+    const error = e as Error;
+    return c.json({ err: error.message }, 500);
+  }
 });
 
 // Create a new Hono instance for protected admin routes
@@ -149,18 +159,17 @@ admin.use('/*', async (c, next) => {
   try {
     const secret = c.env.JWT_SECRET;
     if (!secret) {
-        console.error("JWT_SECRET is not defined in the environment.");
-        return c.json({ err: 'JWT secret is not configured on the server.' }, 500);
+      console.error('JWT_SECRET is not defined in the environment.');
+      return c.json({ err: 'JWT secret is not configured on the server.' }, 500);
     }
     const jwtMiddleware = jwt({ secret });
     return await jwtMiddleware(c, next);
   } catch (e) {
     const error = e as Error;
-    console.error("Middleware Error:", error.stack);
+    console.error('Middleware Error:', error.stack);
     return c.json({ err: 'Authentication middleware error', details: error.message }, 500);
   }
 });
-
 
 // --- Admin: Inquiries ---
 admin.get('/inquiries', async (c) => {
@@ -199,7 +208,9 @@ admin.get('/blogs/:id', async (c) => {
 admin.post('/blogs', async (c) => {
   const { title, content, status, image_url } = await c.req.json();
   try {
-    const { meta } = await c.env.DB.prepare('INSERT INTO blogs (title, content, status, image_url) VALUES (?, ?, ?, ?)').bind(title, content, status, image_url).run();
+    const { meta } = await c.env.DB.prepare('INSERT INTO blogs (title, content, status, image_url) VALUES (?, ?, ?, ?)')
+      .bind(title, content, status, image_url)
+      .run();
     const newId = meta.last_row_id;
     return c.json({ id: newId }, 201);
   } catch (e) {
@@ -212,7 +223,9 @@ admin.put('/blogs/:id', async (c) => {
   const id = c.req.param('id');
   const { title, content, status, image_url } = await c.req.json();
   try {
-    await c.env.DB.prepare('UPDATE blogs SET title = ?, content = ?, status = ?, image_url = ? WHERE id = ?').bind(title, content, status, image_url, id).run();
+    await c.env.DB.prepare('UPDATE blogs SET title = ?, content = ?, status = ?, image_url = ? WHERE id = ?')
+      .bind(title, content, status, image_url, id)
+      .run();
     return c.json({ message: 'Blog post updated successfully' });
   } catch (e) {
     const error = e as Error;
@@ -243,55 +256,57 @@ admin.get('/properties', async (c) => {
 });
 
 admin.get('/properties/:id', async (c) => {
-    const id = c.req.param('id');
-    try {
-        const property = await c.env.DB.prepare('SELECT * FROM properties WHERE id = ?').bind(id).first();
-        if (!property) {
-            return c.json({ err: 'Property not found' }, 404);
-        }
-        return c.json(property);
-    } catch (e) {
-        const error = e as Error;
-        return c.json({ err: error.message }, 500);
+  const id = c.req.param('id');
+  try {
+    const property = await c.env.DB.prepare('SELECT * FROM properties WHERE id = ?').bind(id).first();
+    if (!property) {
+      return c.json({ err: 'Property not found' }, 404);
     }
+    return c.json(property);
+  } catch (e) {
+    const error = e as Error;
+    return c.json({ err: error.message }, 500);
+  }
 });
 
 admin.post('/properties', async (c) => {
-    const { name, address, price, bedrooms, bathrooms, property_type, status, description, features, images } = await c.req.json();
-    try {
-        const { meta } = await c.env.DB.prepare(
-            'INSERT INTO properties (name, address, price, bedrooms, bathrooms, property_type, status, description, features, images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-        ).bind(name, address, price, bedrooms, bathrooms, property_type, status, description, JSON.stringify(features), JSON.stringify(images)).run();
-        return c.json({ id: meta.last_row_id }, 201);
-    } catch (e) {
-        const error = e as Error;
-        return c.json({ err: error.message }, 500);
-    }
+  const { name, address, price, bedrooms, bathrooms, property_type, status, description, features, images } = await c.req.json();
+  try {
+    const { meta } = await c.env.DB.prepare(
+      'INSERT INTO properties (name, address, price, bedrooms, bathrooms, property_type, status, description, features, images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    ).bind(name, address, price, bedrooms, bathrooms, property_type, status, description, JSON.stringify(features), JSON.stringify(images))
+     .run();
+    return c.json({ id: meta.last_row_id }, 201);
+  } catch (e) {
+    const error = e as Error;
+    return c.json({ err: error.message }, 500);
+  }
 });
 
 admin.put('/properties/:id', async (c) => {
-    const id = c.req.param('id');
-    const { name, address, price, bedrooms, bathrooms, property_type, status, description, features, images } = await c.req.json();
-    try {
-        await c.env.DB.prepare(
-            'UPDATE properties SET name = ?, address = ?, price = ?, bedrooms = ?, bathrooms = ?, property_type = ?, status = ?, description = ?, features = ?, images = ? WHERE id = ?'
-        ).bind(name, address, price, bedrooms, bathrooms, property_type, status, description, JSON.stringify(features), JSON.stringify(images), id).run();
-        return c.json({ message: 'Property updated successfully' });
-    } catch (e) {
-        const error = e as Error;
-        return c.json({ err: error.message }, 500);
-    }
+  const id = c.req.param('id');
+  const { name, address, price, bedrooms, bathrooms, property_type, status, description, features, images } = await c.req.json();
+  try {
+    await c.env.DB.prepare(
+      'UPDATE properties SET name = ?, address = ?, price = ?, bedrooms = ?, bathrooms = ?, property_type = ?, status = ?, description = ?, features = ?, images = ? WHERE id = ?'
+    ).bind(name, address, price, bedrooms, bathrooms, property_type, status, description, JSON.stringify(features), JSON.stringify(images), id)
+     .run();
+    return c.json({ message: 'Property updated successfully' });
+  } catch (e) {
+    const error = e as Error;
+    return c.json({ err: error.message }, 500);
+  }
 });
 
 admin.delete('/properties/:id', async (c) => {
-    const id = c.req.param('id');
-    try {
-        await c.env.DB.prepare('DELETE FROM properties WHERE id = ?').bind(id).run();
-        return c.json({ message: 'Property deleted successfully' });
-    } catch (e) {
-        const error = e as Error;
-        return c.json({ err: error.message }, 500);
-    }
+  const id = c.req.param('id');
+  try {
+    await c.env.DB.prepare('DELETE FROM properties WHERE id = ?').bind(id).run();
+    return c.json({ message: 'Property deleted successfully' });
+  } catch (e) {
+    const error = e as Error;
+    return c.json({ err: error.message }, 500);
+  }
 });
 
 // --- Admin: Image Upload ---
@@ -300,11 +315,11 @@ admin.post('/upload', async (c) => {
     const formData = await c.req.formData();
     const file = formData.get('file');
     if (!(file instanceof File)) {
-        return c.json({ err: 'No file to upload or incorrect form data' }, 400);
+      return c.json({ err: 'No file to upload or incorrect form data' }, 400);
     }
     const key = `${Date.now()}-${file.name}`;
     await c.env.MEDIA_BUCKET.put(key, await file.arrayBuffer(), {
-        httpMetadata: { contentType: file.type },
+      httpMetadata: { contentType: file.type },
     });
     return c.json({ key: key, message: `File ${key} uploaded successfully!` });
   } catch (e) {
