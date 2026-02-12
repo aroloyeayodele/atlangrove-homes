@@ -16,6 +16,8 @@ import PropertyForm from "./pages/admin/PropertyForm";
 import InquiriesPage from "./pages/admin/Inquiries";
 import AdminBlogsPage from "./pages/admin/Blogs";
 import BlogForm from "./pages/admin/BlogForm";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,8 @@ const App = () => (
           <Route path="/properties/:id" element={<PropertyDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/properties" element={<AdminProperties />} />
