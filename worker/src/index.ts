@@ -15,31 +15,22 @@ const app = new Hono<{ Bindings: Env }>();
 // Add CORS middleware to allow cross-origin requests
 app.use('/api/*', cors());
 
-// --- CONTACT FORM ROUTE ---
+// --- PUBLIC ROUTES ---
 
 app.post('/api/contact', async (c) => {
   const { name, email, phone, message } = await c.req.json();
-
   if (!name || !email || !message) {
     return c.json({ err: 'Name, email, and message are required' }, 400);
   }
-
   try {
-    await c.env.DB.prepare(
-      'INSERT INTO inquiries (name, email, phone, message) VALUES (?, ?, ?, ?)'
-    ).bind(name, email, phone, message).run();
-
+    await c.env.DB.prepare('INSERT INTO inquiries (name, email, phone, message) VALUES (?, ?, ?, ?)').bind(name, email, phone, message).run();
     return c.json({ message: 'Inquiry submitted successfully' });
-
   } catch (e) {
     const error = e as Error;
     console.error('Error submitting inquiry:', error.message);
     return c.json({ err: 'Failed to submit inquiry' }, 500);
   }
 });
-
-
-// --- PUBLIC BLOG ROUTES ---
 
 app.get('/api/blogs', async (c) => {
   try {
@@ -64,8 +55,6 @@ app.get('/api/blogs/:id', async (c) => {
     return c.json({ err: error.message }, 500);
   }
 });
-
-// --- PUBLIC PROPERTY ROUTES ---
 
 app.get('/api/properties/featured', async (c) => {
     try {
@@ -108,8 +97,6 @@ app.get('/api/properties/:id', async (c) => {
   }
 });
 
-// --- MEDIA ROUTES ---
-
 app.get('/media/:key', async (c) => {
   const key = c.req.param('key');
   try {
@@ -120,9 +107,7 @@ app.get('/media/:key', async (c) => {
     const headers = new Headers();
     object.writeHttpMetadata(headers);
     headers.set('etag', object.httpEtag);
-    return new Response(object.body, {
-      headers,
-    });
+    return new Response(object.body, { headers });
   } catch (e) {
     const error = e as Error;
     return c.json({ err: error.message }, 500);
@@ -131,6 +116,7 @@ app.get('/media/:key', async (c) => {
 
 // --- ADMIN ROUTES ---
 
+// Public login route
 app.post('/api/admin/login', async (c) => {
     const { username, password } = await c.req.json();
     if (!username || !password) {
@@ -138,7 +124,7 @@ app.post('/api/admin/login', async (c) => {
     }
     try {
         const user = await c.env.DB.prepare('SELECT * FROM users WHERE username = ?').bind(username).first();
-        if (!user || password !== user.password) {
+        if (!user || password !== user.password) { // In a real app, use a secure password hashing library like bcrypt
             return c.json({ err: 'Invalid username or password' }, 401);
         }
         const token = await sign({ id: user.id, username: user.username }, c.env.JWT_SECRET);
@@ -149,18 +135,17 @@ app.post('/api/admin/login', async (c) => {
     }
 });
 
-// Middleware for protected routes
-const authMiddleware = (c, next) => jwt({ secret: c.env.JWT_SECRET })(c, next);
+// Create a new Hono instance for protected admin routes
+const admin = new Hono<{ Bindings: Env }>();
 
-app.use('/api/admin/inquiries', authMiddleware);
-app.use('/api/admin/upload', authMiddleware);
-app.use('/api/admin/blogs', authMiddleware);
-app.use('/api/admin/blogs/*', authMiddleware);
-app.use('/api/admin/properties', authMiddleware);
-app.use('/api/admin/properties/*', authMiddleware);
+// Apply JWT middleware to the entire admin sub-app
+admin.use('/*', async (c, next) => {
+  const auth = jwt({ secret: c.env.JWT_SECRET });
+  return auth(c, next);
+});
 
 // --- Admin: Inquiries ---
-app.get('/api/admin/inquiries', async (c) => {
+admin.get('/inquiries', async (c) => {
   try {
     const { results } = await c.env.DB.prepare('SELECT * FROM inquiries ORDER BY submitted_at DESC').all();
     return c.json(results);
@@ -171,7 +156,7 @@ app.get('/api/admin/inquiries', async (c) => {
 });
 
 // --- Admin: Blogs ---
-app.get('/api/admin/blogs', async (c) => {
+admin.get('/blogs', async (c) => {
   try {
     const { results } = await c.env.DB.prepare('SELECT * FROM blogs ORDER BY created_at DESC').all();
     return c.json(results);
@@ -181,7 +166,7 @@ app.get('/api/admin/blogs', async (c) => {
   }
 });
 
-app.get('/api/admin/blogs/:id', async (c) => {
+admin.get('/blogs/:id', async (c) => {
   const id = c.req.param('id');
   try {
     const post = await c.env.DB.prepare('SELECT * FROM blogs WHERE id = ?').bind(id).first();
@@ -193,12 +178,10 @@ app.get('/api/admin/blogs/:id', async (c) => {
   }
 });
 
-app.post('/api/admin/blogs', async (c) => {
+admin.post('/blogs', async (c) => {
   const { title, content, status, image_url } = await c.req.json();
   try {
-    const { meta } = await c.env.DB.prepare(
-      'INSERT INTO blogs (title, content, status, image_url) VALUES (?, ?, ?, ?)'
-    ).bind(title, content, status, image_url).run();
+    const { meta } = await c.env.DB.prepare('INSERT INTO blogs (title, content, status, image_url) VALUES (?, ?, ?, ?)').bind(title, content, status, image_url).run();
     const newId = meta.last_row_id;
     return c.json({ id: newId }, 201);
   } catch (e) {
@@ -207,13 +190,11 @@ app.post('/api/admin/blogs', async (c) => {
   }
 });
 
-app.put('/api/admin/blogs/:id', async (c) => {
+admin.put('/blogs/:id', async (c) => {
   const id = c.req.param('id');
   const { title, content, status, image_url } = await c.req.json();
   try {
-    await c.env.DB.prepare(
-      'UPDATE blogs SET title = ?, content = ?, status = ?, image_url = ? WHERE id = ?'
-    ).bind(title, content, status, image_url, id).run();
+    await c.env.DB.prepare('UPDATE blogs SET title = ?, content = ?, status = ?, image_url = ? WHERE id = ?').bind(title, content, status, image_url, id).run();
     return c.json({ message: 'Blog post updated successfully' });
   } catch (e) {
     const error = e as Error;
@@ -221,7 +202,7 @@ app.put('/api/admin/blogs/:id', async (c) => {
   }
 });
 
-app.delete('/api/admin/blogs/:id', async (c) => {
+admin.delete('/blogs/:id', async (c) => {
   const id = c.req.param('id');
   try {
     await c.env.DB.prepare('DELETE FROM blogs WHERE id = ?').bind(id).run();
@@ -232,9 +213,8 @@ app.delete('/api/admin/blogs/:id', async (c) => {
   }
 });
 
-
 // --- Admin: Properties ---
-app.get('/api/admin/properties', async (c) => {
+admin.get('/properties', async (c) => {
   try {
     const { results } = await c.env.DB.prepare('SELECT * FROM properties ORDER BY created_at DESC').all();
     return c.json(results);
@@ -244,7 +224,7 @@ app.get('/api/admin/properties', async (c) => {
   }
 });
 
-app.get('/api/admin/properties/:id', async (c) => {
+admin.get('/properties/:id', async (c) => {
     const id = c.req.param('id');
     try {
         const property = await c.env.DB.prepare('SELECT * FROM properties WHERE id = ?').bind(id).first();
@@ -258,7 +238,7 @@ app.get('/api/admin/properties/:id', async (c) => {
     }
 });
 
-app.post('/api/admin/properties', async (c) => {
+admin.post('/properties', async (c) => {
     const { name, address, price, bedrooms, bathrooms, property_type, status, description, features, images } = await c.req.json();
     try {
         const { meta } = await c.env.DB.prepare(
@@ -271,7 +251,7 @@ app.post('/api/admin/properties', async (c) => {
     }
 });
 
-app.put('/api/admin/properties/:id', async (c) => {
+admin.put('/properties/:id', async (c) => {
     const id = c.req.param('id');
     const { name, address, price, bedrooms, bathrooms, property_type, status, description, features, images } = await c.req.json();
     try {
@@ -285,7 +265,7 @@ app.put('/api/admin/properties/:id', async (c) => {
     }
 });
 
-app.delete('/api/admin/properties/:id', async (c) => {
+admin.delete('/properties/:id', async (c) => {
     const id = c.req.param('id');
     try {
         await c.env.DB.prepare('DELETE FROM properties WHERE id = ?').bind(id).run();
@@ -296,9 +276,8 @@ app.delete('/api/admin/properties/:id', async (c) => {
     }
 });
 
-
 // --- Admin: Image Upload ---
-app.post('/api/admin/upload', async (c) => {
+admin.post('/upload', async (c) => {
   try {
     const formData = await c.req.formData();
     const file = formData.get('file');
@@ -316,13 +295,12 @@ app.post('/api/admin/upload', async (c) => {
   }
 });
 
+// Mount the admin sub-app under the /api/admin prefix
+app.route('/api/admin', admin);
+
 // --- STATIC ASSETS & SPA FALLBACK ---
 
-// Serve static assets from the root directory.
 app.use('/*', serveStatic({ root: './' }));
-
-// SPA fallback: for any request that did not match a static file,
-// serve the index.html. This allows the client-side router to take over.
 app.get('*', serveStatic({ path: './index.html' }));
 
 export default app;

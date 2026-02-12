@@ -1,5 +1,5 @@
 
-const API_BASE_URL = 'https://worker.aroloyeayodele61.workers.dev/api';
+const API_BASE_URL = 'https://atlangrove.aroloyeayodele61.workers.dev/api';
 
 // Helper function for fetching data
 async function fetchApi(path: string, options: RequestInit = {}) {
