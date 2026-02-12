@@ -49,7 +49,7 @@ const PropertiesPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {properties.map(property => (
                         <Card key={property.id} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                            <Link to={`/properties/${property.id}">
+                            <Link to={`/properties/${property.id}`}>
                                 <img src={property.images && JSON.parse(property.images)[0]} alt={property.name} className="w-full h-56 object-cover" />
                                 <CardHeader>
                                     <CardTitle className="text-xl">{property.name}</CardTitle>
