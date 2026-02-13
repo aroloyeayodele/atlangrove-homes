@@ -135,9 +135,15 @@ admin.get('/inquiries', async (c) => {
 
 // --- Admin: Blogs ---
 admin.get('/blogs', async (c) => {
-  const { results } = await c.env.DB.prepare('SELECT * FROM blogs ORDER BY created_at DESC').all();
+  const { results } = await c.env.DB.prepare(
+    `SELECT b.id, b.title, b.status, b.created_at, u.username as author
+     FROM blogs b
+     LEFT JOIN users u ON b.author_id = u.id
+     ORDER BY b.created_at DESC`
+  ).all();
   return c.json(results);
 });
+
 
 admin.get('/blogs/:id', async (c) => {
   const id = c.req.param('id');
@@ -148,8 +154,10 @@ admin.get('/blogs/:id', async (c) => {
 
 admin.post('/blogs', async (c) => {
   const { title, content, status, image_url } = await c.req.json();
-  const { meta } = await c.env.DB.prepare('INSERT INTO blogs (title, content, status, image_url) VALUES (?, ?, ?, ?)')
-    .bind(title, content, status, image_url)
+  const payload = c.get('jwtPayload');
+  const author_id = payload.id; // Get author ID from JWT payload
+  const { meta } = await c.env.DB.prepare('INSERT INTO blogs (title, content, author_id, status, image_url) VALUES (?, ?, ?, ?, ?)')
+    .bind(title, content, author_id, status, image_url)
     .run();
   const newId = meta.last_row_id;
   return c.json({ id: newId }, 201);
