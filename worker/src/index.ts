@@ -15,7 +15,7 @@ const app = new Hono<{ Bindings: Env }>();
 // Add a global error handler
 app.onError((err, c) => {
   console.error(`Unhandled error: ${err.message}`, err.stack);
-  return c.json({ err: 'An internal server error occurred', message: err.message, stack: err.stack }, 500);
+  return c.json({ err: 'An internal server error occurred (v2)', message: err.message, stack: err.stack }, 500);
 });
 
 // Add CORS middleware to allow cross-origin requests
