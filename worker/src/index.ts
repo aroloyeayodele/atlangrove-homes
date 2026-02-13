@@ -94,32 +94,38 @@ app.get('/media/:key', async (c) => {
   return new Response(object.body, { headers });
 });
 
-// --- ADMIN ROUTES ---
-
-// Public login route
-app.post('/api/admin/login', async (c) => {
-  const { username, password } = await c.req.json();
-  if (!username || !password) {
-    return c.json({ err: 'Username and password are required' }, 400);
-  }
-  const user = await c.env.DB.prepare('SELECT * FROM users WHERE username = ?').bind(username).first();
-  if (!user || password !== user.password) { // In a real app, use a secure password hashing library like bcrypt
-    return c.json({ err: 'Invalid username or password' }, 401);
-  }
-  const token = await sign({ id: user.id, username: user.username }, c.env.JWT_SECRET);
-  return c.json({ token: token, message: 'Login successful' });
-});
-
-// Create a new Hono instance for protected admin routes
+// Create a new Hono instance for all admin routes
 const admin = new Hono<{ Bindings: Env }>();
 
-// Apply JWT middleware to the entire admin sub-app
-// Let the global onError handler catch any errors from the JWT middleware
+// --- UNPROTECTED ADMIN ROUTES ---
+
+// Public login route is now defined on the admin app *before* the JWT middleware
+admin.post('/login', async (c) => {
+  try {
+    const { username, password } = await c.req.json();
+    if (!username || !password) {
+      return c.json({ err: 'Username and password are required' }, 400);
+    }
+    // Make username comparison case-insensitive
+    const user = await c.env.DB.prepare('SELECT * FROM users WHERE LOWER(username) = LOWER(?)').bind(username).first();
+    if (!user || password !== user.password) {
+      return c.json({ err: 'Invalid username or password' }, 401);
+    }
+    const token = await sign({ id: user.id, username: user.username }, c.env.JWT_SECRET);
+    return c.json({ token: token, message: 'Login successful' });
+  } catch (err: any) {
+    console.error('Login error:', err.stack);
+    return c.json({ err: `Login failed: ${err.message}`}, 500);
+  }
+});
+
+// --- PROTECTED ADMIN ROUTES ---
+
+// Apply JWT middleware to all subsequent routes on the admin app
 admin.use('/*', async (c, next) => {
   const jwtMiddleware = jwt({ secret: c.env.JWT_SECRET });
   return jwtMiddleware(c, next);
 });
-
 
 // --- Admin: Inquiries ---
 admin.get('/inquiries', async (c) => {
