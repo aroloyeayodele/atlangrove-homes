@@ -6,44 +6,63 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useToast } from "@/components/ui/use-toast";
 
 const BlogForm = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { token } = useAuth();
+    const { toast } = useToast();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [status, setStatus] = useState('draft');
     const [imageUrl, setImageUrl] = useState('');
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (id) {
             const fetchBlog = async () => {
                 try {
-                    if (!token) throw new Error('Token not found');
+                    if (!token) {
+                        toast({
+                            variant: "destructive",
+                            title: "Authentication Error",
+                            description: "You must be logged in to perform this action.",
+                        });
+                        return;
+                    };
                     const data = await getAdminBlogById(id, token);
                     setTitle(data.title);
                     setContent(data.content);
                     setStatus(data.status);
                     setImageUrl(data.image_url);
                 } catch (err: any) {
-                    setError(err.message || 'Failed to fetch blog post');
+                    toast({
+                        variant: "destructive",
+                        title: "Failed to fetch blog post",
+                        description: err.message || 'An unexpected error occurred.',
+                    });
                 }
             };
             fetchBlog();
         }
-    }, [id, token]);
+    }, [id, token, toast]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        setError(null);
 
         try {
-            if (!token) throw new Error('Token not found');
+            if (!token) {
+                toast({
+                    variant: "destructive",
+                    title: "Authentication Error",
+                    description: "You must be logged in to save a blog post.",
+                });
+                setLoading(false);
+                return;
+            };
             let finalImageUrl = imageUrl;
 
             if (imageFile) {
@@ -55,13 +74,25 @@ const BlogForm = () => {
 
             if (id) {
                 await updateBlog(id, blogData, token);
+                toast({
+                    title: "Blog post updated",
+                    description: "The blog post has been successfully updated.",
+                });
             } else {
                 await createBlog(blogData, token);
+                toast({
+                    title: "Blog post created",
+                    description: "The blog post has been successfully created.",
+                });
             }
 
             navigate('/admin/blogs');
         } catch (err: any) {
-            setError(err.message || 'Failed to save blog post');
+            toast({
+                variant: "destructive",
+                title: "Failed to save blog post",
+                description: err.message || 'An unexpected error occurred.',
+            });
         } finally {
             setLoading(false);
         }
@@ -70,7 +101,6 @@ const BlogForm = () => {
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold mb-6">{id ? 'Edit' : 'Create'} Blog Post</h1>
-            {error && <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>}
             <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
                 <div className="mb-4">
                     <label className="block text-gray-700 font-bold mb-2">Title</label>

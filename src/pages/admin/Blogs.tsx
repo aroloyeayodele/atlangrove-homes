@@ -2,43 +2,70 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAdminBlogs, deleteBlog } from '@/services/api';
 import { Button } from '@/components/ui/button';
+import { useToast } from "@/components/ui/use-toast"
 
 const AdminBlogsPage = () => {
     const [blogs, setBlogs] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const { toast } = useToast();
 
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
                 const token = sessionStorage.getItem('authToken');
-                if (!token) throw new Error('Token not found');
+                if (!token) {
+                    toast({
+                        variant: "destructive",
+                        title: "Authentication Error",
+                        description: "You must be logged in to view this page.",
+                    });
+                    setLoading(false);
+                    return;
+                };
                 const data = await getAdminBlogs(token);
                 setBlogs(data || []);
             } catch (err: any) {
-                setError(err.message || 'Failed to fetch blogs');
+                toast({
+                    variant: "destructive",
+                    title: "Failed to fetch blogs",
+                    description: err.message || "An unexpected error occurred.",
+                });
             } finally {
                 setLoading(false);
             }
         };
         fetchBlogs();
-    }, []);
+    }, [toast]);
 
     const handleDelete = async (id: string) => {
         if (window.confirm('Are you sure you want to delete this post?')) {
             try {
                 const token = sessionStorage.getItem('authToken');
-                if (!token) throw new Error('Token not found');
+                if (!token){
+                    toast({
+                        variant: "destructive",
+                        title: "Authentication Error",
+                        description: "Action failed.",
+                    });
+                    return;
+                };
                 await deleteBlog(id, token);
                 setBlogs(blogs.filter(blog => blog.id !== id));
+                toast({
+                    title: "Blog post deleted",
+                    description: "The blog post has been successfully deleted.",
+                });
             } catch (err: any) {
-                setError(err.message || 'Failed to delete blog post');
+                toast({
+                    variant: "destructive",
+                    title: "Failed to delete blog post",
+                    description: err.message || 'An unexpected error occurred.',
+                });
             }
         }
     };
 
     if (loading) return <div className="text-center py-10">Loading posts...</div>;
-    if (error) return <div className="text-center py-10 text-red-500">Error: {error}</div>;
 
     return (
         <div className="container mx-auto px-4 py-8">

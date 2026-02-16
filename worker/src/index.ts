@@ -135,12 +135,7 @@ admin.get('/inquiries', async (c) => {
 
 // --- Admin: Blogs ---
 admin.get('/blogs', async (c) => {
-  const { results } = await c.env.DB.prepare(
-    `SELECT b.id, b.title, b.status, b.created_at, u.username as author
-     FROM blogs b
-     LEFT JOIN users u ON b.author_id = u.id
-     ORDER BY b.created_at DESC`
-  ).all();
+  const { results } = await c.env.DB.prepare('SELECT id, title, status, created_at FROM blogs ORDER BY created_at DESC').all();
   return c.json(results);
 });
 
