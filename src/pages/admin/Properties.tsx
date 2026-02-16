@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAdminProperties, deleteProperty } from '../../services/api';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 
 const AdminPropertiesPage = () => {
     const [properties, setProperties] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const { toast } = useToast();
 
     useEffect(() => {
         const fetchProperties = async () => {
@@ -16,13 +17,17 @@ const AdminPropertiesPage = () => {
                 const data = await getAdminProperties(token);
                 setProperties(data || []);
             } catch (err: any) {
-                setError(err.message || 'Failed to fetch properties');
+                toast({
+                    title: "Error",
+                    description: err.message || 'Failed to fetch properties',
+                    variant: "destructive",
+                });
             } finally {
                 setLoading(false);
             }
         };
         fetchProperties();
-    }, []);
+    }, [toast]);
 
     const handleDelete = async (id: string) => {
         if (window.confirm('Are you sure you want to delete this property?')) {
@@ -31,14 +36,21 @@ const AdminPropertiesPage = () => {
                 if (!token) throw new Error('Token not found');
                 await deleteProperty(id, token);
                 setProperties(properties.filter(prop => prop.id !== id));
+                toast({
+                    title: "Success",
+                    description: "Property deleted successfully.",
+                });
             } catch (err: any) {
-                setError(err.message || 'Failed to delete property');
+                toast({
+                    title: "Error",
+                    description: err.message || 'Failed to delete property',
+                    variant: "destructive",
+                });
             }
         }
     };
 
     if (loading) return <div className="text-center py-10">Loading properties...</div>;
-    if (error) return <div className="text-center py-10 text-red-500">Error: {error}</div>;
 
     return (
         <div className="container mx-auto px-4 py-8">
