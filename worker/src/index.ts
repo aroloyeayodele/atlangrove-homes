@@ -215,16 +215,21 @@ admin.delete('/properties/:id', async (c) => {
 
 // --- Admin: Image Upload ---
 admin.post('/upload', async (c) => {
-  const formData = await c.req.formData();
-  const file = formData.get('file');
-  if (!(file instanceof File)) {
-    return c.json({ err: 'No file to upload or incorrect form data' }, 400);
+  try {
+    const formData = await c.req.formData();
+    const file = formData.get('file');
+    if (!(file instanceof File)) {
+      return c.json({ err: 'No file to upload or incorrect form data' }, 400);
+    }
+    const key = `${Date.now()}-${file.name}`;
+    await c.env.MEDIA_BUCKET.put(key, await file.arrayBuffer(), {
+      httpMetadata: { contentType: file.type },
+    });
+    return c.json({ key: key, message: `File ${key} uploaded successfully!` });
+  } catch (err: any) {
+    console.error('Upload error:', err.stack);
+    return c.json({ err: `Upload failed: ${err.message}` }, 500);
   }
-  const key = `${Date.now()}-${file.name}`;
-  await c.env.MEDIA_BUCKET.put(key, await file.arrayBuffer(), {
-    httpMetadata: { contentType: file.type },
-  });
-  return c.json({ key: key, message: `File ${key} uploaded successfully!` });
 });
 
 // Mount the admin sub-app under the /api/admin prefix

@@ -18,3 +18,5 @@ migrations_dir = "worker/migrations"
 [[r2_buckets]]
 binding = "MEDIA_BUCKET"
 bucket_name = "atlangrove-media"
+preview_bucket = "atlangrove-media-preview"
+jurisdiction = "eu"
