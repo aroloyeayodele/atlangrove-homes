@@ -83,9 +83,9 @@ app.get('/api/properties/:id', async (c) => {
 });
 
 // This route now uses a wildcard to handle nested paths in keys (e.g., 'lovable-uploads/image.png')
-app.get('/media/*', async (c) => {
+app.get('/api/media/*', async (c) => {
   // Get the path after /media/
-  const key = c.req.path.substring('/media/'.length);
+  const key = c.req.path.substring('/api/media/'.length);
   const object = await c.env.MEDIA_BUCKET.get(key);
   if (object === null) {
     return c.json({ err: 'Object not found' }, 404);
@@ -243,16 +243,16 @@ admin.post('/upload', async (c) => {
     });
     console.log('--- Successfully uploaded to R2 ---');
 
-    const url = `/media/${key}`;
+    const url = `/api/media/${key}`;
     return c.json({ key: key, url: url, message: `File uploaded successfully!` });
 
   } catch (err: any) {
     console.error('--- UPLOAD FAILED ---');
     console.error('Error object:', err);
-    return c.json({ 
-      err: 'Upload failed.', 
+    return c.json({
+      err: 'Upload failed.',
       message: err.message,
-      stack: err.stack, 
+      stack: err.stack,
     }, 500);
   }
 });
