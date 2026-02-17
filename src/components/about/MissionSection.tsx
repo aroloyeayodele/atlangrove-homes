@@ -50,7 +50,7 @@ const MissionSection = () => {
             <div className="absolute -bottom-4 -right-4 w-28 h-28 bg-brand-red rounded-tl-3xl z-[-1]"></div>
           </div>
 
-          {/* Right column - Content */}
+          {/* Right  column - Content */}
           <div className="space-y-6 slide-up">
             <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-6">
               Our <span className="text-brand-red">Mission</span>
