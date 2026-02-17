@@ -15,7 +15,7 @@ const app = new Hono<{ Bindings: Env }>();
 // Add a global error handler
 app.onError((err, c) => {
   console.error(`Unhandled error: ${err.message}`, err);
-  return c.json({ err: 'An internal server error occurred (v2)', message: err.message, stack: err.stack }, 500);
+  return c.json({ err: 'An internal server error occurred', message: err.message, stack: err.stack }, 500);
 });
 
 // Add CORS middleware to allow cross-origin requests
@@ -82,8 +82,10 @@ app.get('/api/properties/:id', async (c) => {
   return c.json(property);
 });
 
-app.get('/media/:key', async (c) => {
-  const key = c.req.param('key');
+// This route now uses a wildcard to handle nested paths in keys (e.g., 'lovable-uploads/image.png')
+app.get('/media/*', async (c) => {
+  // Get the path after /media/
+  const key = c.req.path.substring('/media/'.length);
   const object = await c.env.MEDIA_BUCKET.get(key);
   if (object === null) {
     return c.json({ err: 'Object not found' }, 404);
@@ -99,14 +101,12 @@ const admin = new Hono<{ Bindings: Env }>();
 
 // --- UNPROTECTED ADMIN ROUTES ---
 
-// Public login route is now defined on the admin app *before* the JWT middleware
 admin.post('/login', async (c) => {
   try {
     const { username, password } = await c.req.json();
     if (!username || !password) {
       return c.json({ err: 'Username and password are required' }, 400);
     }
-    // Make username comparison case-insensitive
     const user = await c.env.DB.prepare('SELECT * FROM users WHERE LOWER(username) = LOWER(?)').bind(username).first();
     if (!user || password !== user.password) {
       return c.json({ err: 'Invalid username or password' }, 401);
@@ -121,7 +121,6 @@ admin.post('/login', async (c) => {
 
 // --- PROTECTED ADMIN ROUTES ---
 
-// Apply JWT middleware to all subsequent routes on the admin app
 admin.use('/*', async (c, next) => {
   const jwtMiddleware = jwt({ secret: c.env.JWT_SECRET });
   return jwtMiddleware(c, next);
@@ -138,7 +137,6 @@ admin.get('/blogs', async (c) => {
   const { results } = await c.env.DB.prepare('SELECT id, title, status, created_at FROM blogs ORDER BY created_at DESC').all();
   return c.json(results);
 });
-
 
 admin.get('/blogs/:id', async (c) => {
   const id = c.req.param('id');
@@ -182,9 +180,7 @@ admin.get('/properties', async (c) => {
 admin.get('/properties/:id', async (c) => {
   const id = c.req.param('id');
   const property = await c.env.DB.prepare('SELECT * FROM properties WHERE id = ?').bind(id).first();
-  if (!property) {
-    return c.json({ err: 'Property not found' }, 404);
-  }
+  if (!property) return c.json({ err: 'Property not found' }, 404);
   return c.json(property);
 });
 
@@ -215,20 +211,49 @@ admin.delete('/properties/:id', async (c) => {
 
 // --- Admin: Image Upload ---
 admin.post('/upload', async (c) => {
+  console.log('--- New file upload request ---');
   try {
+    if (!c.env.MEDIA_BUCKET) {
+      console.error('R2 BUCKET NOT BOUND. Check wrangler.toml and Cloudflare dashboard.');
+      return c.json({ err: 'Server configuration error: R2 bucket not configured.' }, 500);
+    }
+    console.log('R2 bucket binding is present.');
+
     const formData = await c.req.formData();
+    console.log('Successfully parsed formData.');
+
     const file = formData.get('file');
     if (!(file instanceof File)) {
+      console.error('Form data is missing a valid file.');
       return c.json({ err: 'No file to upload or incorrect form data' }, 400);
     }
-    const key = `${Date.now()}-${file.name}`;
-    await c.env.MEDIA_BUCKET.put(key, await file.arrayBuffer(), {
+    console.log(`Received file: name='${file.name}', type='${file.type}', size=${file.size} bytes.`);
+
+    // Sanitize filename and create a key for R2
+    const sanitizedFilename = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+    const key = `lovable-uploads/${Date.now()}-${sanitizedFilename}`;
+    console.log(`Generated R2 key: '${key}'`);
+
+    const arrayBuffer = await file.arrayBuffer();
+    console.log(`File content read into arrayBuffer, size=${arrayBuffer.byteLength}.`);
+
+    console.log('Attempting to upload to R2...');
+    await c.env.MEDIA_BUCKET.put(key, arrayBuffer, {
       httpMetadata: { contentType: file.type },
     });
-    return c.json({ key: key, message: `File ${key} uploaded successfully!` });
+    console.log('--- Successfully uploaded to R2 ---');
+
+    const url = `/media/${key}`;
+    return c.json({ key: key, url: url, message: `File uploaded successfully!` });
+
   } catch (err: any) {
-    console.error('Upload error:', err);
-    return c.json({ err: `Upload failed: ${err.message}` }, 500);
+    console.error('--- UPLOAD FAILED ---');
+    console.error('Error object:', err);
+    return c.json({ 
+      err: 'Upload failed.', 
+      message: err.message,
+      stack: err.stack, 
+    }, 500);
   }
 });
 
@@ -237,6 +262,7 @@ app.route('/api/admin', admin);
 
 // --- STATIC ASSETS & SPA FALLBACK ---
 
+// This must be declared after all other routes
 app.use('/*', serveStatic({ root: './' }));
 app.get('*', serveStatic({ path: './index.html' }));
 
