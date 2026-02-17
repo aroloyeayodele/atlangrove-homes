@@ -1,3 +1,4 @@
+
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { jwt, sign } from 'hono/jwt';
@@ -14,20 +15,35 @@ const app = new Hono<{ Bindings: Env }>();
 
 // --- HELPER FUNCTIONS ---
 
+// The base URL of the worker, used to construct absolute URLs for media.
+const getBaseUrl = (c: any) => {
+    // In a real-world scenario, you might derive this dynamically
+    // from an environment variable. For this deployment, we'll hardcode it.
+    return 'https://atlangrove.aroloyeayodele61.workers.dev';
+}
+
+// Helper to convert a relative media URL to an absolute one.
+const toAbsoluteUrl = (c: any, relativeUrl: string | null | undefined) => {
+    if (!relativeUrl) return '';
+    if (relativeUrl.startsWith('http')) return relativeUrl;
+    const baseUrl = getBaseUrl(c);
+    return `${baseUrl}${relativeUrl}`;
+}
+
 // Transforms a blog post from snake_case (db) to camelCase (frontend)
-const transformPost = (post: any) => {
+const transformPost = (c: any, post: any) => {
   if (!post) return null;
   return {
     id: post.id,
-    _id: post.id, // For frontend component compatibility
+    _id: post.id, 
     title: post.title,
     content: post.content,
     authorId: post.author_id,
     status: post.status,
-    imageUrl: post.image_url,
-    createdAt: post.created_at, // The critical fix
+    imageUrl: toAbsoluteUrl(c, post.image_url),
+    createdAt: post.created_at, 
     summary: post.content ? post.content.substring(0, 150) + '...' : '',
-    image: post.image_url, // For BlogCard component compatibility
+    image: toAbsoluteUrl(c, post.image_url),
   };
 };
 
@@ -57,7 +73,7 @@ app.get('/api/blogs', async (c) => {
   const { results } = await c.env.DB.prepare('SELECT * FROM blogs WHERE status = ? ORDER BY created_at DESC')
     .bind('published')
     .all();
-  return c.json(results.map(transformPost));
+  return c.json(results.map(p => transformPost(c, p)));
 });
 
 app.get('/api/blogs/:id', async (c) => {
@@ -68,7 +84,7 @@ app.get('/api/blogs/:id', async (c) => {
   if (!post) {
     return c.json({ err: 'Blog post not found' }, 404);
   }
-  return c.json(transformPost(post));
+  return c.json(transformPost(c, post));
 });
 
 app.get('/api/properties/featured', async (c) => {
@@ -160,22 +176,22 @@ admin.get('/inquiries', async (c) => {
 // --- Admin: Blogs ---
 admin.get('/blogs', async (c) => {
   const { results } = await c.env.DB.prepare('SELECT * FROM blogs ORDER BY created_at DESC').all();
-  return c.json(results.map(transformPost));
+  return c.json(results.map(p => transformPost(c, p)));
 });
 
 admin.get('/blogs/:id', async (c) => {
   const id = c.req.param('id');
   const post = await c.env.DB.prepare('SELECT * FROM blogs WHERE id = ?').bind(id).first();
   if (!post) return c.json({ err: 'Blog post not found' }, 404);
-  return c.json(transformPost(post));
+  return c.json(transformPost(c, post));
 });
 
 admin.post('/blogs', async (c) => {
-  const { title, content, status, image_url } = await c.req.json();
+  const { title, content, status, imageUrl } = await c.req.json();
   const payload = c.get('jwtPayload');
   const author_id = payload.id;
   const { meta } = await c.env.DB.prepare('INSERT INTO blogs (title, content, author_id, status, image_url) VALUES (?, ?, ?, ?, ?)')
-    .bind(title, content, author_id, status, image_url)
+    .bind(title, content, author_id, status, imageUrl) // Use imageUrl from frontend
     .run();
   const newId = meta.last_row_id;
   return c.json({ id: newId }, 201);
@@ -183,9 +199,9 @@ admin.post('/blogs', async (c) => {
 
 admin.put('/blogs/:id', async (c) => {
   const id = c.req.param('id');
-  const { title, content, status, image_url } = await c.req.json();
+  const { title, content, status, imageUrl } = await c.req.json();
   await c.env.DB.prepare('UPDATE blogs SET title = ?, content = ?, status = ?, image_url = ? WHERE id = ?')
-    .bind(title, content, status, image_url, id)
+    .bind(title, content, status, imageUrl, id)
     .run();
   return c.json({ message: 'Blog post updated successfully' });
 });
@@ -246,9 +262,16 @@ admin.post('/upload', async (c) => {
   await c.env.MEDIA_BUCKET.put(key, await file.arrayBuffer(), {
     httpMetadata: { contentType: file.type },
   });
-  const url = `/api/media/${key}`;
-  return c.json({ key: key, url: url, message: `File uploaded successfully!` });
+  const relativeUrl = `/api/media/${key}`;
+  // Return both the relative and the new absolute URL for convenience
+  return c.json({ 
+    key: key, 
+    url: relativeUrl, 
+    absoluteUrl: toAbsoluteUrl(c, relativeUrl),
+    message: `File uploaded successfully!` 
+  });
 });
+
 
 // Mount the admin sub-app under the /api/admin prefix
 app.route('/api/admin', admin);
