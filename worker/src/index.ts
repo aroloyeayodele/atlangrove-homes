@@ -28,13 +28,13 @@ const transformPost = (c: any, post: any) => {
   if (!post) return null;
   return {
     id: post.id,
-    _id: post.id,
+    _id: post.id, 
     title: post.title,
     content: post.content,
     authorId: post.author_id,
     status: post.status,
     imageUrl: toAbsoluteUrl(c, post.image_url),
-    createdAt: post.created_at,
+    createdAt: post.created_at, 
     summary: post.content ? post.content.substring(0, 150) + '...' : '',
     image: toAbsoluteUrl(c, post.image_url),
   };
@@ -70,42 +70,43 @@ app.get('/api/blogs', async (c) => {
   return c.json(results.map(p => transformPost(c, p)));
 });
 
-// TEMPORARY DEBUGGING ROUTE
 app.get('/api/blogs/:id', async (c) => {
     c.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+
     const idParam = c.req.param('id');
     const id = parseInt(idParam, 10);
-    let post = null;
-    let queryError = null;
 
     if (isNaN(id)) {
-        return c.json({
-            error: "ID is not a number",
-            idParam: idParam
-        }, 400);
+        return c.json({ err: 'Invalid post ID format' }, 400);
     }
 
-    try {
-        post = await c.env.DB.prepare('SELECT * FROM blogs WHERE id = ?')
-            .bind(id)
-            .first();
-    } catch (e: any) {
-        queryError = {
-            message: e.message,
-            stack: e.stack,
-        };
+    const post = await c.env.DB.prepare('SELECT * FROM blogs WHERE id = ?')
+        .bind(id)
+        .first();
+
+    if (!post || post.status !== 'published') {
+        return new Response(JSON.stringify({ err: 'Blog post not found or not published' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
     }
-    
-    return c.json({
-        debug: true,
-        idParam: idParam,
-        parsedId: id,
-        postFromDb: post, // This will be null if not found
-        postStatus: post ? post.status : null,
-        isPostNull: post === null,
-        isStatusNotPublished: post ? post.status !== 'published' : null,
-        dbQueryError: queryError,
-    });
+
+    return c.json(transformPost(c, post));
+});
+
+// --- NEW MEDIA SERVING ROUTE ---
+app.get('/api/media/*', async (c) => {
+  const key = c.req.path.replace('/api/media/', '');
+  const object = await c.env.MEDIA_BUCKET.get(key);
+
+  if (object === null) {
+    return c.json({ err: 'Object Not Found' }, 404);
+  }
+
+  const headers = new Headers();
+  object.writeHttpMetadata(headers);
+  headers.set('etag', object.httpEtag);
+
+  return new Response(object.body, {
+    headers,
+  });
 });
 
 
@@ -149,7 +150,7 @@ admin.get('/blogs', async (c) => {
 });
 
 admin.get('/blogs/:id', async (c) => {
-  c.header('Cache-control', 'no-cache, no-store, must-revalidate');
+  c.header('Cache-Control', 'no-cache, no-store, must-revalidate');
   const id = c.req.param('id');
   const post = await c.env.DB.prepare('SELECT * FROM blogs WHERE id = ?').bind(id).first();
   if (!post) return c.json({ err: 'Blog post not found' }, 404);
