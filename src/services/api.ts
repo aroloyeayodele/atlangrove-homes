@@ -1,7 +1,7 @@
 
 const API_BASE_URL = 'https://atlangrove.aroloyeayodele61.workers.dev/api';
 
-// Helper function for fetching data
+// Helper function for fetching JSON data
 async function fetchApi(path: string, options: RequestInit = {}) {
   const headers = {
     'Content-Type': 'application/json',
@@ -10,24 +10,19 @@ async function fetchApi(path: string, options: RequestInit = {}) {
 
   const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
 
-  // Read the response body as text ONCE.
   const responseText = await response.text();
 
   if (!response.ok) {
     let error;
     try {
-      // Try to parse the text as JSON. If it works, we have a structured error.
       const errorJson = JSON.parse(responseText);
       error = new Error(errorJson.err || errorJson.message || 'An unknown API error occurred.');
     } catch (e) {
-      // If parsing fails, the error is the raw text (e.g., an HTML error page).
       error = new Error(responseText || 'An unknown error occurred.');
     }
     throw error;
   }
 
-  // If the response was successful, parse the text we've already read.
-  // If the responseText is empty, return null.
   return responseText ? JSON.parse(responseText) : null;
 }
 
@@ -40,7 +35,7 @@ export const login = (username: string, password: string) => {
   });
 };
 
-// === Properties ===
+// === Public Routes ===
 export const getFeaturedProperties = async () => {
     const properties = await fetchApi('/properties/featured');
     return Array.isArray(properties) ? properties : [];
@@ -51,105 +46,108 @@ export const getAllProperties = async (category?: string) => {
     return Array.isArray(properties) ? properties : [];
 };
 export const getPropertyById = (id: string) => fetchApi(`/properties/${id}`);
-
-
-// === Blogs ===
 export const getAllBlogs = async () => {
     const blogs = await fetchApi('/blogs');
     return Array.isArray(blogs) ? blogs : [];
 }
 export const getBlogById = (id: string) => fetchApi(`/blogs/${id}`);
-
-// === Admin: Properties CRUD ===
-export const getAdminProperties = (token: string) => {
-    return fetchApi('/admin/properties', { headers: { 'Authorization': `Bearer ${token}` } });
-};
-
-export const getAdminPropertyById = (id: string, token: string) => {
-    return fetchApi(`/admin/properties/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
-};
-
-export const createProperty = (propertyData: any, token: string) => {
-    return fetchApi('/admin/properties', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify(propertyData),
-    });
-};
-
-export const updateProperty = (id: string, propertyData: any, token: string) => {
-    return fetchApi(`/admin/properties/${id}`, {
-        method: 'PUT',
-        headers: { 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify(propertyData),
-    });
-};
-
-export const deleteProperty = (id: string, token: string) => {
-    return fetchApi(`/admin/properties/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` },
-    });
-};
-
-// === Admin: Inquiries ===
-export const getInquiries = (token: string) => {
-    return fetchApi('/admin/inquiries', { headers: { 'Authorization': `Bearer ${token}` } });
-};
-
-// === Admin: Blogs CRUD ===
-export const getAdminBlogs = async (token: string) => {
-    const blogs = await fetchApi('/admin/blogs', { headers: { 'Authorization': `Bearer ${token}` } });
-    return Array.isArray(blogs) ? blogs : [];
-};
-
-export const getAdminBlogById = (id: string, token: string) => {
-    return fetchApi(`/admin/blogs/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
-};
-
-export const createBlog = (blogData: any, token: string) => {
-    return fetchApi('/admin/blogs', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify(blogData),
-    });
-};
-
-export const updateBlog = (id: string, blogData: any, token: string) => {
-    return fetchApi(`/admin/blogs/${id}`, {
-        method: 'PUT',
-        headers: { 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify(blogData),
-    });
-};
-
-export const deleteBlog = (id: string, token: string) => {
-    return fetchApi(`/admin/blogs/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` },
-    });
-};
-
-
-// === Admin: Image Upload ===
-export const uploadImage = (file: File, token: string) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    return fetch(`${API_BASE_URL}/admin/upload`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` },
-        body: formData,
-    }).then(res => {
-        if (!res.ok) throw new Error('Upload failed');
-        return res.json();
-    });
-};
-
-// === Contact Form ===
 export const submitContactForm = (formData: { name: string; email: string; phone: string; message: string; }) => {
     return fetchApi('/contact', {
         method: 'POST',
         body: JSON.stringify(formData),
     });
 }
+
+// === Admin Routes (require token) ===
+const getAuthHeaders = (token: string) => ({ 'Authorization': `Bearer ${token}` });
+
+// --- Properties ---
+export const getAdminProperties = (token: string) => {
+    return fetchApi('/admin/properties', { headers: getAuthHeaders(token) });
+};
+export const getAdminPropertyById = (id: string, token: string) => {
+    return fetchApi(`/admin/properties/${id}`, { headers: getAuthHeaders(token) });
+};
+export const createProperty = (propertyData: any, token: string) => {
+    return fetchApi('/admin/properties', {
+        method: 'POST',
+        headers: getAuthHeaders(token),
+        body: JSON.stringify(propertyData),
+    });
+};
+export const updateProperty = (id: string, propertyData: any, token: string) => {
+    return fetchApi(`/admin/properties/${id}`, {
+        method: 'PUT',
+        headers: getAuthHeaders(token),
+        body: JSON.stringify(propertyData),
+    });
+};
+export const deleteProperty = (id: string, token: string) => {
+    return fetchApi(`/admin/properties/${id}`, {
+        method: 'DELETE',
+        headers: getAuthHeaders(token),
+    });
+};
+
+// --- Inquiries ---
+export const getInquiries = (token: string) => {
+    return fetchApi('/admin/inquiries', { headers: getAuthHeaders(token) });
+};
+
+// --- Blogs ---
+export const getAdminBlogs = async (token: string) => {
+    const blogs = await fetchApi('/admin/blogs', { headers: getAuthHeaders(token) });
+    return Array.isArray(blogs) ? blogs : [];
+};
+export const getAdminBlogById = (id: string, token: string) => {
+    return fetchApi(`/admin/blogs/${id}`, { headers: getAuthHeaders(token) });
+};
+export const createBlog = (blogData: any, token: string) => {
+    return fetchApi('/admin/blogs', {
+        method: 'POST',
+        headers: getAuthHeaders(token),
+        body: JSON.stringify(blogData),
+    });
+};
+export const updateBlog = (id: string, blogData: any, token: string) => {
+    return fetchApi(`/admin/blogs/${id}`, {
+        method: 'PUT',
+        headers: getAuthHeaders(token),
+        body: JSON.stringify(blogData),
+    });
+};
+export const deleteBlog = (id: string, token: string) => {
+    return fetchApi(`/admin/blogs/${id}`, {
+        method: 'DELETE',
+        headers: getAuthHeaders(token),
+    });
+};
+
+
+// === Admin: Image Upload (Correct Implementation) ===
+export const uploadImage = (file: File, token: string) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // 1. Create a Headers object.
+    const headers = new Headers();
+
+    // 2. Append the Authorization header.
+    headers.append('Authorization', `Bearer ${token}`);
+    
+    // 3. Make the fetch request. DO NOT set the 'Content-Type' header manually.
+    // The browser will automatically set it to 'multipart/form-data' with the correct boundary.
+    return fetch(`${API_BASE_URL}/admin/upload`, {
+        method: 'POST',
+        headers: headers, // Use the Headers object
+        body: formData,
+    }).then(async res => {
+        // Always try to parse the JSON, even for errors.
+        const json = await res.json();
+        if (!res.ok) {
+            // Use the detailed error message from the server's JSON response if available.
+            throw new Error(json.message || json.err || 'Upload failed due to an unknown server error.');
+        }
+        return json;
+    });
+};
