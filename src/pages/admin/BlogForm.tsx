@@ -16,7 +16,13 @@ const BlogForm = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [status, setStatus] = useState('draft');
-    const [imageUrl, setImageUrl] = useState('');
+
+    // State for the image preview URL (can be absolute or a local blob URL)
+    const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+    
+    // State for the relative image URL to be saved to the database
+    const [imageDbUrl, setImageDbUrl] = useState<string | null>(null);
+    
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -31,12 +37,26 @@ const BlogForm = () => {
                             description: "You must be logged in to perform this action.",
                         });
                         return;
-                    };
+                    }
                     const data = await getAdminBlogById(id, token);
                     setTitle(data.title);
                     setContent(data.content);
                     setStatus(data.status);
-                    setImageUrl(data.image_url);
+
+                    // When we fetch the data, the backend provides an absolute URL for display
+                    if (data.imageUrl) {
+                        setImagePreviewUrl(data.imageUrl);
+
+                        // We must extract the relative path to be stored for submission
+                        // This prevents re-saving an absolute URL back into the DB
+                        try {
+                            const url = new URL(data.imageUrl);
+                            setImageDbUrl(url.pathname); 
+                        } catch (e) {
+                             // If it's already a relative path, use it as is
+                            setImageDbUrl(data.imageUrl);
+                        }
+                    }
                 } catch (err: any) {
                     toast({
                         variant: "destructive",
@@ -49,25 +69,32 @@ const BlogForm = () => {
         }
     }, [id, token, toast]);
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files ? e.target.files[0] : null;
+        if (file) {
+            setImageFile(file);
+            // Create a temporary local URL for an immediate preview of the new image
+            setImagePreviewUrl(URL.createObjectURL(file));
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
         try {
             if (!token) {
-                toast({
-                    variant: "destructive",
-                    title: "Authentication Error",
-                    description: "You must be logged in to save a blog post.",
-                });
-                setLoading(false);
+                // ... (auth check)
                 return;
-            };
-            let finalImageUrl = imageUrl;
+            }
 
+            // This is the key change: start with the existing database URL.
+            let finalImageUrl = imageDbUrl;
+
+            // If a new file was chosen, upload it and get its new relative URL.
             if (imageFile) {
                 const uploadResponse = await uploadImage(imageFile, token);
-                finalImageUrl = `/media/${uploadResponse.key}`;
+                finalImageUrl = uploadResponse.url; // This URL is relative, e.g., /api/serve-media/...
             }
 
             const blogData = { title, content, status, image_url: finalImageUrl };
@@ -124,8 +151,12 @@ const BlogForm = () => {
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 font-bold mb-2">Featured Image</label>
-                    <Input type="file" onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)} className="mb-2" />
-                    {imageUrl && !imageFile && <img src={imageUrl} alt="Featured" className="w-32 h-32 object-cover" />}
+                    <Input type="file" onChange={handleFileChange} className="mb-2" />
+                    {imagePreviewUrl && (
+                        <div className="mt-2">
+                            <img src={imagePreviewUrl} alt="Image Preview" className="w-48 h-48 object-cover rounded-md" />
+                        </div>
+                    )}
                 </div>
                 <Button type="submit" disabled={loading}>{loading ? 'Saving...' : 'Save Post'}</Button>
             </form>
