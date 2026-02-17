@@ -17,5 +17,5 @@ migrations_dir = "worker/migrations"
 
 [[r2_buckets]]
 binding = "MEDIA_BUCKET"
-bucket_name = "atlangrove-media"
+bucket_name = "atlangrove-homes-media"
 jurisdiction = "eu"
