@@ -1,5 +1,5 @@
 
-const API_BASE_URL = 'https://atlangrove.aroloyeayodele61.workers.dev/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://atlangrove.aroloyeayodele61.workers.dev/api';
 
 // Helper function for fetching JSON data
 async function fetchApi(path: string, options: RequestInit = {}) {
