@@ -12,6 +12,25 @@ interface Env {
 
 const app = new Hono<{ Bindings: Env }>();
 
+// --- HELPER FUNCTIONS ---
+
+// Transforms a blog post from snake_case (db) to camelCase (frontend)
+const transformPost = (post: any) => {
+  if (!post) return null;
+  return {
+    id: post.id,
+    _id: post.id, // For frontend component compatibility
+    title: post.title,
+    content: post.content,
+    authorId: post.author_id,
+    status: post.status,
+    imageUrl: post.image_url,
+    createdAt: post.created_at, // The critical fix
+    summary: post.content ? post.content.substring(0, 150) + '...' : '',
+    image: post.image_url, // For BlogCard component compatibility
+  };
+};
+
 // Add a global error handler
 app.onError((err, c) => {
   console.error(`Unhandled error: ${err.message}`, err);
@@ -38,7 +57,7 @@ app.get('/api/blogs', async (c) => {
   const { results } = await c.env.DB.prepare('SELECT * FROM blogs WHERE status = ? ORDER BY created_at DESC')
     .bind('published')
     .all();
-  return c.json(results);
+  return c.json(results.map(transformPost));
 });
 
 app.get('/api/blogs/:id', async (c) => {
@@ -49,7 +68,7 @@ app.get('/api/blogs/:id', async (c) => {
   if (!post) {
     return c.json({ err: 'Blog post not found' }, 404);
   }
-  return c.json(post);
+  return c.json(transformPost(post));
 });
 
 app.get('/api/properties/featured', async (c) => {
@@ -82,9 +101,7 @@ app.get('/api/properties/:id', async (c) => {
   return c.json(property);
 });
 
-// This route now uses a wildcard to handle nested paths in keys (e.g., 'lovable-uploads/image.png')
 app.get('/api/media/*', async (c) => {
-  // Get the path after /media/
   const key = c.req.path.substring('/api/media/'.length);
   const object = await c.env.MEDIA_BUCKET.get(key);
   if (object === null) {
@@ -111,13 +128,11 @@ admin.post('/login', async (c) => {
     if (!user || password !== user.password) {
       return c.json({ err: 'Invalid username or password' }, 401);
     }
-    // Set expiration to 24 hours from now
     const payload = { 
       id: user.id, 
       username: user.username, 
       exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24) 
     };
-    // Sign the token with the secret and the HS256 algorithm
     const token = await sign(payload, c.env.JWT_SECRET, 'HS256');
     return c.json({ token: token, message: 'Login successful' });
   } catch (err: any) {
@@ -128,11 +143,10 @@ admin.post('/login', async (c) => {
 
 // --- PROTECTED ADMIN ROUTES ---
 
-// All routes below this require a valid JWT
 admin.use('/*', async (c, next) => {
   const jwtMiddleware = jwt({ 
     secret: c.env.JWT_SECRET,
-    alg: 'HS256' // Specify the algorithm for verification
+    alg: 'HS256'
   });
   return jwtMiddleware(c, next);
 });
@@ -145,21 +159,21 @@ admin.get('/inquiries', async (c) => {
 
 // --- Admin: Blogs ---
 admin.get('/blogs', async (c) => {
-  const { results } = await c.env.DB.prepare('SELECT id, title, status, created_at FROM blogs ORDER BY created_at DESC').all();
-  return c.json(results);
+  const { results } = await c.env.DB.prepare('SELECT * FROM blogs ORDER BY created_at DESC').all();
+  return c.json(results.map(transformPost));
 });
 
 admin.get('/blogs/:id', async (c) => {
   const id = c.req.param('id');
   const post = await c.env.DB.prepare('SELECT * FROM blogs WHERE id = ?').bind(id).first();
   if (!post) return c.json({ err: 'Blog post not found' }, 404);
-  return c.json(post);
+  return c.json(transformPost(post));
 });
 
 admin.post('/blogs', async (c) => {
   const { title, content, status, image_url } = await c.req.json();
   const payload = c.get('jwtPayload');
-  const author_id = payload.id; // Get author ID from JWT payload
+  const author_id = payload.id;
   const { meta } = await c.env.DB.prepare('INSERT INTO blogs (title, content, author_id, status, image_url) VALUES (?, ?, ?, ?, ?)')
     .bind(title, content, author_id, status, image_url)
     .run();
@@ -222,50 +236,18 @@ admin.delete('/properties/:id', async (c) => {
 
 // --- Admin: Image Upload ---
 admin.post('/upload', async (c) => {
-  console.log('--- New file upload request ---');
-  try {
-    if (!c.env.MEDIA_BUCKET) {
-      console.error('R2 BUCKET NOT BOUND. Check wrangler.toml and Cloudflare dashboard.');
-      return c.json({ err: 'Server configuration error: R2 bucket not configured.' }, 500);
-    }
-    console.log('R2 bucket binding is present.');
-
-    const formData = await c.req.formData();
-    console.log('Successfully parsed formData.');
-
-    const file = formData.get('file');
-    if (!(file instanceof File)) {
-      console.error('Form data is missing a valid file.');
-      return c.json({ err: 'No file to upload or incorrect form data' }, 400);
-    }
-    console.log(`Received file: name='${file.name}', type='${file.type}', size=${file.size} bytes.`);
-
-    // Sanitize filename and create a key for R2
-    const sanitizedFilename = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
-    const key = `lovable-uploads/${Date.now()}-${sanitizedFilename}`;
-    console.log(`Generated R2 key: '${key}'`);
-
-    const arrayBuffer = await file.arrayBuffer();
-    console.log(`File content read into arrayBuffer, size=${arrayBuffer.byteLength}.`);
-
-    console.log('Attempting to upload to R2...');
-    await c.env.MEDIA_BUCKET.put(key, arrayBuffer, {
-      httpMetadata: { contentType: file.type },
-    });
-    console.log('--- Successfully uploaded to R2 ---');
-
-    const url = `/api/media/${key}`;
-    return c.json({ key: key, url: url, message: `File uploaded successfully!` });
-
-  } catch (err: any) {
-    console.error('--- UPLOAD FAILED ---');
-    console.error('Error object:', err);
-    return c.json({
-      err: 'Upload failed.',
-      message: err.message,
-      stack: err.stack,
-    }, 500);
+  const formData = await c.req.formData();
+  const file = formData.get('file');
+  if (!(file instanceof File)) {
+    return c.json({ err: 'No file to upload or incorrect form data' }, 400);
   }
+  const sanitizedFilename = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+  const key = `lovable-uploads/${Date.now()}-${sanitizedFilename}`;
+  await c.env.MEDIA_BUCKET.put(key, await file.arrayBuffer(), {
+    httpMetadata: { contentType: file.type },
+  });
+  const url = `/api/media/${key}`;
+  return c.json({ key: key, url: url, message: `File uploaded successfully!` });
 });
 
 // Mount the admin sub-app under the /api/admin prefix
@@ -273,7 +255,6 @@ app.route('/api/admin', admin);
 
 // --- STATIC ASSETS & SPA FALLBACK ---
 
-// This must be declared after all other routes
 app.use('/*', serveStatic({ root: './' }));
 app.get('*', serveStatic({ path: './index.html' }));
 
