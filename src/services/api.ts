@@ -10,20 +10,31 @@ async function fetchApi(path: string, options: RequestInit = {}) {
 
   const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
 
-  const responseText = await response.text();
-
   if (!response.ok) {
     let error;
     try {
-      const errorJson = JSON.parse(responseText);
+      const errorJson = await response.json();
       error = new Error(errorJson.err || errorJson.message || 'An unknown API error occurred.');
     } catch (e) {
-      error = new Error(responseText || 'An unknown error occurred.');
+        const responseText = await response.text();
+        error = new Error(responseText || 'An unknown error occurred.');
     }
     throw error;
   }
 
-  return responseText ? JSON.parse(responseText) : null;
+  // Handle empty response body for methods like DELETE
+  if (response.status === 204 || response.headers.get('content-length') === '0') {
+      return null;
+  }
+  
+  // Check content type before parsing
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.includes('application/json')) {
+      return response.json();
+  }
+
+  return response.text();
+
 }
 
 

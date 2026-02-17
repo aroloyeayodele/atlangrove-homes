@@ -8,38 +8,38 @@ import { format } from 'date-fns';
 import ShareButtons from '@/components/blog/ShareButtons';
 
 const BlogPost = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [post, setPost] = useState<IBlog | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPost = async () => {
+      if (!id) return;
       try {
-        const response = await getBlogById(id || '');
-        setPost(response.data);
+        const response = await getBlogById(id);
+        setPost(response); // Corrected this line
       } catch (err) {
         setError('Failed to fetch blog post.');
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    if (id) {
-      fetchPost();
-    }
+    fetchPost();
   }, [id]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-center py-10">Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="text-center py-10 text-red-500">{error}</div>;
   }
 
   if (!post) {
-    return <div>Post not found.</div>;
+    return <div className="text-center py-10">Post not found.</div>;
   }
 
   const postUrl = window.location.href;

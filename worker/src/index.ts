@@ -28,13 +28,13 @@ const transformPost = (c: any, post: any) => {
   if (!post) return null;
   return {
     id: post.id,
-    _id: post.id, 
+    _id: post.id,
     title: post.title,
     content: post.content,
     authorId: post.author_id,
     status: post.status,
     imageUrl: toAbsoluteUrl(c, post.image_url),
-    createdAt: post.created_at, 
+    createdAt: post.created_at,
     summary: post.content ? post.content.substring(0, 150) + '...' : '',
     image: toAbsoluteUrl(c, post.image_url),
   };
@@ -63,24 +63,50 @@ app.post('/api/contact', async (c) => {
 });
 
 app.get('/api/blogs', async (c) => {
+  c.header('Cache-Control', 'no-cache, no-store, must-revalidate');
   const { results } = await c.env.DB.prepare('SELECT * FROM blogs WHERE status = ? ORDER BY created_at DESC')
     .bind('published')
     .all();
   return c.json(results.map(p => transformPost(c, p)));
 });
 
+// TEMPORARY DEBUGGING ROUTE
 app.get('/api/blogs/:id', async (c) => {
-  const id = c.req.param('id');
-  const post = await c.env.DB.prepare('SELECT * FROM blogs WHERE id = ? AND status = ?')
-    .bind(id, 'published')
-    .first();
-  if (!post) {
-    return c.json({ err: 'Blog post not found' }, 404);
-  }
-  return c.json(transformPost(c, post));
-});
+    c.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const idParam = c.req.param('id');
+    const id = parseInt(idParam, 10);
+    let post = null;
+    let queryError = null;
 
-// Other public routes (properties, media) follow...
+    if (isNaN(id)) {
+        return c.json({
+            error: "ID is not a number",
+            idParam: idParam
+        }, 400);
+    }
+
+    try {
+        post = await c.env.DB.prepare('SELECT * FROM blogs WHERE id = ?')
+            .bind(id)
+            .first();
+    } catch (e: any) {
+        queryError = {
+            message: e.message,
+            stack: e.stack,
+        };
+    }
+    
+    return c.json({
+        debug: true,
+        idParam: idParam,
+        parsedId: id,
+        postFromDb: post, // This will be null if not found
+        postStatus: post ? post.status : null,
+        isPostNull: post === null,
+        isStatusNotPublished: post ? post.status !== 'published' : null,
+        dbQueryError: queryError,
+    });
+});
 
 
 // --- ADMIN APP ---
@@ -117,11 +143,13 @@ admin.use('/*', async (c, next) => {
 
 // --- Admin: Blogs ---
 admin.get('/blogs', async (c) => {
+  c.header('Cache-Control', 'no-cache, no-store, must-revalidate');
   const { results } = await c.env.DB.prepare('SELECT * FROM blogs ORDER BY created_at DESC').all();
   return c.json(results.map(p => transformPost(c, p)));
 });
 
 admin.get('/blogs/:id', async (c) => {
+  c.header('Cache-control', 'no-cache, no-store, must-revalidate');
   const id = c.req.param('id');
   const post = await c.env.DB.prepare('SELECT * FROM blogs WHERE id = ?').bind(id).first();
   if (!post) return c.json({ err: 'Blog post not found' }, 404);
