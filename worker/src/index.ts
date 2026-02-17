@@ -91,9 +91,9 @@ app.get('/api/blogs/:id', async (c) => {
     return c.json(transformPost(c, post));
 });
 
-// --- NEW MEDIA SERVING ROUTE ---
-app.get('/api/media/*', async (c) => {
-  const key = c.req.path.replace('/api/media/', '');
+// --- RENAMED MEDIA SERVING ROUTE ---
+app.get('/api/serve-media/*', async (c) => {
+  const key = c.req.path.replace('/api/serve-media/', '');
   const object = await c.env.MEDIA_BUCKET.get(key);
 
   if (object === null) {
@@ -207,7 +207,8 @@ admin.post('/upload', async (c) => {
   await c.env.MEDIA_BUCKET.put(key, await file.arrayBuffer(), {
     httpMetadata: { contentType: file.type },
   });
-  const relativeUrl = `/api/media/${key}`;
+  // UPDATED URL
+  const relativeUrl = `/api/serve-media/${key}`;
   return c.json({ 
     key: key, 
     url: relativeUrl, 
