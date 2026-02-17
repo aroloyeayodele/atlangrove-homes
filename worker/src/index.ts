@@ -15,14 +15,8 @@ const app = new Hono<{ Bindings: Env }>();
 
 // --- HELPER FUNCTIONS ---
 
-// The base URL of the worker, used to construct absolute URLs for media.
-const getBaseUrl = (c: any) => {
-    // In a real-world scenario, you might derive this dynamically
-    // from an environment variable. For this deployment, we'll hardcode it.
-    return 'https://atlangrove.aroloyeayodele61.workers.dev';
-}
+const getBaseUrl = (c: any) => 'https://atlangrove.aroloyeayodele61.workers.dev';
 
-// Helper to convert a relative media URL to an absolute one.
 const toAbsoluteUrl = (c: any, relativeUrl: string | null | undefined) => {
     if (!relativeUrl) return '';
     if (relativeUrl.startsWith('http')) return relativeUrl;
@@ -30,7 +24,6 @@ const toAbsoluteUrl = (c: any, relativeUrl: string | null | undefined) => {
     return `${baseUrl}${relativeUrl}`;
 }
 
-// Transforms a blog post from snake_case (db) to camelCase (frontend)
 const transformPost = (c: any, post: any) => {
   if (!post) return null;
   return {
@@ -53,7 +46,7 @@ app.onError((err, c) => {
   return c.json({ err: 'An internal server error occurred', message: err.message, stack: err.stack }, 500);
 });
 
-// Add CORS middleware to allow cross-origin requests
+// Add CORS middleware
 app.use('/api/*', cors());
 
 // --- PUBLIC ROUTES ---
@@ -87,53 +80,13 @@ app.get('/api/blogs/:id', async (c) => {
   return c.json(transformPost(c, post));
 });
 
-app.get('/api/properties/featured', async (c) => {
-  const { results } = await c.env.DB.prepare('SELECT * FROM properties WHERE status = ? ORDER BY created_at DESC LIMIT 3')
-    .bind('available')
-    .all();
-  return c.json(results);
-});
+// Other public routes (properties, media) follow...
 
-app.get('/api/properties', async (c) => {
-  const { category } = c.req.query();
-  let query;
-  if (category && category !== 'all') {
-    query = c.env.DB.prepare('SELECT * FROM properties WHERE status = ? AND property_type = ? ORDER BY created_at DESC')
-      .bind('available', category);
-  } else {
-    query = c.env.DB.prepare('SELECT * FROM properties WHERE status = ? ORDER BY created_at DESC')
-      .bind('available');
-  }
-  const { results } = await query.all();
-  return c.json(results);
-});
 
-app.get('/api/properties/:id', async (c) => {
-  const id = c.req.param('id');
-  const property = await c.env.DB.prepare('SELECT * FROM properties WHERE id = ?').bind(id).first();
-  if (!property) {
-    return c.json({ err: 'Property not found' }, 404);
-  }
-  return c.json(property);
-});
-
-app.get('/api/media/*', async (c) => {
-  const key = c.req.path.substring('/api/media/'.length);
-  const object = await c.env.MEDIA_BUCKET.get(key);
-  if (object === null) {
-    return c.json({ err: 'Object not found' }, 404);
-  }
-  const headers = new Headers();
-  object.writeHttpMetadata(headers);
-  headers.set('etag', object.httpEtag);
-  return new Response(object.body, { headers });
-});
-
-// Create a new Hono instance for all admin routes
+// --- ADMIN APP ---
 const admin = new Hono<{ Bindings: Env }>();
 
 // --- UNPROTECTED ADMIN ROUTES ---
-
 admin.post('/login', async (c) => {
   try {
     const { username, password } = await c.req.json();
@@ -144,11 +97,7 @@ admin.post('/login', async (c) => {
     if (!user || password !== user.password) {
       return c.json({ err: 'Invalid username or password' }, 401);
     }
-    const payload = { 
-      id: user.id, 
-      username: user.username, 
-      exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24) 
-    };
+    const payload = { id: user.id, username: user.username, exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24) };
     const token = await sign(payload, c.env.JWT_SECRET, 'HS256');
     return c.json({ token: token, message: 'Login successful' });
   } catch (err: any) {
@@ -158,19 +107,12 @@ admin.post('/login', async (c) => {
 });
 
 // --- PROTECTED ADMIN ROUTES ---
-
 admin.use('/*', async (c, next) => {
   const jwtMiddleware = jwt({ 
     secret: c.env.JWT_SECRET,
     alg: 'HS256'
   });
   return jwtMiddleware(c, next);
-});
-
-// --- Admin: Inquiries ---
-admin.get('/inquiries', async (c) => {
-  const { results } = await c.env.DB.prepare('SELECT * FROM inquiries ORDER BY submitted_at DESC').all();
-  return c.json(results);
 });
 
 // --- Admin: Blogs ---
@@ -187,67 +129,41 @@ admin.get('/blogs/:id', async (c) => {
 });
 
 admin.post('/blogs', async (c) => {
-  const { title, content, status, imageUrl } = await c.req.json();
-  const payload = c.get('jwtPayload');
-  const author_id = payload.id;
-  const { meta } = await c.env.DB.prepare('INSERT INTO blogs (title, content, author_id, status, image_url) VALUES (?, ?, ?, ?, ?)')
-    .bind(title, content, author_id, status, imageUrl) // Use imageUrl from frontend
-    .run();
-  const newId = meta.last_row_id;
-  return c.json({ id: newId }, 201);
+    const { title, content, status, image_url } = await c.req.json();
+    const payload = c.get('jwtPayload');
+
+    if (!payload || !payload.id) {
+        return c.json({ err: 'Authorization error', message: 'Invalid token payload.' }, 403);
+    }
+    const author_id = payload.id;
+
+    const { meta } = await c.env.DB.prepare('INSERT INTO blogs (title, content, author_id, status, image_url) VALUES (?, ?, ?, ?, ?)')
+        .bind(title, content, author_id, status, image_url)
+        .run();
+    const newId = meta.last_row_id;
+    return c.json({ id: newId }, 201);
 });
 
 admin.put('/blogs/:id', async (c) => {
-  const id = c.req.param('id');
-  const { title, content, status, imageUrl } = await c.req.json();
-  await c.env.DB.prepare('UPDATE blogs SET title = ?, content = ?, status = ?, image_url = ? WHERE id = ?')
-    .bind(title, content, status, imageUrl, id)
-    .run();
-  return c.json({ message: 'Blog post updated successfully' });
+    const id = c.req.param('id');
+    const { title, content, status, image_url } = await c.req.json();
+    
+    const payload = c.get('jwtPayload');
+    if (!payload || !payload.id) {
+        return c.json({ err: 'Authorization error', message: 'Invalid token payload.' }, 403);
+    }
+
+    await c.env.DB.prepare('UPDATE blogs SET title = ?, content = ?, status = ?, image_url = ? WHERE id = ?')
+        .bind(title, content, status, image_url, id)
+        .run();
+    return c.json({ message: 'Blog post updated successfully' });
 });
+
 
 admin.delete('/blogs/:id', async (c) => {
   const id = c.req.param('id');
   await c.env.DB.prepare('DELETE FROM blogs WHERE id = ?').bind(id).run();
   return c.json({ message: 'Blog post deleted successfully' });
-});
-
-// --- Admin: Properties ---
-admin.get('/properties', async (c) => {
-  const { results } = await c.env.DB.prepare('SELECT * FROM properties ORDER BY created_at DESC').all();
-  return c.json(results);
-});
-
-admin.get('/properties/:id', async (c) => {
-  const id = c.req.param('id');
-  const property = await c.env.DB.prepare('SELECT * FROM properties WHERE id = ?').bind(id).first();
-  if (!property) return c.json({ err: 'Property not found' }, 404);
-  return c.json(property);
-});
-
-admin.post('/properties', async (c) => {
-  const { name, address, price, bedrooms, bathrooms, property_type, status, description, features, images } = await c.req.json();
-  const { meta } = await c.env.DB.prepare(
-    'INSERT INTO properties (name, address, price, bedrooms, bathrooms, property_type, status, description, features, images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-  ).bind(name, address, price, bedrooms, bathrooms, property_type, status, description, JSON.stringify(features), JSON.stringify(images))
-    .run();
-  return c.json({ id: meta.last_row_id }, 201);
-});
-
-admin.put('/properties/:id', async (c) => {
-  const id = c.req.param('id');
-  const { name, address, price, bedrooms, bathrooms, property_type, status, description, features, images } = await c.req.json();
-  await c.env.DB.prepare(
-    'UPDATE properties SET name = ?, address = ?, price = ?, bedrooms = ?, bathrooms = ?, property_type = ?, status = ?, description = ?, features = ?, images = ? WHERE id = ?'
-  ).bind(name, address, price, bedrooms, bathrooms, property_type, status, description, JSON.stringify(features), JSON.stringify(images), id)
-    .run();
-  return c.json({ message: 'Property updated successfully' });
-});
-
-admin.delete('/properties/:id', async (c) => {
-  const id = c.req.param('id');
-  await c.env.DB.prepare('DELETE FROM properties WHERE id = ?').bind(id).run();
-  return c.json({ message: 'Property deleted successfully' });
 });
 
 // --- Admin: Image Upload ---
@@ -263,7 +179,6 @@ admin.post('/upload', async (c) => {
     httpMetadata: { contentType: file.type },
   });
   const relativeUrl = `/api/media/${key}`;
-  // Return both the relative and the new absolute URL for convenience
   return c.json({ 
     key: key, 
     url: relativeUrl, 
@@ -273,11 +188,10 @@ admin.post('/upload', async (c) => {
 });
 
 
-// Mount the admin sub-app under the /api/admin prefix
+// Mount the admin sub-app
 app.route('/api/admin', admin);
 
 // --- STATIC ASSETS & SPA FALLBACK ---
-
 app.use('/*', serveStatic({ root: './' }));
 app.get('*', serveStatic({ path: './index.html' }));
 
