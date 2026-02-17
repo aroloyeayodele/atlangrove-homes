@@ -14,7 +14,7 @@ const app = new Hono<{ Bindings: Env }>();
 
 // Add a global error handler
 app.onError((err, c) => {
-  console.error(`Unhandled error: ${err.message}`, err.stack);
+  console.error(`Unhandled error: ${err.message}`, err);
   return c.json({ err: 'An internal server error occurred (v2)', message: err.message, stack: err.stack }, 500);
 });
 
@@ -227,7 +227,7 @@ admin.post('/upload', async (c) => {
     });
     return c.json({ key: key, message: `File ${key} uploaded successfully!` });
   } catch (err: any) {
-    console.error('Upload error:', err.stack);
+    console.error('Upload error:', err);
     return c.json({ err: `Upload failed: ${err.message}` }, 500);
   }
 });
