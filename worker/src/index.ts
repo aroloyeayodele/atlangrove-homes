@@ -111,7 +111,14 @@ admin.post('/login', async (c) => {
     if (!user || password !== user.password) {
       return c.json({ err: 'Invalid username or password' }, 401);
     }
-    const token = await sign({ id: user.id, username: user.username }, c.env.JWT_SECRET);
+    // Set expiration to 24 hours from now
+    const payload = { 
+      id: user.id, 
+      username: user.username, 
+      exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24) 
+    };
+    // Sign the token with the secret and the HS256 algorithm
+    const token = await sign(payload, c.env.JWT_SECRET, 'HS256');
     return c.json({ token: token, message: 'Login successful' });
   } catch (err: any) {
     console.error('Login error:', err.stack);
@@ -121,8 +128,12 @@ admin.post('/login', async (c) => {
 
 // --- PROTECTED ADMIN ROUTES ---
 
+// All routes below this require a valid JWT
 admin.use('/*', async (c, next) => {
-  const jwtMiddleware = jwt({ secret: c.env.JWT_SECRET });
+  const jwtMiddleware = jwt({ 
+    secret: c.env.JWT_SECRET,
+    alg: 'HS256' // Specify the algorithm for verification
+  });
   return jwtMiddleware(c, next);
 });
 
