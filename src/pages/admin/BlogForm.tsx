@@ -19,10 +19,10 @@ const BlogForm = () => {
 
     // State for the image preview URL (can be absolute or a local blob URL)
     const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
-    
+
     // State for the relative image URL to be saved to the database
     const [imageDbUrl, setImageDbUrl] = useState<string | null>(null);
-    
+
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -47,13 +47,16 @@ const BlogForm = () => {
                     if (data.imageUrl) {
                         setImagePreviewUrl(data.imageUrl);
 
-                        // We must extract the relative path to be stored for submission
-                        // This prevents re-saving an absolute URL back into the DB
+                        // Extract relative path if it's an absolute internal URL
+                        // If it's already relative or an external URL, handled gracefully
                         try {
                             const url = new URL(data.imageUrl);
-                            setImageDbUrl(url.pathname); 
+                            if (url.origin === window.location.origin) {
+                                setImageDbUrl(url.pathname);
+                            } else {
+                                setImageDbUrl(data.imageUrl);
+                            }
                         } catch (e) {
-                             // If it's already a relative path, use it as is
                             setImageDbUrl(data.imageUrl);
                         }
                     }

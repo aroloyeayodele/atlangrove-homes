@@ -24,7 +24,7 @@ const PropertyForm = () => {
     const [status, setStatus] = useState('available');
     const [description, setDescription] = useState('');
     const [features, setFeatures] = useState<string[]>([]);
-    
+
     // State for image display URLs (absolute or local blobs)
     const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
     // State for relative image URLs to be saved to DB
@@ -49,15 +49,19 @@ const PropertyForm = () => {
                     setStatus(data.status);
                     setDescription(data.description);
                     setFeatures(data.features || []);
-                    
+
                     const absoluteUrls = data.images || [];
                     setImagePreviewUrls(absoluteUrls);
 
-                    const relativeUrls = absoluteUrls.map((url: string) => {
+                    const relativeUrls = absoluteUrls.map((urlStr: string) => {
                         try {
-                            return new URL(url).pathname;
+                            const url = new URL(urlStr);
+                            if (url.origin === window.location.origin) {
+                                return url.pathname;
+                            }
+                            return urlStr;
                         } catch (e) {
-                            return url; // It might already be a relative path
+                            return urlStr; // It might already be a relative path
                         }
                     });
                     setImageDbUrls(relativeUrls);
@@ -137,7 +141,7 @@ const PropertyForm = () => {
             setLoading(false);
         }
     };
-    
+
     const handleFeatureChange = (index: number, value: string) => {
         const newFeatures = [...features];
         newFeatures[index] = value;

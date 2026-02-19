@@ -1,49 +1,49 @@
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://atlangrove.aroloyeayodele61.workers.dev/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 // Helper function for fetching JSON data
 async function fetchApi(path: string, options: RequestInit = {}) {
-  const headers = {
-    'Content-Type': 'application/json',
-    ...options.headers,
-  };
+    const headers = {
+        'Content-Type': 'application/json',
+        ...options.headers,
+    };
 
-  const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
+    const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
 
-  if (!response.ok) {
-    let error;
-    try {
-      const errorJson = await response.json();
-      error = new Error(errorJson.err || errorJson.message || 'An unknown API error occurred.');
-    } catch (e) {
-        const responseText = await response.text();
-        error = new Error(responseText || 'An unknown error occurred.');
+    if (!response.ok) {
+        let error;
+        try {
+            const errorJson = await response.json();
+            error = new Error(errorJson.err || errorJson.message || 'An unknown API error occurred.');
+        } catch (e) {
+            const responseText = await response.text();
+            error = new Error(responseText || 'An unknown error occurred.');
+        }
+        throw error;
     }
-    throw error;
-  }
 
-  // Handle empty response body for methods like DELETE
-  if (response.status === 204 || response.headers.get('content-length') === '0') {
-      return null;
-  }
-  
-  // Check content type before parsing
-  const contentType = response.headers.get('content-type');
-  if (contentType && contentType.includes('application/json')) {
-      return response.json();
-  }
+    // Handle empty response body for methods like DELETE
+    if (response.status === 204 || response.headers.get('content-length') === '0') {
+        return null;
+    }
 
-  return response.text();
+    // Check content type before parsing
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+        return response.json();
+    }
+
+    return response.text();
 
 }
 
 
 // === Authentication ===
 export const login = (username: string, password: string) => {
-  return fetchApi('/admin/login', {
-    method: 'POST',
-    body: JSON.stringify({ username, password }),
-  });
+    return fetchApi('/admin/login', {
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+    });
 };
 
 // === Public Routes ===
@@ -145,7 +145,7 @@ export const uploadImage = (file: File, token: string) => {
 
     // 2. Append the Authorization header.
     headers.append('Authorization', `Bearer ${token}`);
-    
+
     // 3. Make the fetch request. DO NOT set the 'Content-Type' header manually.
     // The browser will automatically set it to 'multipart/form-data' with the correct boundary.
     return fetch(`${API_BASE_URL}/admin/upload`, {
