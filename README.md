@@ -1,4 +1,5 @@
-# Welcome to your Lovable project
+picture in blog stillnot showing
+the blog imagesis still mot showinganalyse front-end backend upload logic r2 setup cAllss every possible cause and fix the problem # Welcome to your Lovable project
 
 ## Project info
 
