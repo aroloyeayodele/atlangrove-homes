@@ -50,19 +50,15 @@ const PropertyForm = () => {
                     setDescription(data.description);
                     setFeatures(data.features || []);
 
-                    const absoluteUrls = data.images || [];
+                    const absoluteUrls = typeof data.images === 'string' ? JSON.parse(data.images) : data.images;
                     setImagePreviewUrls(absoluteUrls);
 
+                    // Extract relative paths for internal URLs
                     const relativeUrls = absoluteUrls.map((urlStr: string) => {
-                        try {
-                            const url = new URL(urlStr);
-                            if (url.origin === window.location.origin) {
-                                return url.pathname;
-                            }
-                            return urlStr;
-                        } catch (e) {
-                            return urlStr; // It might already be a relative path
+                        if (urlStr.includes('/api/media/')) {
+                            return '/api/media/' + urlStr.split('/api/media/')[1];
                         }
+                        return urlStr;
                     });
                     setImageDbUrls(relativeUrls);
 
@@ -170,9 +166,9 @@ const PropertyForm = () => {
                     <Select value={propertyType} onValueChange={setPropertyType} required>
                         <SelectTrigger><SelectValue placeholder="Select Property Type" /></SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="house">House</SelectItem>
-                            <SelectItem value="apartment">Apartment</SelectItem>
                             <SelectItem value="land">Land</SelectItem>
+                            <SelectItem value="carcass">Carcass</SelectItem>
+                            <SelectItem value="finished">Finished</SelectItem>
                         </SelectContent>
                     </Select>
                     <Select value={status} onValueChange={setStatus} required>

@@ -1,5 +1,6 @@
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+// @ts-ignore
+const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || 'https://atlangrove.aroloyeayodele61.workers.dev/api';
 
 // Helper function for fetching JSON data
 async function fetchApi(path: string, options: RequestInit = {}) {
@@ -12,12 +13,13 @@ async function fetchApi(path: string, options: RequestInit = {}) {
 
     if (!response.ok) {
         let error;
+        const responseClone = response.clone();
         try {
             const errorJson = await response.json();
             error = new Error(errorJson.err || errorJson.message || 'An unknown API error occurred.');
         } catch (e) {
-            const responseText = await response.text();
-            error = new Error(responseText || 'An unknown error occurred.');
+            const responseText = await responseClone.text();
+            error = new Error(responseText || `Error ${response.status}: ${response.statusText}`);
         }
         throw error;
     }
@@ -153,12 +155,19 @@ export const uploadImage = (file: File, token: string) => {
         headers: headers, // Use the Headers object
         body: formData,
     }).then(async res => {
-        // Always try to parse the JSON, even for errors.
-        const json = await res.json();
-        if (!res.ok) {
-            // Use the detailed error message from the server's JSON response if available.
-            throw new Error(json.message || json.err || 'Upload failed due to an unknown server error.');
+        const resClone = res.clone();
+        try {
+            const json = await res.json();
+            if (!res.ok) {
+                throw new Error(json.message || json.err || `Upload failed with status ${res.status}`);
+            }
+            return json;
+        } catch (e) {
+            if (!res.ok) {
+                const text = await resClone.text();
+                throw new Error(text || `Upload failed with status ${res.status}`);
+            }
+            throw e;
         }
-        return json;
     });
 };
