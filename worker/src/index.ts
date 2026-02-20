@@ -16,9 +16,38 @@ const app = new Hono<{ Bindings: Env }>();
 // --- HELPER FUNCTIONS ---
 
 const getBaseUrl = (c: any) => {
-  const url = new URL(c.req.url);
-  return `${url.protocol}//${url.host}`;
+  try {
+    const url = new URL(c.req.url);
+    return `${url.protocol}//${url.host}`;
+  } catch (e) {
+    // Fallback if c.req.url is just a path
+    return '';
+  }
 };
+
+// --- DEBUG ROUTE ---
+app.get('/api/debug-db', async (c) => {
+  try {
+    const tables = await c.env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
+    const tableInfo: any = {};
+
+    if (tables.results) {
+      for (const table of (tables.results as any[])) {
+        const info = await c.env.DB.prepare(`PRAGMA table_info(${table.name})`).all();
+        tableInfo[table.name] = info.results;
+      }
+    }
+
+    return c.json({
+      db_status: 'connected',
+      tables: tables.results,
+      details: tableInfo,
+      env: c.env.ENV
+    });
+  } catch (err: any) {
+    return c.json({ err: 'Debug route failed', message: err.message }, 500);
+  }
+});
 
 const toAbsoluteUrl = (c: any, relativeUrl: string | null | undefined) => {
   if (!relativeUrl) return '';
@@ -40,43 +69,53 @@ const safeJsonParse = (val: any, fallback: any = []) => {
 
 const transformPost = (c: any, post: any) => {
   if (!post) return null;
-  const relativeImageUrl = post.image_url || '';
-  return {
-    id: post.id,
-    _id: post.id,
-    title: post.title,
-    content: post.content,
-    authorId: post.author_id,
-    status: post.status,
-    imageUrl: toAbsoluteUrl(c, relativeImageUrl),
-    createdAt: post.created_at,
-    summary: post.content ? post.content.substring(0, 150) + '...' : '',
-    image: toAbsoluteUrl(c, relativeImageUrl),
-  };
+  try {
+    const relativeImageUrl = post.image_url || '';
+    return {
+      id: post.id,
+      _id: post.id,
+      title: post.title || 'Untitled Post',
+      content: post.content || '',
+      authorId: post.author_id,
+      status: post.status,
+      imageUrl: toAbsoluteUrl(c, relativeImageUrl),
+      createdAt: post.created_at,
+      summary: post.content ? post.content.substring(0, 150) + '...' : '',
+      image: toAbsoluteUrl(c, relativeImageUrl),
+    };
+  } catch (err) {
+    console.error('transformPost error:', err);
+    return post;
+  }
 };
 
 const transformProperty = (c: any, prop: any) => {
   if (!prop) return null;
 
-  const imageUrls = safeJsonParse(prop.images, []);
-  const absoluteImages = Array.isArray(imageUrls)
-    ? imageUrls.map(url => toAbsoluteUrl(c, url))
-    : [];
+  try {
+    const imageUrls = safeJsonParse(prop.images, []);
+    const absoluteImages = Array.isArray(imageUrls)
+      ? imageUrls.map(url => toAbsoluteUrl(c, url))
+      : [];
 
-  return {
-    ...prop,
-    // Legacy/PropertyCard fields
-    title: prop.name,
-    location: prop.address,
-    category: prop.property_type,
-    imageUrl: absoluteImages[0] || '',
+    return {
+      ...prop,
+      // Legacy/PropertyCard fields
+      title: prop.name || 'Untitled Property',
+      location: prop.address || 'Unknown Location',
+      category: prop.property_type || 'unspecified',
+      imageUrl: absoluteImages[0] || '',
 
-    // Modern/Standard fields
-    images: JSON.stringify(absoluteImages),
-    _images: absoluteImages,
-    displayPrice: prop.price ? `₦${Number(prop.price).toLocaleString()}` : '',
-    features: safeJsonParse(prop.features, [])
-  };
+      // Modern/Standard fields
+      images: JSON.stringify(absoluteImages),
+      _images: absoluteImages,
+      displayPrice: prop.price ? `₦${Number(prop.price).toLocaleString()}` : 'Price on request',
+      features: safeJsonParse(prop.features, [])
+    };
+  } catch (err) {
+    console.error('transformProperty error:', err);
+    return prop; // Return raw if transform fails
+  }
 }
 
 // Add a global error handler
@@ -113,11 +152,17 @@ app.post('/api/contact', async (c) => {
 // --- PUBLIC ROUTES: BLOGS ---
 
 app.get('/api/blogs', async (c) => {
-  c.header('Cache-Control', 'no-cache, no-store, must-revalidate');
-  const { results } = await c.env.DB.prepare('SELECT * FROM blogs WHERE status = ? ORDER BY created_at DESC')
-    .bind('published')
-    .all();
-  return c.json(results.map(p => transformPost(c, p)));
+  try {
+    c.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const { results } = await c.env.DB.prepare('SELECT * FROM blogs WHERE status = ? ORDER BY id DESC')
+      .bind('published')
+      .all();
+    const items = results || [];
+    return c.json(items.map(p => transformPost(c, p)));
+  } catch (err: any) {
+    console.error('Fetch blogs failed:', err.message);
+    throw err;
+  }
 });
 
 app.get('/api/blogs/:id', async (c) => {
@@ -155,14 +200,16 @@ app.get('/api/properties', async (c) => {
   query += ' ORDER BY created_at DESC';
 
   const { results } = await c.env.DB.prepare(query).bind(...params).all();
-  return c.json(results.map(p => transformProperty(c, p)));
+  const items = results || [];
+  return c.json(items.map(p => transformProperty(c, p)));
 });
 
 app.get('/api/properties/featured', async (c) => {
   const { results } = await c.env.DB.prepare('SELECT * FROM properties WHERE status = ? LIMIT 6')
     .bind('available')
     .all();
-  return c.json(results.map(p => transformProperty(c, p)));
+  const items = results || [];
+  return c.json(items.map(p => transformProperty(c, p)));
 });
 
 app.get('/api/properties/:id', async (c) => {
@@ -268,7 +315,8 @@ admin.delete('/blogs/:id', async (c) => {
 // --- Admin: Properties ---
 admin.get('/properties', async (c) => {
   const { results } = await c.env.DB.prepare('SELECT * FROM properties ORDER BY created_at DESC').all();
-  return c.json(results.map(p => transformProperty(c, p)));
+  const items = results || [];
+  return c.json(items.map(p => transformProperty(c, p)));
 });
 
 admin.get('/properties/:id', async (c) => {
@@ -303,8 +351,13 @@ admin.delete('/properties/:id', async (c) => {
 
 // --- Admin: Inquiries ---
 admin.get('/inquiries', async (c) => {
-  const { results } = await c.env.DB.prepare('SELECT * FROM inquiries ORDER BY submitted_at DESC').all();
-  return c.json(results);
+  try {
+    const { results } = await c.env.DB.prepare('SELECT * FROM inquiries ORDER BY id DESC').all();
+    return c.json(results || []);
+  } catch (err: any) {
+    console.error('Inquiries fetch error:', err.message);
+    throw err; // Let global error handler catch it
+  }
 });
 
 // --- Admin: Image Upload ---
