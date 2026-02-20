@@ -1,6 +1,14 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
-const AuthContext = createContext<{ token: string | null }>({ token: null });
+const AuthContext = createContext<{
+    token: string | null;
+    login: (token: string) => void;
+    logout: () => void;
+}>({
+    token: null,
+    login: () => { },
+    logout: () => { },
+});
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
@@ -12,7 +20,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, []);
 
-    return <AuthContext.Provider value={{ token }}>{children}</AuthContext.Provider>;
+    const login = (newToken: string) => {
+        sessionStorage.setItem('authToken', newToken);
+        setToken(newToken);
+    };
+
+    const logout = () => {
+        sessionStorage.removeItem('authToken');
+        setToken(null);
+    };
+
+    return (
+        <AuthContext.Provider value={{ token, login, logout }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 export const useAuth = () => useContext(AuthContext);

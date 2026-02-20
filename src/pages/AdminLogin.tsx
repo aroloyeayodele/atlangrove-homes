@@ -1,8 +1,8 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as api from '@/services/api';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/context/AuthContext';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -11,6 +11,7 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login } = useAuth(); // Correctly use the hook
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,7 +20,7 @@ const AdminLogin = () => {
     try {
       const response = await api.login(username, password);
       if (response && response.token) {
-        sessionStorage.setItem('authToken', response.token);
+        login(response.token); // Use the login method
         toast({ title: 'Login Successful', description: 'Redirecting to dashboard...' });
         navigate('/admin/dashboard');
       } else {

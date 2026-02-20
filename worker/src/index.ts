@@ -29,6 +29,15 @@ const toAbsoluteUrl = (c: any, relativeUrl: string | null | undefined) => {
   return `${baseUrl}${normalizedRelativeUrl}`;
 }
 
+const safeJsonParse = (val: any, fallback: any = []) => {
+  if (typeof val !== 'string') return val || fallback;
+  try {
+    return JSON.parse(val);
+  } catch (e) {
+    return fallback;
+  }
+};
+
 const transformPost = (c: any, post: any) => {
   if (!post) return null;
   const relativeImageUrl = post.image_url || '';
@@ -49,15 +58,10 @@ const transformPost = (c: any, post: any) => {
 const transformProperty = (c: any, prop: any) => {
   if (!prop) return null;
 
-  let imageUrls: string[] = [];
-  try {
-    const parsedImages = typeof prop.images === 'string' ? JSON.parse(prop.images) : prop.images;
-    imageUrls = Array.isArray(parsedImages) ? parsedImages : [];
-  } catch (e) {
-    imageUrls = [];
-  }
-
-  const absoluteImages = imageUrls.map(url => toAbsoluteUrl(c, url));
+  const imageUrls = safeJsonParse(prop.images, []);
+  const absoluteImages = Array.isArray(imageUrls)
+    ? imageUrls.map(url => toAbsoluteUrl(c, url))
+    : [];
 
   return {
     ...prop,
@@ -71,7 +75,7 @@ const transformProperty = (c: any, prop: any) => {
     images: JSON.stringify(absoluteImages),
     _images: absoluteImages,
     displayPrice: prop.price ? `₦${prop.price.toLocaleString()}` : '',
-    features: typeof prop.features === 'string' ? JSON.parse(prop.features) : prop.features
+    features: safeJsonParse(prop.features, [])
   };
 }
 
