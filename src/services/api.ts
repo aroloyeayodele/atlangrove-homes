@@ -1,6 +1,6 @@
 
 // @ts-ignore
-const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || 'https://atlangrove.aroloyeayodele61.workers.dev/api';
+const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || '/api';
 
 // Helper function for fetching JSON data
 async function fetchApi(path: string, options: RequestInit = {}) {
