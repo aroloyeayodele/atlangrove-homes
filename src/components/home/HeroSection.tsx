@@ -66,7 +66,7 @@ const HeroSection = () => {
 		if (searchParams.location !== 'all') queryParams.set('location', searchParams.location);
 
 		// Navigate programmatically
-		window.location.href = `/properties?${queryParams.toString()}`;
+		window.location.href = `/ properties ? ${queryParams.toString()} `;
 	};
 
 	return (
@@ -75,13 +75,12 @@ const HeroSection = () => {
 			{backgroundImages.map((image, index) => (
 				<div
 					key={image}
-					className={`absolute inset-0 z-0 transition-opacity duration-500 ease-in-out ${
-						index === currentImageIndex ? 'opacity-50' : 'opacity-0'
-					} ${isTransitioning && index === currentImageIndex ? 'opacity-0' : ''}`}
+					className={`absolute inset - 0 z - 0 transition - opacity duration - 500 ease -in -out ${index === currentImageIndex ? 'opacity-50' : 'opacity-0'
+						} ${isTransitioning && index === currentImageIndex ? 'opacity-0' : ''} `}
 				>
 					<img
 						src={image}
-						alt={`Luxury Real Estate ${index + 1}`}
+						alt={`Luxury Real Estate ${index + 1} `}
 						className="w-full h-full object-cover"
 					/>
 					<div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40" />
@@ -157,7 +156,7 @@ const HeroSection = () => {
 							<Button
 								type="submit"
 								size="lg"
-								className="bg-brand-blue hover:bg-blue-600 text-white text-base py-6 px-8 transition-colors duration-300 hover:shadow-lg hover:shadow-blue-500/20"
+								className="bg-brand-blue hover:bg-brand-blue-dark active:bg-brand-blue-dark text-white text-base py-6 px-8 transition-colors duration-300 hover:shadow-lg hover:shadow-brand-blue/20"
 							>
 								<Search className="mr-2 h-4 w-4" /> Search
 							</Button>

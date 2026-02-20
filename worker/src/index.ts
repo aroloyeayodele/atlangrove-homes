@@ -74,15 +74,24 @@ const transformProperty = (c: any, prop: any) => {
     // Modern/Standard fields
     images: JSON.stringify(absoluteImages),
     _images: absoluteImages,
-    displayPrice: prop.price ? `₦${prop.price.toLocaleString()}` : '',
+    displayPrice: prop.price ? `₦${Number(prop.price).toLocaleString()}` : '',
     features: safeJsonParse(prop.features, [])
   };
 }
 
 // Add a global error handler
 app.onError((err, c) => {
-  console.error(`Unhandled error: ${err.message}`, err);
-  return c.json({ err: 'An internal server error occurred', message: err.message, stack: err.stack }, 500);
+  console.error(`Unhandled error: ${err.message}`);
+  // Log full error in dev or for debugging
+  const errorDetail = {
+    err: 'An internal server error occurred',
+    message: err.message,
+    path: c.req.path,
+    method: c.req.method,
+    stack: err.stack
+  };
+  console.error(JSON.stringify(errorDetail, null, 2));
+  return c.json(errorDetail, 500);
 });
 
 // Add CORS middleware
@@ -294,7 +303,7 @@ admin.delete('/properties/:id', async (c) => {
 
 // --- Admin: Inquiries ---
 admin.get('/inquiries', async (c) => {
-  const { results } = await c.env.DB.prepare('SELECT * FROM inquiries ORDER BY created_at DESC').all();
+  const { results } = await c.env.DB.prepare('SELECT * FROM inquiries ORDER BY submitted_at DESC').all();
   return c.json(results);
 });
 
