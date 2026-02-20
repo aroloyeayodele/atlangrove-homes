@@ -46,7 +46,7 @@ const MissionSection = () => {
             <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
               <div className="font-serif text-2xl md:text-3xl font-semibold">Our Story</div>
             </div>
-            {/* Accent element */}
+            {/* Accent  element */}
             <div className="absolute -bottom-4 -right-4 w-28 h-28 bg-brand-red rounded-tl-3xl z-[-1]"></div>
           </div>
 
