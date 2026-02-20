@@ -100,11 +100,11 @@ const transformProperty = (c: any, prop: any) => {
 
     return {
       ...prop,
-      // Legacy/PropertyCard fields
-      title: prop.name || 'Untitled Property',
-      location: prop.address || 'Unknown Location',
-      category: prop.property_type || 'unspecified',
-      imageUrl: absoluteImages[0] || '',
+      // Handle both potential schemas (name/address vs title/location)
+      title: prop.title || prop.name || 'Untitled Property',
+      location: prop.location || prop.address || 'Unknown Location',
+      category: prop.category || prop.property_type || 'unspecified',
+      imageUrl: absoluteImages[0] || prop.image_url || '',
 
       // Modern/Standard fields
       images: JSON.stringify(absoluteImages),
@@ -352,11 +352,12 @@ admin.delete('/properties/:id', async (c) => {
 // --- Admin: Inquiries ---
 admin.get('/inquiries', async (c) => {
   try {
-    const { results } = await c.env.DB.prepare('SELECT * FROM inquiries ORDER BY id DESC').all();
+    // In actual schema, it's created_at, not id
+    const { results } = await c.env.DB.prepare('SELECT * FROM inquiries ORDER BY created_at DESC').all();
     return c.json(results || []);
   } catch (err: any) {
     console.error('Inquiries fetch error:', err.message);
-    throw err; // Let global error handler catch it
+    throw err;
   }
 });
 

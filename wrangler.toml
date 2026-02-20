@@ -11,8 +11,8 @@ bucket = "./dist"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "atlangrove_db"
-database_id = "8ce477f7-bdfa-43cf-b231-3de132211292"
+database_name = "atlangrove-homes-d1"
+database_id = "a39b3095-7aa3-4646-85ee-cc9f6798566a"
 migrations_dir = "worker/migrations"
 
 [[r2_buckets]]
