@@ -17,7 +17,7 @@ const BlogForm = () => {
     const [content, setContent] = useState('');
     const [status, setStatus] = useState('draft');
 
-    // State for the image preview URL (can be absolute or a local blob URL)
+    // State for the image preview  URL (can be absolute or a local blob URL)
     const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
     // State for the relative image URL to be saved to the database
