@@ -29,23 +29,33 @@ const getBaseUrl = (c: any) => {
 app.get('/api/debug-db', async (c) => {
   try {
     const tables = await c.env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
-    const tableInfo: any = {};
+    const tableData: any = {};
 
     if (tables.results) {
       for (const table of (tables.results as any[])) {
-        const info = await c.env.DB.prepare(`PRAGMA table_info(${table.name})`).all();
-        tableInfo[table.name] = info.results;
+        try {
+          const count = await c.env.DB.prepare(`SELECT COUNT(*) as count FROM "${table.name}"`).first('count');
+          tableData[table.name] = { count };
+        } catch (e: any) {
+          tableData[table.name] = { error: e.message };
+        }
       }
     }
 
     return c.json({
       db_status: 'connected',
       tables: tables.results,
-      details: tableInfo,
-      env: c.env.ENV
+      counts: tableData,
+      env: c.env.ENV,
+      database_id: 'a39b3095-7aa3-4646-85ee-cc9f6798566a'
     });
   } catch (err: any) {
-    return c.json({ err: 'Debug route failed', message: err.message }, 500);
+    console.error('Debug route failed:', err);
+    return c.json({
+      err: 'Debug route failed',
+      message: err.message,
+      stack: err.stack
+    }, 500);
   }
 });
 
@@ -53,10 +63,10 @@ const toAbsoluteUrl = (c: any, relativeUrl: string | null | undefined) => {
   if (!relativeUrl) return '';
   if (relativeUrl.startsWith('http')) return relativeUrl;
   const baseUrl = getBaseUrl(c);
-  // Ensure relativeUrl starts with / if it doesn't
+  // Remove duplicate /api prefix if present
   const normalizedRelativeUrl = relativeUrl.startsWith('/') ? relativeUrl : `/${relativeUrl}`;
   return `${baseUrl}${normalizedRelativeUrl}`;
-}
+};
 
 const safeJsonParse = (val: any, fallback: any = []) => {
   if (typeof val !== 'string') return val || fallback;
@@ -83,8 +93,8 @@ const transformPost = (c: any, post: any) => {
       summary: post.content ? post.content.substring(0, 150) + '...' : '',
       image: toAbsoluteUrl(c, relativeImageUrl),
     };
-  } catch (err) {
-    console.error('transformPost error:', err);
+  } catch (err: any) {
+    console.error('transformPost error:', err.message);
     return post;
   }
 };
@@ -112,24 +122,21 @@ const transformProperty = (c: any, prop: any) => {
       displayPrice: prop.price ? `₦${Number(prop.price).toLocaleString()}` : 'Price on request',
       features: safeJsonParse(prop.features, [])
     };
-  } catch (err) {
-    console.error('transformProperty error:', err);
+  } catch (err: any) {
+    console.error('transformProperty error:', err.message);
     return prop; // Return raw if transform fails
   }
 }
 
 // Add a global error handler
 app.onError((err, c) => {
-  console.error(`Unhandled error: ${err.message}`);
-  // Log full error in dev or for debugging
+  console.error('SERVER ERROR:', err);
   const errorDetail = {
-    err: 'An internal server error occurred',
+    err: 'Internal Server Error',
     message: err.message,
-    path: c.req.path,
     method: c.req.method,
     stack: err.stack
   };
-  console.error(JSON.stringify(errorDetail, null, 2));
   return c.json(errorDetail, 500);
 });
 
