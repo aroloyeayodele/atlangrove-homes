@@ -60,4 +60,4 @@ Atlangrove Homes aims to bridge the gap between premium real estate and digital 
 [Explore my portfolio](https://jeremiahojonimi.vercel.app)
 
 ---
-*Built with excellence by Atlangrove Engineering and Homes Ltd.*
+*Built with excellence for Atlangrove Engineering and Homes Ltd.*
