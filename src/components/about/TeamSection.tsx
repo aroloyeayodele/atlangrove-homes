@@ -21,7 +21,7 @@ const teamMembers: TeamMember[] = [
     name: 'Bishop Israel Morakinyo',
     role: 'Chairman',
     bio: 'Bishop Israel Morakinyo stands as a titan in the realm of real estate management, boasting an impressive 25-year entrepreneurial journey that has left an indelible mark on the Nigerian estate management sector.\n\nHis accolades extend beyond his entrepreneurial success, as he is a distinguished fellow of esteemed professional bodies, including the Chartered Institute of Public Administration of Nigeria, showcasing his commitment to excellence in his field.\n\nIn 1987, he served as the estate management agency manager at Harriman & Co., the trailblazing indigenous firm of estate surveyors and valuers in the Federal Republic of Nigeria. He studied Accounting at the Federal Polytechnic, Ibadan, Oyo State, and emerged at the top of his class with a distinction.\n\nMorakinyo made history as the first African indigenous to be ordained Bishop in the state of Israel. He is the presiding Bishop of Family Altar Assembly International, US, bringing a unique blend of leadership, spirituality, and business acumen.\n\nCurrently, he serves as the Chairman at Step Synergy and Atlangrove Heights Ltd., where he continues to shape the industry while dedicating himself to capacity development programs for youths and emerging leaders across business, spirituality, and politics.',
-    image: '/lovable-uploads/TeamMember/PeterAdobamen.jpg',
+    image: 'lovable-uploads\TeamMember\Bishop-Morakinyo.jpg',
     social: {
       facebook: '#',
       instagram: '#',
@@ -33,7 +33,7 @@ const teamMembers: TeamMember[] = [
     name: 'Mr. Ayodele O. Aroloye',
     role: 'Managing Director/CEO',
     bio: 'Mr. Ayodele O. Aroloye is an accomplished serial entrepreneur, inventor, and adept administrator with a wealth of experience spanning two decades. His journey includes the establishment of manufacturing concerns and active involvement on multiple business boards.\n\nWith a foundation in Industrial Mathematics, Aroloye commenced his professional career at NCR & Associates Limited, Nigeria, showcasing early expertise. He further developed his skills through high-level investment and management roles at the National Association of REALTORS (NNAR) and The Estate Surveyors and Valuers Registration Board of Nigeria (ESVARBON), a regulatory body in real estate and valuation practices.\n\nHis well-rounded development was enhanced through experience at the Citizenship and Leadership organization. As the visionary Founder and CEO of Atlangrove Engineering and Homes Ltd., he leads with innovation and excellence.\n\nBeyond business, Aroloye is actively involved in philanthropy, volunteering with NGOs dedicated to community welfare and fitness. His career is a testament to strategic leadership, diverse expertise, and a strong commitment to positive societal impact.',
-    image: '/lovable-uploads/TeamMember/EmmanuelAdetutu.jpg',
+    image: 'lovable-uploads\TeamMember\Ayodele-Aroloye.jpg',
     social: {
       instagram: '#',
       linkedin: '#',
@@ -44,7 +44,7 @@ const teamMembers: TeamMember[] = [
     name: 'Ayomikun Fred Bulu',
     role: 'Chief Administrative Officer',
     bio: 'Ayomikun Fred Bulu is a dynamic Chief Administrative Officer with over 5 years of post-university experience across business development, integrated marketing communications, publishing, and training. As a seasoned economist, Ayomikun\'s professional journey began in 2000 at Palnapina International, where he showcased his early expertise in various capacities, setting the stage for a rich and diverse career.\n\nHe has been instrumental in establishing manufacturing concerns and actively shaping the trajectory of multiple business boards. His expertise includes strategic research, start-up guidance, operational process advisory, and brand equity building through integrated marketing communications.\n\nNotably, Ayomikun served as an Associate Partner at alGROWithm, the No.1 indigenous Growth Agency in Africa, focusing on Growth Marketing at Jumia. His ventures demonstrate a commitment to innovation and excellence in the African business landscape.\n\nBeyond the boardroom, Ayomikun is passionate about youth and leadership development, volunteering with NGOs to contribute to capacity building programs for emerging leaders in business and sustainability.\n\nCurrently, he serves as the dynamic Business & Strategic Development Consultant to Atlangrove Engineering and Homes Ltd., Africa\'s emerging game changer in the Real Estate sector, where his strategic vision continues to drive impactful growth and innovation.',
-    image: '/lovable-uploads/TeamMember/HalimaAbubakar.jpg',
+    image: 'lovable-uploads\TeamMember\Ayomikun-Bulu.jpg',
     social: {
       facebook: '#',
       linkedin: '#',
@@ -61,7 +61,7 @@ const teamMembers: TeamMember[] = [
       linkedin: '#',
     },
   },
-];  
+];
 
 const TeamSection = () => {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
@@ -80,8 +80,8 @@ const TeamSection = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {teamMembers.map((member, index) => (
-            <div 
-              key={member.id} 
+            <div
+              key={member.id}
               className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all slide-up"
               style={{ animationDelay: `${(index + 1) * 150}ms` }}
             >
