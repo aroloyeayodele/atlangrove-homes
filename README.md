@@ -1,69 +1,63 @@
+# Atlangrove Heights
 
+A premium, full-stack real estate platform designed for modern property management and seamless user experiences. Atlangrove Heights provides a robust solution for listing, searching, and managing luxury properties and corporate office spaces.
 
-## Project info
+## 🚀 Vision
+Atlangrove Heights aims to bridge the gap between premium real estate and digital accessibility, offering a state-of-the-art interface for both property seekers and administrators.
 
-**URL**: https://lovable.dev/projects/7a7fd6e8-332b-442c-89a7-10f01c82d2de
+## 🛠️ Technology Stack
 
-## How can I edit this code?
+### Frontend
+- **Framework**: React 18 with Vite
+- **Styling**: Tailwind CSS for high-performance, utility-first design
+- **Components**: shadcn/ui for accessible, premium-feel UI components
+- **Navigation**: React Router DOM
+- **Icons**: Lucide React
+- **Animations**: Custom Framer Motion-inspired CSS transitions
 
-There are several ways of editing your application.
+### Backend & Infrastructure
+- **Serverless Runtime**: Cloudflare Workers
+- **Database**: Cloudflare D1 (Serverless SQL)
+- **Media Storage**: Cloudflare R2
+- **Proxy/Deployment**: Vercel (Frontend) & Cloudflare (Backend)
+- **API Architecture**: Modern RESTful patterns with robust error handling and type safety
 
-**Use Lovable**
+## ✨ Key Features
+- **Dynamic Property Engine**: Fully searchable and filtered property listings.
+- **Robust Admin Dashboard**: Secure management of properties, blog posts, and user inquiries.
+- **Safety First**: Deeply integrated error boundaries and data validation to ensure uptime.
+- **Mobile Optimized**: Fully responsive design tailored for all devices.
+- **Inquiry System**: direct line of communication between potential clients and administrators.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/7a7fd6e8-332b-442c-89a7-10f01c82d2de) and start prompting.
+## 💻 Local Development
 
-Changes made via Lovable will be committed automatically to this repo.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Ojogbe/atlangrove.git
+   cd atlangrove
+   ```
 
-**Use your preferred IDE**
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+4. **Wrangler (Backend) Setup**
+   ```bash
+   cd worker
+   npx wrangler dev
+   ```
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 👨‍💻 Developed By
+**Jeremiah Ojonimi**  
+[Explore my portfolio](https://jeremiahojonimi.vercel.app)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/7a7fd6e8-332b-442c-89a7-10f01c82d2de) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+---
+*Built with excellence by Atlangrove Engineering and Homes Ltd.*
