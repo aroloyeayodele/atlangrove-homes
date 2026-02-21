@@ -171,7 +171,7 @@ const PropertyDetailPage = () => {
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-sm font-medium">Email Address</label>
-                                        <Input name="name" value={formData.name} onChange={handleInputChange} placeholder="John Doe" required />
+                                        <Input name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="john@example.com" required />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
@@ -193,7 +193,5 @@ const PropertyDetailPage = () => {
         </PageLayout>
     );
 };
-
-export default PropertyDetailPage;
 
 export default PropertyDetailPage;
