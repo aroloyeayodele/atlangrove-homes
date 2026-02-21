@@ -24,7 +24,7 @@ const About = () => {
             "logo": "/lovable-uploads/d8b82a03-78f9-4b90-ac43-39097201c852.png",
             "contactPoint": [{
               "@type": "ContactPoint",
-              "telephone": "+234 806 655 8355",
+              "telephone": "+234 806 655 8355, +234 806 172 0146",
               "contactType": "customer service",
               "email": "info@atlangrovehomes.com"
             }],
@@ -101,7 +101,7 @@ const About = () => {
                 <h3 className="text-xl font-semibold text-brand-blue mb-3">Integrity</h3>
                 <p className="text-gray-600">We conduct business with transparency, accountability and ethical practices.</p>
               </div>
-              
+
               <div className="bg-gray-50 p-6 rounded-lg hover:shadow-md transition-all">
                 <div className="w-12 h-12 bg-brand-blue/10 rounded-full flex items-center justify-center mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-brand-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -111,7 +111,7 @@ const About = () => {
                 <h3 className="text-xl font-semibold text-brand-blue mb-3">Innovation</h3>
                 <p className="text-gray-600">We embrace forward-thinking design, smart technologies and sustainable building practices.</p>
               </div>
-              
+
               <div className="bg-gray-50 p-6 rounded-lg hover:shadow-md transition-all">
                 <div className="w-12 h-12 bg-brand-blue/10 rounded-full flex items-center justify-center mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-brand-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -121,7 +121,7 @@ const About = () => {
                 <h3 className="text-xl font-semibold text-brand-blue mb-3">Excellence</h3>
                 <p className="text-gray-600">We strive for the highest standards in construction, design and customer satisfaction.</p>
               </div>
-              
+
               <div className="bg-gray-50 p-6 rounded-lg hover:shadow-md transition-all">
                 <div className="w-12 h-12 bg-brand-blue/10 rounded-full flex items-center justify-center mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-brand-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -131,7 +131,7 @@ const About = () => {
                 <h3 className="text-xl font-semibold text-brand-blue mb-3">Customer-Centricity</h3>
                 <p className="text-gray-600">We place our clients at the center of every decision, ensuring their needs and preferences guide our developments.</p>
               </div>
-              
+
               <div className="bg-gray-50 p-6 rounded-lg md:col-span-2 hover:shadow-md transition-all">
                 <div className="w-12 h-12 bg-brand-blue/10 rounded-full flex items-center justify-center mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-brand-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -142,7 +142,7 @@ const About = () => {
                 <p className="text-gray-600">We are committed to environmentally responsible development that protects and preserves resources for future generations.</p>
               </div>
             </div>
-            
+
             <div className="bg-gray-50 rounded-lg p-8 shadow-sm">
               <h3 className="text-2xl font-serif font-semibold mb-4 text-center">Why Choose Atlangrove Homes?</h3>
               <ul className="list-disc list-inside text-gray-600 space-y-2 max-w-2xl mx-auto">
@@ -156,7 +156,7 @@ const About = () => {
         </div>
       </section>
       <TeamSection />
-      
+
       {/* Location Section */}
       <section className="py-16 bg-gray-50">
         <div className="section-container">

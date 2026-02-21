@@ -3,7 +3,7 @@ import { Facebook, Instagram, Twitter, MapPin, Phone, Mail } from 'lucide-react'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
+
   return (
     <footer className="bg-gray-100 border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -11,37 +11,37 @@ const Footer = () => {
           {/* Logo and about */}
           <div className="space-y-4">
             <Link to="/" className="inline-block">
-              <img 
-                src="/lovable-uploads/d8b82a03-78f9-4b90-ac43-39097201c852.png" 
-                alt="Atlangrove Homes Logo" 
+              <img
+                src="/lovable-uploads/d8b82a03-78f9-4b90-ac43-39097201c852.png"
+                alt="Atlangrove Homes Logo"
                 className="h-8"
               />
             </Link>
             <p className="text-sm text-gray-600 mt-4">
-             Atlangrove Homes provides quality and affordable accommodation while redefining possibilities in real estate with integrity, professionalism, and innovation.
+              Atlangrove Homes provides quality and affordable accommodation while redefining possibilities in real estate with integrity, professionalism, and innovation.
             </p>
             <div className="flex space-x-4 pt-2">
-              <a 
-                href="https://facebook.com/atlangrovehomes" 
-                target="_blank" 
+              <a
+                href="https://facebook.com/atlangrovehomes"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-brand-blue transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook className="h-5 w-5" />
               </a>
-              <a 
-                href="https://instagram.com/atlangrovehomes" 
-                target="_blank" 
+              <a
+                href="https://instagram.com/atlangrovehomes"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-brand-blue transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" />
               </a>
-              <a 
-                href="#" 
-                target="_blank" 
+              <a
+                href="#"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-brand-blue transition-colors"
                 aria-label="LinkedIn"
@@ -58,32 +58,32 @@ const Footer = () => {
             <h3 className="font-serif text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link 
-                  to="/" 
+                <Link
+                  to="/"
                   className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   Home
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/properties" 
+                <Link
+                  to="/properties"
                   className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   Properties
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/about" 
+                <Link
+                  to="/about"
                   className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/contact" 
+                <Link
+                  to="/contact"
                   className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   Contact
@@ -97,24 +97,24 @@ const Footer = () => {
             <h3 className="font-serif text-lg font-semibold mb-4">Properties</h3>
             <ul className="space-y-2">
               <li>
-                <Link 
-                  to="/properties?category=land" 
+                <Link
+                  to="/properties?category=land"
                   className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   Land
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/properties?category=carcass" 
+                <Link
+                  to="/properties?category=carcass"
                   className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   Carcass
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/properties?category=finished" 
+                <Link
+                  to="/properties?category=finished"
                   className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   Finished Buildings
@@ -133,7 +133,7 @@ const Footer = () => {
               </p>
               <p className="flex items-start text-sm">
                 <Phone className="h-5 w-5 text-brand-blue mr-2 mt-0.5" />
-                <span className="text-gray-600">+234 806 172 0146</span>
+                <span className="text-gray-600">+234 806 655 8355, +234 806 172 0146</span>
               </p>
               <p className="flex items-start text-sm">
                 <Mail className="h-5 w-5 text-brand-blue mr-2 mt-0.5" />
