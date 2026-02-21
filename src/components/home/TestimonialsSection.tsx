@@ -15,21 +15,21 @@ const testimonials: Testimonial[] = [
     id: 1,
     name: 'Samuel Johnson',
     role: 'Property Investor',
-  content: 'Exclusive Estates guided me through the entire process of acquiring investment property in Lagos. Their market knowledge and professionalism are unmatched.',
+  content: 'Atlangrove Heights guided me through the entire process of acquiring investment property in Lagos. Their market knowledge and professionalism are unmatched.',
     avatar: '/lovable-uploads/SamuelJohnson.png',
   },
   {
     id: 2,
     name: 'Amina Ibrahim',
     role: 'First-time Homebuyer',
-  content: "As a first-time buyer, I was nervous about the process, but the team at Exclusive Estates made everything simple and transparent. I couldn't be happier with my new home!",
+  content: "As a first-time buyer, I was nervous about the process, but the team at Atlangrove Heights made everything simple and transparent. I couldn't be happier with my new home!",
     avatar: '/lovable-uploads/AminaIbrahim.png',
   },
   {
     id: 3,
     name: 'Chidi Okonkwo',
     role: 'Property Developer',
-  content: 'Working with Exclusive Estates has significantly expanded our development portfolio. Their consulting services and market insights have been invaluable to our success.',
+  content: 'Working with Atlangrove Heights has significantly expanded our development portfolio. Their consulting services and market insights have been invaluable to our success.',
     avatar: '/lovable-uploads/ChidiOkonkwo.png',
   },
 ];
@@ -79,7 +79,7 @@ const TestimonialsSection = () => {
             Client <span className="text-brand-blue">Testimonials</span>
           </h2>
           <p className="text-gray-600 slide-up animate-delay-200">
-            Hear what our clients have to say about their experience working with Exclusive Estates.
+            Hear what our clients have to say about their experience working with Atlangrove Heights.
           </p>
         </div>
 
