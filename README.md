@@ -1,9 +1,9 @@
-# Atlangrove Heights
+# Atlangrove Homes
 
-A premium, full-stack real estate platform designed for modern property management and seamless user experiences. Atlangrove Heights provides a robust solution for listing, searching, and managing luxury properties and corporate office spaces.
+A premium, full-stack real estate platform designed for modern property management and seamless user experiences. Atlangrove Homes provides a robust solution for listing, searching, and managing luxury properties and corporate office spaces.
 
 ## 🚀 Vision
-Atlangrove Heights aims to bridge the gap between premium real estate and digital accessibility, offering a state-of-the-art interface for both property seekers and administrators.
+Atlangrove Homes aims to bridge the gap between premium real estate and digital accessibility, offering a state-of-the-art interface for both property seekers and administrators.
 
 ## 🛠️ Technology Stack
 
