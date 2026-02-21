@@ -71,7 +71,7 @@ const TeamSection = () => {
       <div className="section-container">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-4 slide-up">
-            Meet Our <span className="text-brand-red">Team</span>
+            Meet Our <span className="text-brand-blue">Team</span>
           </h2>
           <p className="text-gray-600 slide-up animate-delay-200">
             Our team of experienced professionals is dedicated to providing exceptional service and expertise in the Nigerian real estate market.
@@ -94,10 +94,10 @@ const TeamSection = () => {
               </div>
               <div className="p-6">
                 <h3 className="font-serif text-xl font-medium">{member.name}</h3>
-                <p className="text-brand-red font-medium text-sm mb-3">{member.role}</p>
+                <p className="text-brand-blue font-medium text-sm mb-3">{member.role}</p>
                 <button
                   onClick={() => setSelectedMember(member)}
-                  className="text-sm text-brand-red hover:underline"
+                  className="text-sm text-brand-blue hover:underline"
                 >
                   Click to view bio
                 </button>
@@ -117,7 +117,7 @@ const TeamSection = () => {
                   className="w-24 h-24 rounded-full mx-auto mb-4"
                 />
                 <h3 className="text-2xl font-semibold text-gray-900">{selectedMember.name}</h3>
-                <p className="text-brand-red font-medium mt-1">{selectedMember.role}</p>
+                <p className="text-brand-blue font-medium mt-1">{selectedMember.role}</p>
                 <div className="mt-4 text-gray-600 max-h-60 overflow-y-auto pr-4 team-member-bio">
                   {selectedMember.bio.split('\n\n').map((paragraph, index) => (
                     <p key={index} className="mb-4">{paragraph}</p>
@@ -125,7 +125,7 @@ const TeamSection = () => {
                 </div>
                 <button
                   onClick={() => setSelectedMember(null)}
-                  className="mt-4 text-sm text-brand-red hover:underline"
+                  className="mt-4 text-sm text-brand-blue hover:underline"
                 >
                   Close
                 </button>

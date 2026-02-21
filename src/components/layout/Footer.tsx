@@ -25,7 +25,7 @@ const Footer = () => {
                 href="https://facebook.com/atlangrovehomes" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-brand-red transition-colors"
+                className="text-gray-600 hover:text-brand-blue transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook className="h-5 w-5" />
@@ -34,7 +34,7 @@ const Footer = () => {
                 href="https://instagram.com/atlangrovehomes" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-brand-red transition-colors"
+                className="text-gray-600 hover:text-brand-blue transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" />
@@ -43,7 +43,7 @@ const Footer = () => {
                 href="#" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-brand-red transition-colors"
+                className="text-gray-600 hover:text-brand-blue transition-colors"
                 aria-label="LinkedIn"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -60,7 +60,7 @@ const Footer = () => {
               <li>
                 <Link 
                   to="/" 
-                  className="text-gray-600 hover:text-brand-red transition-colors text-sm"
+                  className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   Home
                 </Link>
@@ -68,7 +68,7 @@ const Footer = () => {
               <li>
                 <Link 
                   to="/properties" 
-                  className="text-gray-600 hover:text-brand-red transition-colors text-sm"
+                  className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   Properties
                 </Link>
@@ -76,7 +76,7 @@ const Footer = () => {
               <li>
                 <Link 
                   to="/about" 
-                  className="text-gray-600 hover:text-brand-red transition-colors text-sm"
+                  className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   About Us
                 </Link>
@@ -84,7 +84,7 @@ const Footer = () => {
               <li>
                 <Link 
                   to="/contact" 
-                  className="text-gray-600 hover:text-brand-red transition-colors text-sm"
+                  className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   Contact
                 </Link>
@@ -99,7 +99,7 @@ const Footer = () => {
               <li>
                 <Link 
                   to="/properties?category=land" 
-                  className="text-gray-600 hover:text-brand-red transition-colors text-sm"
+                  className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   Land
                 </Link>
@@ -107,7 +107,7 @@ const Footer = () => {
               <li>
                 <Link 
                   to="/properties?category=carcass" 
-                  className="text-gray-600 hover:text-brand-red transition-colors text-sm"
+                  className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   Carcass
                 </Link>
@@ -115,7 +115,7 @@ const Footer = () => {
               <li>
                 <Link 
                   to="/properties?category=finished" 
-                  className="text-gray-600 hover:text-brand-red transition-colors text-sm"
+                  className="text-gray-600 hover:text-brand-blue transition-colors text-sm"
                 >
                   Finished Buildings
                 </Link>
@@ -128,15 +128,15 @@ const Footer = () => {
             <h3 className="font-serif text-lg font-semibold mb-4">Contact Us</h3>
             <div className="space-y-3">
               <p className="flex items-start text-sm">
-                <MapPin className="h-5 w-5 text-brand-red mr-2 mt-0.5" />
+                <MapPin className="h-5 w-5 text-brand-blue mr-2 mt-0.5" />
                 <span className="text-gray-600">Garki Area 3 Abuja</span>
               </p>
               <p className="flex items-start text-sm">
-                <Phone className="h-5 w-5 text-brand-red mr-2 mt-0.5" />
+                <Phone className="h-5 w-5 text-brand-blue mr-2 mt-0.5" />
                 <span className="text-gray-600">+234 806 172 0146</span>
               </p>
               <p className="flex items-start text-sm">
-                <Mail className="h-5 w-5 text-brand-red mr-2 mt-0.5" />
+                <Mail className="h-5 w-5 text-brand-blue mr-2 mt-0.5" />
                 <span className="text-gray-600">info@atlangrovehomes.com</span>
               </p>
             </div>

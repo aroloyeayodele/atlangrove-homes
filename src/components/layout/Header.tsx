@@ -66,9 +66,9 @@ const Header = () => {
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  'text-sm font-medium transition-colors hover:text-brand-red relative py-2',
+                  'text-sm font-medium transition-colors hover:text-brand-blue relative py-2',
                   isActive(item.href) 
-                    ? 'text-brand-red after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-brand-red' 
+                    ? 'text-brand-blue after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-brand-blue' 
                     : 'text-foreground'
                 )}
               >
@@ -79,7 +79,7 @@ const Header = () => {
 
           {/* Contact Button - Desktop */}
           <div className="hidden md:block">
-            <Button asChild className="bg-brand-red text-white hover:brightness-90">
+            <Button asChild className="bg-brand-blue text-white hover:brightness-90">
               <Link to="/contact">Get In Touch</Link>
             </Button>
           </div>
@@ -109,13 +109,13 @@ const Header = () => {
                 to={item.href}
                 className={cn(
                   'block text-base font-medium py-2 transition-colors',
-                  isActive(item.href) ? 'text-brand-red' : 'text-foreground'
+                  isActive(item.href) ? 'text-brand-blue' : 'text-foreground'
                 )}
               >
                 {item.name}
               </Link>
             ))}
-            <Button asChild className="w-full mt-4 bg-brand-red text-white hover:brightness-90">
+            <Button asChild className="w-full mt-4 bg-brand-blue text-white hover:brightness-90">
               <Link to="/contact">Get In Touch</Link>
             </Button>
           </div>

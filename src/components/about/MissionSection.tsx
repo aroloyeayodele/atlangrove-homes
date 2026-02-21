@@ -47,13 +47,13 @@ const MissionSection = () => {
               <div className="font-serif text-2xl md:text-3xl font-semibold">Our Story</div>
             </div>
             {/* Accent  element */}
-            <div className="absolute -bottom-4 -right-4 w-28 h-28 bg-brand-red rounded-tl-3xl z-[-1]"></div>
+            <div className="absolute -bottom-4 -right-4 w-28 h-28 bg-brand-blue rounded-tl-3xl z-[-1]"></div>
           </div>
 
           {/* Right   column  - Content */}
           <div className="space-y-6 slide-up">
             <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-6">
-              Our <span className="text-brand-red">Mission</span>
+              Our <span className="text-brand-blue">Mission</span>
             </h2>
             <p className="text-gray-600">
               To build vibrant and sustainable communities that enhance the lives of residents and contribute positively to the broader urban landscape.
@@ -62,7 +62,7 @@ const MissionSection = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
               <div className="flex space-x-4">
                 <div className="bg-red-50 rounded-lg p-3 h-fit">
-                  <Award className="h-6 w-6 text-brand-red" />
+                  <Award className="h-6 w-6 text-brand-blue" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-semibold mb-6">Our Vision</h3>

@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import PageLayout from '@/components/layout/PageLayout';
 import { Helmet } from 'react-helmet';
 import { getBlogById } from '@/services/api';
 import { IBlog } from '@/services/propertyService';
 import { format } from 'date-fns';
 import ShareButtons from '@/components/blog/ShareButtons';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
 const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
@@ -53,6 +55,11 @@ const BlogPost = () => {
 
       <div className="pt-32 pb-16">
         <div className="max-w-4xl mx-auto px-4">
+          <Button asChild variant="ghost" className="mb-6 hover:bg-gray-100">
+            <Link to="/blog">
+              <ArrowLeft className="mr-2 h-4 w-4" /> Back to Blog
+            </Link>
+          </Button>
           <h1 className="text-3xl md:text-4xl font-serif font-bold mb-4">{post.title}</h1>
           <div className="flex items-center justify-between text-sm text-gray-500 mb-6">
             <span>{format(new Date(post.createdAt), 'MMMM dd, yyyy')}</span>

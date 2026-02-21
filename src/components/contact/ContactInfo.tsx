@@ -7,8 +7,8 @@ const ContactInfo = () => {
       
       <div className="space-y-6">
         <div className="flex items-start">
-          <div className="bg-brand-red/10 p-3 rounded-full mr-4">
-            <Phone className="h-6 w-6 text-brand-red" />
+          <div className="bg-brand-blue/10 p-3 rounded-full mr-4">
+            <Phone className="h-6 w-6 text-brand-blue" />
           </div>
           <div>
             <h4 className="font-medium mb-1">Phone</h4>
@@ -18,8 +18,8 @@ const ContactInfo = () => {
         </div>
         
         <div className="flex items-start">
-          <div className="bg-brand-red/10 p-3 rounded-full mr-4">
-            <Mail className="h-6 w-6 text-brand-red" />
+          <div className="bg-brand-blue/10 p-3 rounded-full mr-4">
+            <Mail className="h-6 w-6 text-brand-blue" />
           </div>
           <div>
             <h4 className="font-medium mb-1">Email</h4>
@@ -28,8 +28,8 @@ const ContactInfo = () => {
         </div>
         
         <div className="flex items-start">
-          <div className="bg-brand-red/10 p-3 rounded-full mr-4">
-            <MapPin className="h-6 w-6 text-brand-red" />
+          <div className="bg-brand-blue/10 p-3 rounded-full mr-4">
+            <MapPin className="h-6 w-6 text-brand-blue" />
           </div>
           <div>
             <h4 className="font-medium mb-1">Office Locations</h4>
@@ -38,8 +38,8 @@ const ContactInfo = () => {
         </div>
         
         <div className="flex items-start">
-          <div className="bg-brand-red/10 p-3 rounded-full mr-4">
-            <Clock className="h-6 w-6 text-brand-red" />
+          <div className="bg-brand-blue/10 p-3 rounded-full mr-4">
+            <Clock className="h-6 w-6 text-brand-blue" />
           </div>
           <div>
             <h4 className="font-medium mb-1">Business Hours</h4>

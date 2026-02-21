@@ -7,7 +7,7 @@ const services = [
     description: 'High-quality residential communities that blend modern living with timeless design and architectural excellence.',
     icon: Home,
     bgColor: 'bg-red-50',
-    iconColor: 'text-brand-red',
+    iconColor: 'text-brand-blue',
   },
   {
     id: 'master-planned',
@@ -41,7 +41,7 @@ const ServicesSection = () => {
       <div className="section-container">
         <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
           <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-4 slide-up">
-            Our <span className="text-brand-red">Services</span>
+            Our <span className="text-brand-blue">Services</span>
           </h2>
           <p className="text-gray-600 slide-up animate-delay-200">
             Atlangrove Homes specializes in creating high-quality residential communities that blend modern living with timeless design. 

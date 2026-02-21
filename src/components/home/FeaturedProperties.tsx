@@ -82,7 +82,7 @@ const FeaturedProperties = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10">
           <div className="mb-6 md:mb-0">
             <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-4 slide-up">
-              Featured <span className="text-brand-red">Properties</span>
+              Featured <span className="text-brand-blue">Properties</span>
             </h2>
             <p className="text-gray-600 max-w-2xl slide-up animate-delay-200">
               Explore our curated selection of premium properties located in prime areas across Nigeria.
@@ -98,7 +98,7 @@ const FeaturedProperties = () => {
 
         {isLoading ? (
           <div className="flex justify-center items-center py-20">
-            <Loader2 className="h-8 w-8 text-brand-red animate-spin" />
+            <Loader2 className="h-8 w-8 text-brand-blue animate-spin" />
             <span className="ml-2 text-gray-500">Loading properties...</span>
           </div>
         ) : (

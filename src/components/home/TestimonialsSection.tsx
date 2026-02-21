@@ -76,7 +76,7 @@ const TestimonialsSection = () => {
       <div className="section-container">
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-4 slide-up">
-            Client <span className="text-brand-red">Testimonials</span>
+            Client <span className="text-brand-blue">Testimonials</span>
           </h2>
           <p className="text-gray-600 slide-up animate-delay-200">
             Hear what our clients have to say about their experience working with Exclusive Estates.
@@ -85,7 +85,7 @@ const TestimonialsSection = () => {
 
         <div className="relative max-w-4xl mx-auto px-4 slide-up animate-delay-400">
           <div className="relative bg-white rounded-lg p-8 md:p-10 shadow-lg border border-gray-100">
-            <Quote className="absolute top-8 left-8 text-brand-red opacity-10 w-16 h-16" />
+            <Quote className="absolute top-8 left-8 text-brand-blue opacity-10 w-16 h-16" />
             
             <div className="text-center relative z-10">
               <div className="overflow-hidden h-32">
@@ -104,7 +104,7 @@ const TestimonialsSection = () => {
               </div>
 
               <div className="mt-6 inline-flex flex-col items-center">
-                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-brand-red mb-3">
+                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-brand-blue mb-3">
                   <img 
                     src={testimonials[activeIndex].avatar} 
                     alt={testimonials[activeIndex].name}
@@ -125,7 +125,7 @@ const TestimonialsSection = () => {
                 key={idx}
                 onClick={() => setActiveIndex(idx)}
                 className={`w-3 h-3 rounded-full transition-all ${
-                  activeIndex === idx ? 'bg-brand-red scale-110' : 'bg-gray-300'
+                  activeIndex === idx ? 'bg-brand-blue scale-110' : 'bg-gray-300'
                 }`}
                 aria-label={`Go to testimonial ${idx + 1}`}
               />
@@ -134,7 +134,7 @@ const TestimonialsSection = () => {
 
           <button
             onClick={prevTestimonial}
-            className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-gray-700 hover:text-brand-red transition-colors z-10"
+            className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-gray-700 hover:text-brand-blue transition-colors z-10"
             aria-label="Previous testimonial"
           >
             <ChevronLeft className="h-6 w-6" />
@@ -142,7 +142,7 @@ const TestimonialsSection = () => {
           
           <button
             onClick={nextTestimonial}
-            className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-gray-700 hover:text-brand-red transition-colors z-10"
+            className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-gray-700 hover:text-brand-blue transition-colors z-10"
             aria-label="Next testimonial"
           >
             <ChevronRight className="h-6 w-6" />

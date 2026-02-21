@@ -56,7 +56,6 @@ export default {
 				// Custom brand colors
 				"brand-blue": "#3266a8",
 				"brand-blue-dark": "#2a558c",
-				"brand-red": "#e11d48",
 				"brand-gray": "#888686",
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',

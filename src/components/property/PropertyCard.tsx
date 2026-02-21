@@ -45,17 +45,17 @@ const PropertyCard = ({ property, className }: PropertyCardProps) => {
         />
         <div className="absolute top-4 left-4">
           <Badge 
-            className="bg-brand-red/90 hover:bg-brand-red text-white border-none font-medium"
+            className="bg-brand-blue/90 hover:bg-brand-blue text-white border-none font-medium"
           >
             {categoryLabel[property.category]}
           </Badge>
         </div>
       </div>
       <div className="p-4 space-y-2">
-        <h3 className="font-serif text-lg font-medium line-clamp-1 group-hover:text-brand-red transition-colors">
+        <h3 className="font-serif text-lg font-medium line-clamp-1 group-hover:text-brand-blue transition-colors">
           {property.title}
         </h3>
-        <p className="text-brand-red font-medium">
+        <p className="text-brand-blue font-medium">
           {formatCurrency(property.price)}
         </p>
         <div className="flex items-center text-brand-gray">

@@ -12,7 +12,7 @@ const Contact = () => {
         <div className="section-container">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-serif font-semibold mb-6 slide-up">
-              Contact <span className="text-brand-red">Us</span>
+              Contact <span className="text-brand-blue">Us</span>
             </h1>
             <p className="text-lg text-gray-600 mb-8 slide-up animate-delay-200">
               We'd love to hear from you. Get in touch with our team for any inquiries 

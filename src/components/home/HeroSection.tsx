@@ -91,7 +91,7 @@ const HeroSection = () => {
 			<div className="section-container relative z-10 text-white">
 				<div className="max-w-3xl slide-up animate-delay-200">
 					<h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-semibold text-white leading-tight mb-6 slide-up">
-						Redefining <span className="text-brand-red">Modern Living</span> in Nigeria
+						Redefining <span className="text-brand-blue">Modern Living</span> in Nigeria
 					</h1>
 					<p className="text-lg md:text-xl text-gray-200 font-light mb-8 max-w-2xl text-left slide-up animate-delay-200">
 						Discover premium residential communities that blend modern living with timeless design.

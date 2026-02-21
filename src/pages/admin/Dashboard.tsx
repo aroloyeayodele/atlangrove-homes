@@ -17,14 +17,14 @@ const Dashboard = () => {
           <div className="rounded-xl border bg-white p-5 sm:p-6">
             <div className="flex items-start justify-between">
               <h2 className="font-medium">Properties</h2>
-              <span className="inline-flex h-6 px-2 rounded-full text-xs items-center bg-brand-red/10 text-brand-red">
+              <span className="inline-flex h-6 px-2 rounded-full text-xs items-center bg-brand-blue/10 text-brand-blue">
                 Manage
               </span>
             </div>
             <p className="text-sm text-gray-600 mt-2 mb-4">
               Create, update and organize property listings, images and features.
             </p>
-            <Button asChild className="bg-brand-red hover:bg-brand-red/90 text-white">
+            <Button asChild className="bg-brand-blue hover:bg-brand-blue/90 text-white">
               <Link to="/admin/properties">Manage Properties</Link>
             </Button>
           </div>
@@ -32,14 +32,14 @@ const Dashboard = () => {
           <div className="rounded-xl border bg-white p-5 sm:p-6">
             <div className="flex items-start justify-between">
               <h2 className="font-medium">Inquiries</h2>
-              <span className="inline-flex h-6 px-2 rounded-full text-xs items-center bg-brand-red/10 text-brand-red">
+              <span className="inline-flex h-6 px-2 rounded-full text-xs items-center bg-brand-blue/10 text-brand-blue">
                 Review
               </span>
             </div>
             <p className="text-sm text-gray-600 mt-2 mb-4">
               Review and respond to customer messages sent via the website.
             </p>
-            <Button asChild className="bg-brand-red hover:bg-brand-red/90 text-white">
+            <Button asChild className="bg-brand-blue hover:bg-brand-blue/90 text-white">
               <Link to="/admin/inquiries">View Inquiries</Link>
             </Button>
           </div>
@@ -47,14 +47,14 @@ const Dashboard = () => {
           <div className="rounded-xl border bg-white p-5 sm:p-6">
             <div className="flex items-start justify-between">
               <h2 className="font-medium">Blogs</h2>
-              <span className="inline-flex h-6 px-2 rounded-full text-xs items-center bg-brand-red/10 text-brand-red">
+              <span className="inline-flex h-6 px-2 rounded-full text-xs items-center bg-brand-blue/10 text-brand-blue">
                 Manage
               </span>
             </div>
             <p className="text-sm text-gray-600 mt-2 mb-4">
               Create, update, and publish blog posts to your website.
             </p>
-            <Button asChild className="bg-brand-red hover:bg-brand-red/90 text-white">
+            <Button asChild className="bg-brand-blue hover:bg-brand-blue/90 text-white">
               <Link to="/admin/blogs">Manage Blogs</Link>
             </Button>
           </div>
@@ -62,7 +62,7 @@ const Dashboard = () => {
           <div className="rounded-xl border bg-white p-5 sm:p-6">
             <div className="flex items-start justify-between">
               <h2 className="font-medium">Account</h2>
-              <span className="inline-flex h-6 px-2 rounded-full text-xs items-center bg-brand-red/10 text-brand-red">
+              <span className="inline-flex h-6 px-2 rounded-full text-xs items-center bg-brand-blue/10 text-brand-blue">
                 Session
               </span>
             </div>

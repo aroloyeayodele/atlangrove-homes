@@ -7,7 +7,7 @@ const stats = [
     value: '500+',
     description: 'Premium listings across Nigeria',
     icon: Home,
-    color: 'text-brand-red',
+    color: 'text-brand-blue',
   },
   {
     id: 'locations',
@@ -41,7 +41,7 @@ const StatsSection = () => {
       <div className="section-container">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-4 slide-up">
-            Our <span className="text-brand-red">Impact</span>
+            Our <span className="text-brand-blue">Impact</span>
           </h2>
           <p className="text-gray-600 slide-up animate-delay-200 mb-8">
             Atlangrove Homes has been a trusted name in Nigerian real estate, 

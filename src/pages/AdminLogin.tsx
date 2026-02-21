@@ -45,7 +45,7 @@ const AdminLogin = () => {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-red"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue"
             required
             disabled={loading}
           />
@@ -57,7 +57,7 @@ const AdminLogin = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-red"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue"
             required
             disabled={loading}
           />
@@ -65,7 +65,7 @@ const AdminLogin = () => {
         {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
         <button
           type="submit"
-          className="w-full bg-brand-red text-white py-2 rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:bg-gray-400"
+          className="w-full bg-brand-blue text-white py-2 rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:bg-gray-400"
           disabled={loading}
         >
           {loading ? 'Logging in...' : 'Login'}

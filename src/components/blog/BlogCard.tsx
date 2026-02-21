@@ -11,7 +11,7 @@ const BlogCard = ({ post }: { post: IBlog }) => {
         <h3 className="text-xl font-semibold mb-3 font-serif">{post.title}</h3>
         <p className="text-gray-600 line-clamp-3">{post.summary}</p>
         <div className="mt-4">
-          <span className="text-brand-red font-medium hover:underline">Read More</span>
+          <span className="text-brand-blue font-medium hover:underline">Read More</span>
         </div>
       </div>
     </Link>
