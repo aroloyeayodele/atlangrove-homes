@@ -46,8 +46,9 @@ app.get('/api/debug-db', async (c) => {
       db_status: 'connected',
       tables: tables.results,
       counts: tableData,
+      users: (await c.env.DB.prepare("SELECT id, username FROM users").all()).results,
       env: c.env.ENV,
-      database_id: 'a39b3095-7aa3-4646-85ee-cc9f6798566a'
+      database_id: 'DEBUG-V3-a39b3095-7aa3-4646-85ee-cc9f6798566a'
     });
   } catch (err: any) {
     console.error('Debug route failed:', err);
@@ -360,7 +361,7 @@ admin.delete('/properties/:id', async (c) => {
 admin.get('/inquiries', async (c) => {
   try {
     // In actual schema, it's created_at, not id
-    const { results } = await c.env.DB.prepare('SELECT * FROM inquiries ORDER BY created_at DESC').all();
+    const { results } = await c.env.DB.prepare('SELECT * FROM inquiries ORDER BY submitted_at DESC').all();
     return c.json(results || []);
   } catch (err: any) {
     console.error('Inquiries fetch error:', err.message);
