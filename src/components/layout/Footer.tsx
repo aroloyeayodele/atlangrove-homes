@@ -18,7 +18,7 @@ const Footer = () => {
               />
             </Link>
             <p className="text-sm text-gray-600 mt-4">
-              Atlangrove Homes provides quality and affordable accommodation while redefining possibilities in real estate with integrity, professionalism, and innovation.
+              Atlangrove Homes is dedicated to creating high-quality residential communities that blend modern living with timeless design, built on Excellence, Innovation and Integrity.
             </p>
             <div className="flex space-x-4 pt-2">
               <a

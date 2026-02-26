@@ -65,11 +65,11 @@ const MissionSection = () => {
                   <Award className="h-6 w-6 text-brand-blue" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-semibold mb-6">Our Vision</h3>
+                  <h3 className="text-2xl font-serif font-semibold mb-4">Our Vision</h3>
                   <p className="text-gray-600 mb-8">
                     To be recognized as a leading force in real estate development—where quality, design and trust come together to create exceptional living experiences.
                   </p>
-                  <h3 className="text-2xl font-semibold mb-6">Core Values</h3>
+                  <h3 className="text-2xl font-serif font-semibold mb-4">Core Values</h3>
                   {values.map((value, index) => (
                     <div key={index} className="mb-4">
                       <h3 className="font-medium text-lg mb-1">{value.title}</h3>

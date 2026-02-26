@@ -48,39 +48,23 @@ const About = () => {
             <p className="text-lg text-gray-600 mb-8 slide-up animate-delay-200">
               Atlangrove Homes is a premier real estate development company dedicated to creating high-quality residential communities that blend modern living with timeless design. Founded with a vision to redefine the standards of urban and suburban living, Atlangrove Homes has earned a reputation for Excellence, Innovation and Integrity in the real estate sector.
               <br /><br />
-              We specialize in the development of Master-planned communities, Luxury Homes and Sustainable Housing solutions that reflect the evolving needs of today's homeowners. Each of our project is a testament to our commitment in Architectural Excellence, Smart planning and Lasting value.
+              We specialize in the development of Master-planned communities, Luxury Homes and Sustainable Housing solutions that reflect the evolving needs of today’s homeowners. Each of our project is a testament to our commitment in Architectural Excellence, Smart planning and Lasting value.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Timeline Section */}
+      {/* Mission & Vision Section */}
       <section className="py-16 bg-gray-100">
         <div className="section-container">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-4 slide-up">Our Story</h2>
-            <p className="text-gray-600">A journey of excellence in real estate and community building</p>
-          </div>
-          <div className="grid gap-8">
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <strong className="text-brand-blue text-xl">2021</strong>
-              <h3 className="font-semibold mt-2">Founding</h3>
-              <p className="text-gray-600">Atlangrove Homes was established, led by competent and professional realtors accredited by the Nigeria Institute of Estate Surveyors and Valuers.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-lg p-8 shadow-sm">
+              <h2 className="text-2xl font-serif font-semibold mb-4">Our Mission</h2>
+              <p className="text-gray-600">To build vibrant and sustainable communities that enhance the lives of residents and contribute positively to the broader urban landscape.</p>
             </div>
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <strong className="text-brand-blue text-xl">Vision</strong>
-              <h3 className="font-semibold mt-2">Transformative Living</h3>
-              <p className="text-gray-600">We aspire to be catalysts for transformative experiences, crafting not just homes but narratives of lives well lived.</p>
-            </div>
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <strong className="text-brand-blue text-xl">Mission</strong>
-              <h3 className="font-semibold mt-2">Creating Value</h3>
-              <p className="text-gray-600">Redefining the landscape of possibilities by creating enduring value and fostering a sense of belonging.</p>
-            </div>
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <strong className="text-brand-blue text-xl">Focus</strong>
-              <h3 className="font-semibold mt-2">Quality & Affordability</h3>
-              <p className="text-gray-600">World-class housing emphasizing affordability, comfort, security, and genuine Certificate of Occupancy (C of O).</p>
+            <div className="bg-white rounded-lg p-8 shadow-sm">
+              <h2 className="text-2xl font-serif font-semibold mb-4">Our Vision</h2>
+              <p className="text-gray-600">To be recognized as a leading force in real estate development—where quality, design and trust come together to create exceptional living experiences.</p>
             </div>
           </div>
         </div>
@@ -143,14 +127,11 @@ const About = () => {
               </div>
             </div>
 
-            <div className="bg-gray-50 rounded-lg p-8 shadow-sm">
-              <h3 className="text-2xl font-serif font-semibold mb-4 text-center">Why Choose Atlangrove Homes?</h3>
-              <ul className="list-disc list-inside text-gray-600 space-y-2 max-w-2xl mx-auto">
-                <li>Affordability without compromising quality</li>
-                <li>Genuine Certificate of Occupancy</li>
-                <li>Secure and well-planned communities</li>
-                <li>Modern, comfortable living spaces</li>
-              </ul>
+            <div className="bg-brand-blue/5 rounded-lg p-8 shadow-sm mb-12">
+              <h3 className="text-2xl font-serif font-semibold mb-4 text-center">Sustainability Commitment</h3>
+              <p className="text-gray-600 text-center max-w-3xl mx-auto">
+                Atlangrove Homes is passionate about responsible development. We integrate green building practices, energy-efficient systems and eco-friendly materials into our projects. Our goal is to contribute to a more sustainable future while delivering value to our stakeholders.
+              </p>
             </div>
           </div>
         </div>

@@ -3,32 +3,32 @@ import { Home, Search, Key, TrendingUp } from 'lucide-react';
 const services = [
   {
     id: 'residential',
-    title: 'Residential Development',
-    description: 'High-quality residential communities that blend modern living with timeless design and architectural excellence.',
+    title: 'Residential Real Estate Development',
+    description: 'Creating high-quality residential communities that blend modern living with timeless design.',
     icon: Home,
     bgColor: 'bg-red-50',
     iconColor: 'text-brand-blue',
   },
   {
-    id: 'master-planned',
-    title: 'Master-Planned Communities',
-    description: 'Thoughtfully designed communities that offer a complete living experience with amenities and green spaces.',
+    id: 'land-acquisition',
+    title: 'Land Acquisition & Planning',
+    description: 'Expertise in strategic land acquisition and comprehensive urban planning.',
     icon: Search,
     bgColor: 'bg-blue-50',
     iconColor: 'text-brand-blue',
   },
   {
-    id: 'luxury-homes',
-    title: 'Luxury Homes',
-    description: 'Exquisite homes featuring premium finishes, smart technologies, and exceptional craftsmanship.',
+    id: 'community-design',
+    title: 'Urban and Suburban Community Design',
+    description: 'Master-planned communities designed to reflect the evolving needs of today’s homeowners.',
     icon: Key,
     bgColor: 'bg-amber-50',
     iconColor: 'text-amber-600',
   },
   {
-    id: 'sustainable',
-    title: 'Sustainable Housing',
-    description: 'Eco-friendly homes designed with sustainable materials and energy-efficient technologies.',
+    id: 'luxury-construction',
+    title: 'Luxury and Custom Home Construction',
+    description: 'Testament to our commitment in Architectural Excellence, Smart planning and Lasting value.',
     icon: TrendingUp,
     bgColor: 'bg-green-50',
     iconColor: 'text-green-600',
@@ -44,14 +44,14 @@ const ServicesSection = () => {
             Our <span className="text-brand-blue">Services</span>
           </h2>
           <p className="text-gray-600 slide-up animate-delay-200">
-            Atlangrove Homes specializes in creating high-quality residential communities that blend modern living with timeless design. 
+            Atlangrove Homes specializes in creating high-quality residential communities that blend modern living with timeless design.
             Our services reflect our commitment to excellence, innovation, and sustainable development.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
-            <div 
+            <div
               key={service.id}
               className="bg-white rounded-lg p-6 border border-gray-100 shadow-sm hover:shadow-md transition-all slide-up"
               style={{ animationDelay: `${(index + 1) * 200}ms` }}

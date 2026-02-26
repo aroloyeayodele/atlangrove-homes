@@ -14,8 +14,8 @@ import { AlertCircle } from 'lucide-react';
 const fallbackProperties = [
   {
     id: '1',
-    title: 'CommonWealth City',
-    location: 'Karshi, Nansarawa',
+    title: 'Atlangrove Heights Estates',
+    location: 'Ketti Lugbe, Abuja',
     price: 450000000,
     category: 'finished' as const,
     bedrooms: 5,
@@ -25,10 +25,10 @@ const fallbackProperties = [
   },
   {
     id: '2',
-    title: "King's COurt Waru",
-    location: 'Waru, Abuja',
+    title: 'CommonWealth City',
+    location: 'Karshi, Abuja',
     price: 125000000,
-    category: 'Land' as const,
+    category: 'land' as const,
     bedrooms: 3,
     bathrooms: 3,
     squareMeters: 180,
@@ -36,8 +36,8 @@ const fallbackProperties = [
   },
   {
     id: '3',
-    title: 'One Million Dollar View',
-    location: 'Guzape Abuja',
+    title: "Kings'Court Apo Waru",
+    location: 'Apo Waru, Abuja',
     price: 200000000,
     category: 'commercial' as const,
     bedrooms: 0,
