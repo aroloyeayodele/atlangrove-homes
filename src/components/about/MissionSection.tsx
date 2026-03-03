@@ -33,7 +33,7 @@ const MissionSection = () => {
     <section className="py-16 md:py-24 bg-white">
       <div className="section-container">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left column - Image */}
+          {/* Left  column - Image */}
           <div className="relative slide-right">
             <div className="relative rounded-lg overflow-hidden shadow-lg aspect-[4/3]">
               <img
