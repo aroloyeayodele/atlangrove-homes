@@ -41,7 +41,7 @@ const teamMembers: TeamMember[] = [
   },
   {
     id: 3,
-    name: 'Ayomikun Fred Bulu',
+    name: 'Mr. Ayomikun Fred Bulu',
     role: 'Chief Administrative Officer',
     bio: 'Ayomikun Fred Bulu is a dynamic Chief Administrative Officer with over 5 years of post-university experience across business development, integrated marketing communications, publishing, and training. As a seasoned economist, Ayomikun\'s professional journey began in 2000 at Palnapina International, where he showcased his early expertise in various capacities, setting the stage for a rich and diverse career.\n\nHe has been instrumental in establishing manufacturing concerns and actively shaping the trajectory of multiple business boards. His expertise includes strategic research, start-up guidance, operational process advisory, and brand equity building through integrated marketing communications.\n\nNotably, Ayomikun served as an Associate Partner at alGROWithm, the No.1 indigenous Growth Agency in Africa, focusing on Growth Marketing at Jumia. His ventures demonstrate a commitment to innovation and excellence in the African business landscape.\n\nBeyond the boardroom, Ayomikun is passionate about youth and leadership development, volunteering with NGOs to contribute to capacity building programs for emerging leaders in business and sustainability.\n\nCurrently, he serves as the dynamic Business & Strategic Development Consultant to Atlangrove Engineering and Homes Ltd., Africa\'s emerging game changer in the Real Estate sector, where his strategic vision continues to drive impactful growth and innovation.',
     image: '/lovable-uploads/TeamMember/Ayomikun-Bulu.jpg',
