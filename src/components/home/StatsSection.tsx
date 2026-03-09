@@ -44,7 +44,7 @@ const StatsSection = () => {
             Our <span className="text-brand-blue">Impact</span>
           </h2>
           <p className="text-gray-600 slide-up animate-delay-200 mb-8">
-            Atlangrove Homes has been a trusted name in Nigerian real estate, 
+            Atlangrove Homes has been a trusted name in Nigerian real estate sector, 
             delivering exceptional results for our clients across the country.
           </p>
         </div>
