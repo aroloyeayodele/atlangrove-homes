@@ -14,7 +14,7 @@ export interface PropertyData {
   imageUrl: string;
   bedrooms?: number;
   bathrooms?: number;
-  squareMeters?: number;
+  size?: number; // Sqm
 }
 
 interface PropertyCardProps {
@@ -76,9 +76,9 @@ const PropertyCard = ({ property, className }: PropertyCardProps) => {
                 <span className="font-medium">{property.bathrooms}</span> Baths
               </div>
             )}
-            {property.squareMeters && (
+            {property.size && (
               <div className="text-gray-600">
-                <span className="font-medium">{property.squareMeters}</span> m²
+                <span className="font-medium">{property.size}</span> Sqm
               </div>
             )}
           </div>

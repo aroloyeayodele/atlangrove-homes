@@ -40,22 +40,21 @@ const Header = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header 
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        isScrolled 
-          ? 'bg-white/90 backdrop-blur-md shadow-sm py-3' 
-          : 'bg-transparent py-5'
-      )}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white shadow-sm py-2 md:py-3">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <img 
-              src="/lovable-uploads/d8b82a03-78f9-4b90-ac43-39097201c852.png" 
-              alt="Atlangrove Homes Logo" 
-              className="h-8 sm:h-10"
+          {/* Logo on the left */}
+          <Link
+            to="/"
+            className="flex items-center flex-shrink-0"
+            style={{ pointerEvents: 'auto' }}
+          >
+            <img
+              src="/lovable-uploads/d8b82a03-78f9-4b90-ac43-39097201c852.png"
+              alt="Atlangrove Homes Logo"
+              className="h-10 sm:h-12 navbar-logo"
+              style={{ filter: 'none !important', WebkitFilter: 'none !important' }}
+              tabIndex={-1}
             />
           </Link>
 
@@ -67,8 +66,8 @@ const Header = () => {
                 to={item.href}
                 className={cn(
                   'text-sm font-medium transition-colors hover:text-brand-blue relative py-2',
-                  isActive(item.href) 
-                    ? 'text-brand-blue after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-brand-blue' 
+                  isActive(item.href)
+                    ? 'text-brand-blue after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-brand-blue'
                     : 'text-foreground'
                 )}
               >
@@ -78,7 +77,7 @@ const Header = () => {
           </nav>
 
           {/* Contact Button - Desktop */}
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center gap-4">
             <Button asChild className="bg-brand-blue text-white hover:brightness-90">
               <Link to="/contact">Get In Touch</Link>
             </Button>
@@ -97,30 +96,30 @@ const Header = () => {
             )}
           </button>
         </div>
-      </div>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-background border-t border-border py-4 shadow-lg animate-fadeIn">
-          <div className="px-4 space-y-3">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={cn(
-                  'block text-base font-medium py-2 transition-colors',
-                  isActive(item.href) ? 'text-brand-blue' : 'text-foreground'
-                )}
-              >
-                {item.name}
-              </Link>
-            ))}
-            <Button asChild className="w-full mt-4 bg-brand-blue text-white hover:brightness-90">
-              <Link to="/contact">Get In Touch</Link>
-            </Button>
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white border-t border-border py-4 shadow-lg animate-fadeIn">
+            <div className="px-4 space-y-3">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={cn(
+                    'block text-base font-medium py-2 transition-colors',
+                    isActive(item.href) ? 'text-brand-blue' : 'text-foreground'
+                  )}
+                >
+                  {item.name}
+                </Link>
+              ))}
+              <Button asChild className="w-full mt-4 bg-brand-blue text-white hover:brightness-90">
+                <Link to="/contact">Get In Touch</Link>
+              </Button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </header>
   );
 };

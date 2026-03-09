@@ -335,19 +335,19 @@ admin.get('/properties/:id', async (c) => {
 });
 
 admin.post('/properties', async (c) => {
-  const { name, address, price, bedrooms, bathrooms, property_type, status, description, features, images } = await c.req.json();
+  const { name, address, price, bedrooms, bathrooms, property_type, status, description, features, images, size } = await c.req.json();
   const { meta } = await c.env.DB.prepare(
-    'INSERT INTO properties (name, address, price, bedrooms, bathrooms, property_type, status, description, features, images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-  ).bind(name, address, price, bedrooms, bathrooms, property_type, status, description, features, images).run();
+    'INSERT INTO properties (name, address, price, bedrooms, bathrooms, property_type, status, description, features, images, size) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  ).bind(name, address, price, bedrooms, bathrooms, property_type, status, description, features, images, size).run();
   return c.json({ id: meta.last_row_id }, 201);
 });
 
 admin.put('/properties/:id', async (c) => {
   const id = c.req.param('id');
-  const { name, address, price, bedrooms, bathrooms, property_type, status, description, features, images } = await c.req.json();
+  const { name, address, price, bedrooms, bathrooms, property_type, status, description, features, images, size } = await c.req.json();
   await c.env.DB.prepare(
-    'UPDATE properties SET name = ?, address = ?, price = ?, bedrooms = ?, bathrooms = ?, property_type = ?, status = ?, description = ?, features = ?, images = ? WHERE id = ?'
-  ).bind(name, address, price, bedrooms, bathrooms, property_type, status, description, features, images, id).run();
+    'UPDATE properties SET name = ?, address = ?, price = ?, bedrooms = ?, bathrooms = ?, property_type = ?, status = ?, description = ?, features = ?, images = ?, size = ? WHERE id = ?'
+  ).bind(name, address, price, bedrooms, bathrooms, property_type, status, description, features, images, size, id).run();
   return c.json({ message: 'Property updated successfully' });
 });
 

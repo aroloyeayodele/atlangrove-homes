@@ -135,8 +135,8 @@ const PropertyDetailPage = () => {
                             </div>
                             <div className="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
                                 <Maximize className="h-6 w-6 text-brand-blue mb-1" />
-                                <span className="font-semibold">{property.square_meters || '--'}</span>
-                                <span className="text-xs text-gray-500">Sq. Meters</span>
+                                <span className="font-semibold">{property.size || '--'}</span>
+                                <span className="text-xs text-gray-500">Sqm</span>
                             </div>
                         </div>
 

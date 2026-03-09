@@ -1,3 +1,22 @@
+.navbar-logo {
+  filter: none !important;
+  -webkit-filter: none !important;
+  -moz-filter: none !important;
+  -ms-filter: none !important;
+  -o-filter: none !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+}
+
+.navbar-logo:hover,
+.navbar-logo:focus,
+.navbar-logo:active {
+  filter: none !important;
+  -webkit-filter: none !important;
+  -moz-filter: none !important;
+  -ms-filter: none !important;
+  -o-filter: none !important;
+}
 #root {
   max-width: 1280px;
   margin: 0 auto;

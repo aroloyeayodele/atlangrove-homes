@@ -70,18 +70,18 @@ const HeroSection = () => {
 	};
 
 	return (
-		<section className="relative min-h-screen bg-gray-900 flex items-center overflow-hidden">
+		<section className="relative min-h-screen bg-gray-900 flex items-center overflow-hidden pt-20 md:pt-24">
 			{/* Background image carousel with transitions */}
 			{backgroundImages.map((image, index) => (
 				<div
 					key={image}
-					className={`absolute inset - 0 z - 0 transition - opacity duration - 500 ease -in -out ${index === currentImageIndex ? 'opacity-50' : 'opacity-0'
-						} ${isTransitioning && index === currentImageIndex ? 'opacity-0' : ''} `}
+					className={`absolute inset-0 z-0 transition-opacity duration-500 ease-in-out ${index === currentImageIndex ? 'opacity-60' : 'opacity-0'} ${isTransitioning && index === currentImageIndex ? 'opacity-0' : ''}`}
 				>
 					<img
 						src={image}
-						alt={`Luxury Real Estate ${index + 1} `}
-						className="w-full h-full object-cover"
+						alt={`Luxury Real Estate ${index + 1}`}
+						className="w-full h-full object-cover min-h-screen sm:min-h-0"
+						style={{ minHeight: '100vh' }}
 					/>
 					<div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40" />
 				</div>
@@ -90,16 +90,15 @@ const HeroSection = () => {
 			{/* Content */}
 			<div className="section-container relative z-10 text-white">
 				<div className="max-w-3xl slide-up animate-delay-200">
-					<h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-semibold text-white leading-tight mb-6 slide-up">
-						Redefining <span className="text-brand-blue">Modern Living</span> in Nigeria
+					<h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight mb-6 slide-up">
+						Find Your Dream Home with <span className="font-extrabold text-brand-blue">Atlangrove Homes</span>
 					</h1>
-					<p className="text-lg md:text-xl text-gray-200 font-light mb-8 max-w-2xl text-left slide-up animate-delay-200">
-						Discover premium residential communities that blend modern living with timeless design.
-						Experience architectural excellence and sustainable living with Atlangrove Homes.
+					<p className="text-lg md:text-xl text-white/90 font-light mb-8 max-w-2xl text-left slide-up animate-delay-200">
+						Modern, sustainable, and elegant living—crafted for you. Explore our exclusive properties and experience the best of Nigerian real estate.
 					</p>
 
 					{/* Search Form */}
-					<div className="bg-white/10 backdrop-blur-md p-4 rounded-lg mb-8 max-w-4xl mx-auto slide-up animate-delay-400">
+					  <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg mb-8 max-w-4xl mx-auto slide-up animate-delay-400">
 						<form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3">
 							<div className="flex-1">
 								<div className="relative">
@@ -164,7 +163,7 @@ const HeroSection = () => {
 					</div>
 
 					<div className="flex flex-wrap gap-4">
-						<Button asChild size="lg" className="text-base">
+						<Button asChild size="lg" variant="outline" className="text-base bg-white border-white text-brand-blue hover:bg-gray-100 hover:text-brand-blue">
 							<Link to="/properties">
 								Explore Properties <ArrowRight className="ml-2 h-5 w-5" />
 							</Link>

@@ -24,6 +24,7 @@ const PropertyForm = () => {
     const [status, setStatus] = useState('available');
     const [description, setDescription] = useState('');
     const [features, setFeatures] = useState<string[]>([]);
+    const [size, setSize] = useState(''); // Sqm
 
     // State for image display URLs (absolute or local blobs)
     const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
@@ -49,6 +50,7 @@ const PropertyForm = () => {
                     setStatus(data.status);
                     setDescription(data.description);
                     setFeatures(data.features || []);
+                    setSize(data.size ? data.size.toString() : '');
 
                     const absoluteUrls = typeof data.images === 'string' ? JSON.parse(data.images) : data.images;
                     setImagePreviewUrls(absoluteUrls);
@@ -120,6 +122,7 @@ const PropertyForm = () => {
                 property_type: propertyType,
                 features: JSON.stringify(features),
                 images: JSON.stringify(finalImageDbUrls),
+                size: size ? parseFloat(size) : null,
             };
 
             if (id) {
@@ -157,10 +160,11 @@ const PropertyForm = () => {
                 <Textarea placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} required />
 
                 {/* Numeric and Select Fields */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <Input type="number" placeholder="Price" value={price} onChange={e => setPrice(e.target.value)} required />
                     <Input type="number" placeholder="Bedrooms" value={bedrooms} onChange={e => setBedrooms(e.target.value)} required />
                     <Input type="number" placeholder="Bathrooms" value={bathrooms} onChange={e => setBathrooms(e.target.value)} required />
+                    <Input type="number" placeholder="Size (Sqm)" value={size} onChange={e => setSize(e.target.value)} min={0} step={0.01} required />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Select value={propertyType} onValueChange={setPropertyType} required>
