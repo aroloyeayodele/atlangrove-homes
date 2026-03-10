@@ -38,9 +38,14 @@ const Header = () => {
   ];
 
   const isActive = (path: string) => location.pathname === path;
+  const isHomePage = location.pathname === '/';
+  const shouldHideHeader = isHomePage && !isScrolled;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white shadow-sm py-2 md:py-3">
+    <header className={cn(
+      'fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white shadow-sm py-2 md:py-3',
+      shouldHideHeader ? 'opacity-0 pointer-events-none' : 'opacity-100'
+    )}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo on the left */}
@@ -59,7 +64,11 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className={cn(
+            'hidden transition-all duration-300',
+            isScrolled ? 'md:flex' : 'md:hidden',
+            'space-x-8'
+          )}>
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -77,7 +86,10 @@ const Header = () => {
           </nav>
 
           {/* Contact Button - Desktop */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className={cn(
+            'hidden transition-all duration-300 items-center gap-4',
+            isScrolled ? 'md:flex' : 'md:hidden'
+          )}>
             <Button asChild className="bg-brand-blue text-white hover:brightness-90">
               <Link to="/contact">Get In Touch</Link>
             </Button>

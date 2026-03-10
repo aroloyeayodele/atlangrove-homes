@@ -76,11 +76,13 @@ const PropertyCard = ({ property, className }: PropertyCardProps) => {
                 <span className="font-medium">{property.bathrooms}</span> Baths
               </div>
             )}
-            {property.size && (
-              <div className="text-gray-600">
-                <span className="font-medium">{property.size}</span> Sqm
-              </div>
-            )}
+          </div>
+        )}
+
+        {/* Show size for all property types */}
+        {property.size && (
+          <div className="pt-2 text-sm text-gray-600 border-t border-gray-100">
+            <span className="font-medium">{property.size}</span> Sqm
           </div>
         )}
       </div>

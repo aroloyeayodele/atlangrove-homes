@@ -70,7 +70,7 @@ const HeroSection = () => {
 	};
 
 	return (
-		<section className="relative min-h-screen bg-gray-900 flex items-center overflow-hidden pt-20 md:pt-24">
+		<section className="relative min-h-screen bg-gray-900 flex items-center overflow-hidden pt-0">
 			{/* Background image carousel with transitions */}
 			{backgroundImages.map((image, index) => (
 				<div
@@ -90,11 +90,21 @@ const HeroSection = () => {
 			{/* Content */}
 			<div className="section-container relative z-10 text-white">
 				<div className="max-w-3xl slide-up animate-delay-200">
+					{/* Logo */}
+					<div className="mb-8 slide-up">
+						<img
+							src="/lovable-uploads/d8b82a03-78f9-4b90-ac43-39097201c852.png"
+							alt="Atlangrove Homes Logo"
+						className="h-12 sm:h-16 md:h-20 w-auto"
+							style={{ filter: 'brightness(1.1)', WebkitFilter: 'brightness(1.1)' }}
+						/>
+					</div>
+
 					<h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight mb-6 slide-up">
 						Find Your Dream Home with <span className="font-extrabold text-brand-blue">Atlangrove Homes</span>
 					</h1>
 					<p className="text-lg md:text-xl text-white/90 font-light mb-8 max-w-2xl text-left slide-up animate-delay-200">
-						Modern, sustainable, and elegant living—crafted for you. Explore our exclusive properties and experience the best of Nigerian real estate.
+						Experience Modern, sustainable and elegant living—crafted for you. Explore our exclusive properties and experience the best of Nigerian real estate.
 					</p>
 
 					{/* Search Form */}
