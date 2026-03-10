@@ -107,7 +107,7 @@ const HeroSection = () => {
 						Experience Modern, sustainable and elegant living—crafted for you. Explore our exclusive properties and experience the best of Nigerian real estate.
 					</p>
 
-					{/* Search Form */}
+					{/*  Search  Form */}
 					  <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg mb-8 max-w-4xl mx-auto slide-up animate-delay-400">
 						<form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3">
 							<div className="flex-1">
