@@ -45,7 +45,7 @@ const ServicesSection = () => {
           </h2>
           <p className="text-gray-600 slide-up animate-delay-200">
             Atlangrove Homes specializes in creating high-quality residential communities that blend modern living with timeless design.
-            Our services reflect our commitment to excellence, innovation, and sustainable development.
+            Our services reflect our commitment to excellence, innovation and sustainable development.
           </p>
         </div>
 
