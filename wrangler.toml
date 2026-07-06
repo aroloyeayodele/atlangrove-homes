@@ -1,4 +1,4 @@
-name = "atlangrove-homes"
+name = "atlangrove"
 main = "worker/src/index.ts"
 compatibility_date = "2024-03-18"
 
