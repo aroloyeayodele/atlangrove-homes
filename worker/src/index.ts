@@ -396,16 +396,22 @@ app.route('/api/admin', admin);
 
 // SPA fallback — serve index.html for any unmatched route
 app.notFound(async (c) => {
-  const env = c.env as unknown as Env;
-  const url = new URL(c.req.url);
-  const assetReq = new Request(`${url.origin}/index.html`, c.req.raw);
-  const response = await env.ASSETS.fetch(assetReq);
-  return new Response(response.body, {
-    status: 200,
-    headers: {
-      'Content-Type': 'text/html; charset=utf-8',
-    },
-  });
+  try {
+    const env = c.env as unknown as Env;
+    const url = new URL(c.req.url);
+    const response = await env.ASSETS.fetch(`${url.origin}/index.html`);
+    if (!response || response.status !== 200) {
+      return c.text(`SPA fallback: ASSETS returned status ${response?.status || 'empty'}`, 500);
+    }
+    return new Response(response.body, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+      },
+    });
+  } catch (err: any) {
+    return c.text(`SPA fallback error: ${err.message}`, 500);
+  }
 });
 
 export default app;
