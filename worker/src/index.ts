@@ -9,6 +9,7 @@ interface Env {
   DB: D1Database;
   MEDIA_BUCKET: R2Bucket;
   JWT_SECRET: string;
+  ASSETS: { fetch: (req: Request) => Promise<Response> };
 }
 
 const app = new Hono<{ Bindings: Env }>();
@@ -392,5 +393,13 @@ admin.post('/upload', async (c) => {
 
 // Mount the admin sub-app
 app.route('/api/admin', admin);
+
+// SPA fallback — serve index.html for any unmatched route
+app.notFound(async (c) => {
+  const env = c.env as unknown as Env;
+  const url = new URL(c.req.url);
+  const assetReq = new Request(`${url.origin}/index.html`, c.req.raw);
+  return env.ASSETS.fetch(assetReq);
+});
 
 export default app;
