@@ -2,7 +2,7 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { jwt, sign } from 'hono/jwt';
-import { serveStatic } from 'hono/cloudflare-workers';
+
 
 // Define the database and R2 bucket bindings
 interface Env {
@@ -392,9 +392,5 @@ admin.post('/upload', async (c) => {
 
 // Mount the admin sub-app
 app.route('/api/admin', admin);
-
-// --- STATIC ASSETS & SPA FALLBACK ---
-app.use('/*', serveStatic({ root: './' }));
-app.get('*', serveStatic({ path: './index.html' }));
 
 export default app;
