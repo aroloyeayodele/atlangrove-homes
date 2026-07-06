@@ -397,7 +397,9 @@ app.route('/api/admin', admin);
 // SPA fallback — serve index.html for any unmatched route
 app.notFound(async (c) => {
   const env = c.env as unknown as Env;
-  const response = await env.ASSETS.fetch('/index.html');
+  const url = new URL(c.req.url);
+  const assetReq = new Request(`${url.origin}/index.html`, c.req.raw);
+  const response = await env.ASSETS.fetch(assetReq);
   return new Response(response.body, {
     status: 200,
     headers: response.headers,
