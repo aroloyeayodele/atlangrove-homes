@@ -402,7 +402,9 @@ app.notFound(async (c) => {
   const response = await env.ASSETS.fetch(assetReq);
   return new Response(response.body, {
     status: 200,
-    headers: response.headers,
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+    },
   });
 });
 
