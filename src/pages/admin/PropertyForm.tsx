@@ -4,7 +4,7 @@ import { getAdminPropertyById, createProperty, updateProperty, uploadImage } fro
 import { useAuth } from '../../context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import RichTextEditor from '@/components/ui/RichTextEditor';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { X } from 'lucide-react';
@@ -157,7 +157,7 @@ const PropertyForm = () => {
                 {/* Text Fields */}
                 <Input placeholder="Property Name" value={name} onChange={e => setName(e.target.value)} required />
                 <Input placeholder="Address" value={address} onChange={e => setAddress(e.target.value)} required />
-                <Textarea placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} required />
+                <RichTextEditor value={description} onChange={setDescription} minHeight={250} />
 
                 {/* Numeric and Select Fields */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

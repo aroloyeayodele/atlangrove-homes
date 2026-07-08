@@ -4,7 +4,7 @@ import { getAdminBlogById, createBlog, updateBlog, uploadImage } from '../../ser
 import { useAuth } from '../../context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import RichTextEditor from '@/components/ui/RichTextEditor';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 
@@ -132,7 +132,7 @@ const BlogForm = () => {
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 font-bold mb-2">Content</label>
-                    <Textarea value={content} onChange={(e) => setContent(e.target.value)} rows={10} required />
+                    <RichTextEditor value={content} onChange={setContent} minHeight={300} />
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 font-bold mb-2">Status</label>

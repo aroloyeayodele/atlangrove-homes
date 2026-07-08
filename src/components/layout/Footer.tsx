@@ -129,7 +129,7 @@ const Footer = () => {
             <div className="space-y-3">
               <p className="flex items-start text-sm">
                 <MapPin className="h-5 w-5 text-brand-blue mr-2 mt-0.5" />
-                <span className="text-gray-600">Garki Area 3 Abuja</span>
+                <span className="text-gray-600"> Atlangrove Heights, Suite FF037 Block C, AICL Neighbourhood Shopping Complex, Garki Area 3, Abuja</span>
               </p>
               <p className="flex items-start text-sm">
                 <Phone className="h-5 w-5 text-brand-blue mr-2 mt-0.5" />

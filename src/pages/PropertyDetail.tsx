@@ -142,9 +142,7 @@ const PropertyDetailPage = () => {
 
                         <div className="space-y-4">
                             <h2 className="text-2xl font-serif font-semibold">Description</h2>
-                            <p className="text-gray-600 leading-relaxed">
-                                {property.description || 'No description available for this property.'}
-                            </p>
+                            <div className="text-gray-600 leading-relaxed prose max-w-none" dangerouslySetInnerHTML={{ __html: property.description || 'No description available for this property.' }} />
                         </div>
 
                         {features.length > 0 && (
