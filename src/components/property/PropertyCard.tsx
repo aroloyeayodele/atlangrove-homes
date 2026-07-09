@@ -8,13 +8,13 @@ import { useState } from 'react';
 export interface PropertyData {
   id: string;
   title: string;
-  price: number;
+  price: string | number;
   location: string;
   category: 'land' | 'carcass' | 'finished';
   imageUrl: string;
-  bedrooms?: number;
-  bathrooms?: number;
-  size?: number; // Sqm
+  bedrooms?: string | number;
+  bathrooms?: string | number;
+  size?: string | number;
 }
 
 interface PropertyCardProps {
@@ -56,7 +56,7 @@ const PropertyCard = ({ property, className }: PropertyCardProps) => {
           {property.title}
         </h3>
         <p className="text-brand-blue font-medium">
-          {formatCurrency(property.price)}
+          {typeof property.price === 'number' ? formatCurrency(property.price) : property.price}
         </p>
         <div className="flex items-center text-brand-gray">
           <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />

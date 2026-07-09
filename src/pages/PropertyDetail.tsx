@@ -80,7 +80,9 @@ const PropertyDetailPage = () => {
     const images = safeParse(property.images);
     const features = safeParse(property.features);
     const displayTitle = property.title || property.name || 'Untitled Property';
-    const displayPrice = property.price ? `₦${property.price.toLocaleString()}` : 'Price on request';
+    const displayPrice = property.price
+        ? (typeof property.price === 'number' ? `₦${property.price.toLocaleString()}` : property.price)
+        : 'Price on request';
 
     return (
         <PageLayout>

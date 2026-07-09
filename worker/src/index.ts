@@ -121,7 +121,7 @@ const transformProperty = (c: any, prop: any) => {
       // Modern/Standard fields
       images: JSON.stringify(absoluteImages),
       _images: absoluteImages,
-      displayPrice: prop.price ? `₦${Number(prop.price).toLocaleString()}` : 'Price on request',
+      displayPrice: prop.price ? (isNaN(Number(prop.price)) ? prop.price : `₦${Number(prop.price).toLocaleString()}`) : 'Price on request',
       features: safeJsonParse(prop.features, [])
     };
   } catch (err: any) {

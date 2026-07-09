@@ -116,13 +116,13 @@ const PropertyForm = () => {
 
             const propertyData = {
                 name, address, status, description,
-                price: parseFloat(price),
-                bedrooms: parseInt(bedrooms),
-                bathrooms: parseInt(bathrooms),
+                price,
+                bedrooms,
+                bathrooms,
                 property_type: propertyType,
                 features: JSON.stringify(features),
                 images: JSON.stringify(finalImageDbUrls),
-                size: size ? parseFloat(size) : null,
+                size,
             };
 
             if (id) {
@@ -161,10 +161,10 @@ const PropertyForm = () => {
 
                 {/* Numeric and Select Fields */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <Input type="number" placeholder="Price" value={price} onChange={e => setPrice(e.target.value)} required />
-                    <Input type="number" placeholder="Bedrooms" value={bedrooms} onChange={e => setBedrooms(e.target.value)} required />
-                    <Input type="number" placeholder="Bathrooms" value={bathrooms} onChange={e => setBathrooms(e.target.value)} required />
-                    <Input type="number" placeholder="Size (Sqm)" value={size} onChange={e => setSize(e.target.value)} min={0} step={0.01} required />
+                    <Input type="text" placeholder="Price (e.g. ₦15,000,000 or Negotiable)" value={price} onChange={e => setPrice(e.target.value)} required />
+                    <Input type="text" placeholder="Bedrooms (e.g. 3 or N/A)" value={bedrooms} onChange={e => setBedrooms(e.target.value)} required />
+                    <Input type="text" placeholder="Bathrooms (e.g. 2 or N/A)" value={bathrooms} onChange={e => setBathrooms(e.target.value)} required />
+                    <Input type="text" placeholder="Size (e.g. 200 Sqm or On Request)" value={size} onChange={e => setSize(e.target.value)} required />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Select value={propertyType} onValueChange={setPropertyType} required>

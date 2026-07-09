@@ -58,7 +58,7 @@ const PropertiesPage = () => {
                                     </CardHeader>
                                     <CardContent>
                                         <p className="text-gray-700">{property.address}</p>
-                                        <p className="text-lg font-semibold mt-2">₦{property.price.toLocaleString()}</p>
+                                        <p className="text-lg font-semibold mt-2">{typeof property.price === 'number' ? `₦${property.price.toLocaleString()}` : property.price}</p>
                                         {property.size && <p className="text-sm text-gray-600 mt-2">{property.size} Sqm</p>}
                                     </CardContent>
                                 </Link>
